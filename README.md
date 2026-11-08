@@ -95,5 +95,5 @@ and serves `_site/`. No framework preset is needed.
 
 - `scripts/site.py` is modelled on REA's MIT-licensed website tooling; see
   [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md).
-- The site is proprietary. iCode Workbench is MIT-licensed; iCode Agent is
+- The site is proprietary. iCode Workbench is AGPL-3.0-only; iCode Agent is
   Apache-2.0.
