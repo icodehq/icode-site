@@ -2,7 +2,7 @@
 
 Static marketing site for iCode and its two products:
 
-- **iCode Workbench** — the desktop agent development environment (ADE).
+- **iCode Workbench** — the universal agent development environment (ADE).
 - **iCode Agent** — the terminal coding agent.
 
 Framework-free, by design: authored HTML in `public/`, shared regions injected
