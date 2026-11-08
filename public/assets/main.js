@@ -1,6 +1,6 @@
 // Progressive enhancement: theme toggle, dynamic year, and copy buttons.
 (() => {
-  const key = "loonglab-theme";
+  const key = "icode-theme";
   const toggle = document.querySelector("[data-theme-toggle]");
   if (toggle) {
     toggle.addEventListener("click", () => {
@@ -20,6 +20,16 @@
 
   document.querySelectorAll("[data-year]").forEach((el) => {
     el.textContent = String(new Date().getFullYear());
+  });
+
+  const currentPath = window.location.pathname.replace(/\/index\.html$/, "/");
+  document.querySelectorAll(".site-nav a[href]").forEach((link) => {
+    const target = new URL(link.href, window.location.href);
+    if (target.origin !== window.location.origin) return;
+    const path = target.pathname.endsWith("/") ? target.pathname : target.pathname + "/";
+    if (path === currentPath || (path !== "/" && currentPath.startsWith(path))) {
+      link.setAttribute("aria-current", "page");
+    }
   });
 
   document.querySelectorAll("[data-copy]").forEach((block) => {

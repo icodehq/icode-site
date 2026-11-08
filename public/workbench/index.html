@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>iCode Workbench — the agent development environment</title>
+  <meta name="description" content="iCode Workbench is the desktop ADE for a team of coding agents: parallel sessions in isolated Git worktrees, durable tasks, review in the session checkout, and Mira watching every project. Pre-1.0 and in early access." />
+  <meta name="theme-color" content="#ffffff" />
+  <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml" />
+  <link rel="stylesheet" href="../assets/styles.css" />
+  <script src="../assets/theme.js"></script>
+</head>
+<body>
+<!-- BEGIN:site-header -->
+<!-- END:site-header -->
+
+<main>
+  <section class="hero">
+    <div class="container">
+      <p class="eyebrow">iCode Workbench · Desktop ADE</p>
+      <h1>A control room for a team of coding agents.</h1>
+      <p class="lede">
+        Run Claude Code, Codex, and OpenCode in parallel, each in its own Git
+        worktree. Queue durable tasks, review changes where the agent worked, and
+        keep terminals alive when the app restarts — while Mira watches every
+        repository and tells you what needs you.
+      </p>
+      <div class="actions">
+        <a class="button button-primary" href="#workbench">Explore the workbench</a>
+        <a class="button" href="https://github.com/icodehq" rel="noopener">Visit iCode on GitHub</a>
+      </div>
+      <p class="hero-note">Pre-1.0 · Linux (WSL2/WSLg) · Windows x64 · macOS x64 / arm64</p>
+
+      <figure class="product-shot hero-shot">
+        <img src="../assets/workbench/projects-wall.png" width="1600" height="1000" alt="The iCode Workbench All projects wall showing in-flight sessions, items that need attention, and last activity across three projects" />
+        <figcaption>The Projects wall separates what is in flight, what needs you, and when each project was last active.</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section class="section" id="workbench">
+    <div class="container-wide">
+      <p class="eyebrow">The workbench</p>
+      <h2>One environment, from first prompt to reviewed change.</h2>
+      <div class="grid feature-grid">
+        <article class="card">
+          <span class="tag">Portfolio</span>
+          <h3>One wall for every project.</h3>
+          <p>
+            Each row separates live direct sessions and queued tasks, the items
+            that need a person, and real last-activity timestamps. Filter by Needs
+            you, Live, or Idle, pin projects, and open a waiting task or session
+            directly from the attention list.
+          </p>
+        </article>
+        <article class="card">
+          <span class="tag">Isolation</span>
+          <h3>Every session gets its own worktree.</h3>
+          <p>
+            A new session starts on its own branch at the current HEAD, so two
+            agents in the same repository never edit the same checkout. Sleep a
+            direct session to stop the process while keeping the checkout and
+            resume token; wake it to continue where the harness supports it.
+          </p>
+        </article>
+        <article class="card">
+          <span class="tag">Terminals</span>
+          <h3>The process outlives the window.</h3>
+          <p>
+            A detached host owns the PTYs, terminal emulation, and exit truth.
+            Closing the window or quitting the app does not stop a live session;
+            reopening reattaches to the same PTY with its scrollback and
+            alternate-screen state intact.
+          </p>
+        </article>
+        <article class="card">
+          <span class="tag">Tasks</span>
+          <h3>Durable work, not terminal tabs.</h3>
+          <p>
+            Queue tasks with a global 1–4 slot limit. They move through queued,
+            dispatching, running, waiting, completed, failed, and cancelled. A
+            retry is a new attempt; a review decision is separate from process
+            exit. Schedules create ordinary queued tasks on a cadence.
+          </p>
+        </article>
+        <article class="card">
+          <span class="tag">Review</span>
+          <h3>Review where the agent worked.</h3>
+          <p>
+            Source Control is scoped to the session checkout: changes against the
+            task baseline, staged and untracked files, inline diffs, line notes
+            sent back to the agent, and commit, amend, push, history, cherry-pick,
+            revert, or reset.
+          </p>
+        </article>
+        <article class="card">
+          <span class="tag">Editing</span>
+          <h3>Edit in the same checkout.</h3>
+          <p>
+            Open Files beside the terminal and work in the same worktree the agent
+            is editing. Explore, rename, duplicate, move, and search; Monaco adds
+            editing, quick diffs against HEAD, inline blame, and file history.
+          </p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="mira">
+    <div class="container-wide split">
+      <div>
+        <p class="eyebrow">Mira · Cross-project assistant</p>
+        <h2>She watches all of it. You keep the decisions.</h2>
+        <p>
+          Mira is a person item in the rail — Projects · Schedules ┊ Mira ┊
+          Settings — with an avatar, live status, and an unread badge. One
+          conversation spans every repository, and her answers come from the real
+          projects, tasks, sessions, diffs, and review state.
+        </p>
+        <ul class="feature-list">
+          <li><strong>She can act.</strong> Through validated actions she creates, cancels, retries, and archives tasks, messages task sessions and project supervisors, and records non-binding review recommendations.</li>
+          <li><strong>She is bounded.</strong> She has no shell and no project working directory. She cannot approve a proposal, decide a review, merge, push, or edit project code.</li>
+          <li><strong>She comes to you.</strong> Approvals, failures, waiting tasks, and review-ready work become proactive messages with a rail badge and an OS notification when no window is focused. Deduplication, an hourly budget, and quiet hours keep it from becoming noise.</li>
+        </ul>
+      </div>
+      <figure class="product-shot">
+        <img src="../assets/workbench/mira.png" width="1920" height="1032" loading="lazy" alt="Mira streaming a Markdown status report with a task table, live thinking-token count, and a Stop button" />
+        <figcaption>Mira streams a Markdown status report across projects while the run line shows the harness stage, elapsed time, and thinking tokens.</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container-wide">
+      <p class="eyebrow">In practice</p>
+      <h2>See the task, then see the change.</h2>
+      <div class="shot-row">
+        <figure class="product-shot">
+          <img src="../assets/workbench/tasks.png" width="1600" height="1000" loading="lazy" alt="The task workbench showing a review-pending task with a live session, changes against its baseline, and a review recommendation" />
+          <figcaption>The task workbench: the instruction, the live session, the changes, and a review decision.</figcaption>
+        </figure>
+        <figure class="product-shot">
+          <img src="../assets/workbench/session-review.png" width="1600" height="1000" loading="lazy" alt="Source Control inside a session, showing staged and untracked changes with an inline diff" />
+          <figcaption>Source Control in the session worktree: stage, review, and commit without leaving the app.</figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container-wide">
+      <p class="eyebrow">Deeper in the workbench</p>
+      <h2>Terminal and editor, in the same checkout.</h2>
+      <div class="shot-row">
+        <figure class="product-shot">
+          <img src="../assets/workbench/session-terminal.png" width="1600" height="1000" loading="lazy" alt="A real shell session in its worktree, showing git status and recent commits" />
+          <figcaption>A real PTY in the session worktree; the detached host keeps it alive. The terminal keeps its own dark palette in both appearances.</figcaption>
+        </figure>
+        <figure class="product-shot">
+          <img src="../assets/workbench/files-editor.png" width="1600" height="1000" loading="lazy" alt="The Files panel with a worktree explorer and Monaco editor open on a TypeScript component" />
+          <figcaption>Files and Monaco beside the terminal, in the same worktree.</figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="install">
+    <div class="container">
+      <p class="eyebrow">Availability</p>
+      <h2>Early access, before 1.0.</h2>
+      <p>
+        iCode Workbench is pre-1.0 and currently shared with early testers. The
+        source repository is private while the release path is finished; CI
+        produces Linux x64, Windows x64, and macOS x64 / arm64 packages. This page
+        will link to the public repository when it opens. The source is
+        MIT-licensed.
+      </p>
+      <p>
+        <strong>If you have access to the repository</strong>, build from source.
+        Requirements: Node 24.x (the repository pins 24.15.0), Corepack with pnpm
+        11.16.0, Git, and at least one harness on <code>PATH</code>. Linux also
+        needs <code>build-essential</code> and <code>python3</code>; macOS needs
+        Xcode Command Line Tools.
+      </p>
+      <div class="code-block" data-copy><pre>git clone https://github.com/icodehq/icode-workbench.git
+cd icode-workbench
+corepack enable
+pnpm install
+pnpm dev</pre></div>
+      <p>
+        Then choose <strong>Add project</strong>, start a session, queue a task,
+        or open <strong>Mira</strong> and ask what needs you.
+      </p>
+      <p class="muted">
+        Packaging details and platform notes are in the repository README,
+        available to early testers. For the publicly available terminal agent,
+        see <a href="../agent/">iCode Agent</a>.
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="notice">
+        <p><strong>Current limits, deliberately stated.</strong></p>
+        <ul class="feature-list">
+          <li>Session activity is reported by Claude Code today; Codex, OpenCode, and shell sessions stay <code>unknown</code>.</li>
+          <li>Mira’s streamed Markdown reply is Claude Code only. Codex and OpenCode show run stages and the final reply.</li>
+          <li>Tasks are supervised, not autonomous: a permission prompt still waits for a person.</li>
+          <li>Schedules are in-process timers and need iCode Workbench running.</li>
+          <li>Source Control is worktree-scoped; it does not manage stashes, tags, submodules, or arbitrary branch checkouts.</li>
+        </ul>
+      </div>
+      <div class="actions">
+        <a class="button button-primary" href="../agent/">Prefer the terminal? Meet iCode Agent</a>
+        <a class="button" href="../about/">About iCode</a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<!-- BEGIN:site-footer -->
+<!-- END:site-footer -->
+<script src="../assets/main.js"></script>
+</body>
+</html>

@@ -1,17 +1,18 @@
 # Evidence: context management
 
-Source-of-truth for the claims on the site about how LoongCode manages context
-(the home page "Context that lasts" section and the blog article "The context
-window is a budget"). Every claim below is checkable against the LoongCode
-source at `github.com/LoongLab/LoongCode`.
+Source-of-truth for the claims on the site about how iCode Agent manages context
+(the Agent product page "Context that lasts" section and the blog article "The
+context window is a budget"). Every claim below is checkable against the iCode
+Agent source at `github.com/icodehq/icode-agent`.
 
-Recorded 2026-10-14 against LoongCode v0.1.4.
+Recorded 2026-10-14 against the codebase (v0.1.4 at the time; v0.3.0 at the
+repository rename). Source paths below use the current names.
 
 ## Three layers
 
 | Claim | Where it lives |
 | --- | --- |
-| Tool output is capped at the source and spilled to a file with a short preview | `packages/agent/src/tools/truncate.ts` — `THRESHOLD = 2048` bytes, `PREVIEW_LENGTH = 500`, spills to `<tmpdir>/loongcode-tool-output/` |
+| Tool output is capped at the source and spilled to a file with a short preview | `packages/agent/src/tools/truncate.ts` — `THRESHOLD = 2048` bytes, `PREVIEW_LENGTH = 500`, spills to `<tmpdir>/icode-agent-tool-output/` |
 | Large file reads are bounded | `packages/agent/src/tools/read.ts` — `MAX_BYTES = 50 * 1024` |
 | Other tools bound their output | `grep.ts` `MAX_MATCHES = 100`; `find.ts` `MAX_RESULTS = 200` |
 | Older tool results are reduced at request time, oldest first, only when over budget | `packages/agent/src/context/projection.ts` — `pruneOldToolOutputs` |
@@ -33,14 +34,14 @@ Recorded 2026-10-14 against LoongCode v0.1.4.
 
 - No percentage or absolute token saving is stated anywhere. A benchmark has not
   been run, so no number is published. This file records mechanism, not effect.
-- The terminal session on the home page is labelled **illustrative**: it shows the
-  tool loop (read → bash → edit → bash) but is not a recorded run.
+- The terminal session on the Agent page is labelled **illustrative**: it shows
+  the tool loop (read → bash → edit → bash) but is not a recorded run.
 
 ## How to verify
 
 ```sh
-git clone https://github.com/LoongLab/LoongCode.git
-cd LoongCode
+git clone https://github.com/icodehq/icode-agent.git
+cd icode-agent
 sed -n '1,70p' packages/agent/src/context/projection.ts
 sed -n '1,60p' packages/agent/src/tools/truncate.ts
 sed -n '1,60p' packages/agent/src/context/compaction.ts

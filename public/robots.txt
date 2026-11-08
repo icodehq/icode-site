@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://loonglab.com/sitemap.xml
+Sitemap: ${site_origin}/sitemap.xml

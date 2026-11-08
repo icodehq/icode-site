@@ -1,4 +1,5 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
-  <rect width="32" height="32" rx="5" fill="#20252b"/>
-  <text x="16" y="23" font-family="-apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="20" font-weight="700" fill="#ffffff" text-anchor="middle">L</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
+  <!-- Transparent brand mark: green chevron, neutral cursor. -->
+  <path d="M34 30 L70 64 L34 98 L46 108 L94 64 L46 20 Z" fill="#3FB950" />
+  <rect x="74" y="86" width="34" height="14" rx="7" fill="#8B949E" />
 </svg>

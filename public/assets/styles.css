@@ -1,5 +1,5 @@
 /*
- * LoongLab site styles.
+ * iCode site styles.
  *
  * Design language follows the same system used across REA's site (system fonts,
  * hairline borders, tight radii, a single restrained accent, a narrow reading
@@ -9,16 +9,16 @@
  */
 
 :root {
-  --ink: #20252b;
-  --muted: #5b6570;
-  --line: #e0e5e9;
-  --soft: #f4f6f8;
-  --accent: #294f82;
+  --ink: #1c2128;
+  --muted: #57606a;
+  --line: #d8dee4;
+  --soft: #f6f8fa;
+  --accent: #1a7f37;
   --accent-ink: #ffffff;
   --page: #ffffff;
-  --code-bg: #f4f6f8;
-  --shadow: 0 5px 20px rgb(32 37 43 / 8%);
-  --ok: #1f7a3d;
+  --code-bg: #f6f8fa;
+  --shadow: 0 5px 20px rgb(28 33 40 / 8%);
+  --ok: #1a7f37;
   --warn: #a8520f;
   --font-latin: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial;
   --font-code: "SFMono-Regular", Consolas, "Liberation Mono";
@@ -33,8 +33,8 @@
   --muted: #a6adc8;
   --line: #45475a;
   --soft: #181825;
-  --accent: #89b4fa;
-  --accent-ink: #1e1e2e;
+  --accent: #3fb950;
+  --accent-ink: #0d1117;
   --page: #1e1e2e;
   --code-bg: #181825;
   --shadow: 0 5px 20px rgb(0 0 0 / 35%);
@@ -60,6 +60,7 @@ a { color: var(--accent); text-underline-offset: 2px; }
 
 .container { max-width: var(--measure); margin: 0 auto; padding: 0 1.5rem; }
 .container-wide { max-width: var(--wide); margin: 0 auto; padding: 0 1.5rem; }
+.container-lede { max-width: var(--measure); }
 
 /* Header ------------------------------------------------------------------ */
 
@@ -79,18 +80,20 @@ a { color: var(--accent); text-underline-offset: 2px; }
 
 .brand {
   display: inline-flex;
-  align-items: baseline;
-  gap: 0.6rem;
+  align-items: center;
+  gap: 0.55rem;
   text-decoration: none;
   color: var(--ink);
 }
 
+.brand-mark { display: block; width: 26px; height: 26px; flex: none; }
 .brand-name { font-weight: 700; font-size: 1.05rem; letter-spacing: -0.02em; }
 .brand-caption { font-size: 0.85rem; color: var(--muted); font-weight: 400; }
 
-.site-nav { display: flex; align-items: center; gap: 1.4rem; }
+.site-nav { display: flex; align-items: center; gap: 1.2rem; }
 .site-nav a { color: var(--muted); text-decoration: none; font-size: 0.9rem; }
 .site-nav a:hover { color: var(--ink); }
+.site-nav a[aria-current="page"] { color: var(--ink); font-weight: 600; }
 
 .theme-toggle {
   border: 1px solid var(--line);
@@ -113,6 +116,7 @@ h1 {
   letter-spacing: -0.02em;
   margin: 0 0 1rem;
   font-weight: 700;
+  text-wrap: balance;
 }
 
 h2 {
@@ -121,6 +125,7 @@ h2 {
   letter-spacing: -0.01em;
   margin: 0 0 1rem;
   font-weight: 650;
+  text-wrap: balance;
 }
 
 h3 { font-size: 1.05rem; margin: 0 0 0.5rem; font-weight: 600; }
@@ -149,6 +154,12 @@ main { display: block; }
 .section:first-child { border-top: 0; }
 
 .hero { padding: 5rem 0 3.5rem; }
+
+.hero-note {
+  color: var(--muted);
+  font-size: 0.875rem;
+  margin: 1.1rem 0 0;
+}
 
 .eyebrow {
   font-size: 0.75rem;
@@ -207,6 +218,63 @@ main { display: block; }
   color: var(--muted);
 }
 
+/* Product pages ----------------------------------------------------------- */
+
+figure { margin: 0; }
+
+.product-shot { min-width: 0; }
+.product-shot img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border: 1px solid var(--line);
+  border-radius: 7px;
+  background: var(--soft);
+  box-shadow: var(--shadow);
+}
+.product-shot figcaption {
+  margin-top: 0.7rem;
+  color: var(--muted);
+  font-size: 0.85rem;
+  line-height: 1.5;
+}
+
+.hero-shot { margin-top: 2.2rem; }
+
+.split {
+  display: grid;
+  grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr);
+  gap: 3rem;
+  align-items: center;
+}
+
+.shot-row {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+  align-items: start;
+}
+
+.product-grid { align-items: stretch; }
+.product-card .more { margin-top: auto; }
+.product-card p { font-size: 0.925rem; }
+
+.mini-list {
+  margin: 0 0 0.4rem;
+  padding-left: 1.1rem;
+  color: var(--muted);
+  font-size: 0.875rem;
+}
+.mini-list li { margin: 0.35rem 0; }
+
+.product-command { margin: 0.2rem 0 0.6rem; }
+.product-command code {
+  display: inline-block;
+  max-width: 100%;
+  overflow-wrap: anywhere;
+  font-size: 0.78rem;
+}
+
 /* Code blocks ------------------------------------------------------------- */
 
 .code-block {
@@ -250,7 +318,8 @@ main { display: block; }
 .site-footer-inner p { margin: 0; }
 .site-footer-brand { flex: 1 1 100%; color: var(--ink); font-weight: 600; }
 .site-footer-copy { flex: 1 1 100%; font-size: 0.8rem; }
-.site-footer-links a { margin-right: 1rem; text-decoration: none; }
+.site-footer-links { display: flex; flex: 1 1 100%; flex-wrap: wrap; gap: 0.35rem 1.1rem; }
+.site-footer-links a { text-decoration: none; }
 
 .lockup {
   text-align: center;
@@ -307,6 +376,7 @@ main { display: block; }
 }
 .notice p { margin: 0 0 0.6rem; }
 .notice p:last-child { margin-bottom: 0; }
+.notice .feature-list { margin-bottom: 0; }
 
 details {
   border-bottom: 1px solid var(--line);
@@ -338,3 +408,34 @@ details p { margin: 0.7rem 0 0; color: var(--muted); }
 }
 .copy-button:hover { color: var(--ink); }
 
+
+/* Responsive -------------------------------------------------------------- */
+
+@media (max-width: 1040px) {
+  .brand-caption { display: none; }
+}
+
+@media (max-width: 860px) {
+  .split { grid-template-columns: minmax(0, 1fr); gap: 1.5rem; }
+  .shot-row { grid-template-columns: minmax(0, 1fr); }
+}
+
+@media (max-width: 760px) {
+  .site-header-inner {
+    flex-wrap: wrap;
+    gap: 0.75rem 1rem;
+    padding-block: 0.75rem;
+  }
+  .site-nav {
+    width: 100%;
+    gap: 1rem;
+    overflow-x: auto;
+    padding-bottom: 0.15rem;
+    scrollbar-width: none;
+  }
+  .site-nav::-webkit-scrollbar { display: none; }
+  .site-nav a { white-space: nowrap; }
+  .hero { padding: 3.25rem 0 2.75rem; }
+  .section { padding: 2.75rem 0; }
+  .site-footer-inner { padding-bottom: 2rem; }
+}

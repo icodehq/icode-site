@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Guide: automate with LoongCode in scripts and CI</title>
-  <meta name="description" content="Run LoongCode non-interactively: print a final answer with -p, stream every run event as JSON lines with --mode json, and continue sessions in CI." />
+  <title>Guide: automate with iCode Agent in scripts and CI</title>
+  <meta name="description" content="Run iCode Agent non-interactively: print a final answer with -p, stream every run event as JSON lines with --mode json, and continue sessions in CI." />
   <meta name="theme-color" content="#ffffff" />
   <link rel="icon" href="../../assets/favicon.svg" type="image/svg+xml" />
   <link rel="stylesheet" href="../../assets/styles.css" />
@@ -17,10 +17,10 @@
 <main>
   <section class="section">
     <div class="container">
-      <p class="eyebrow">Guide · Automation</p>
+      <p class="eyebrow">iCode Agent · Guide · Automation</p>
       <h1>Automate in scripts and CI.</h1>
       <p class="lede">
-        LoongCode is a terminal agent, but it does not need a terminal. The same
+        iCode Agent is a terminal agent, but it does not need a terminal. The same
         tasks you run interactively run headless with <code>-p</code>, and the
         runtime's full event stream is available as JSON.
       </p>
@@ -31,7 +31,7 @@
     <div class="container">
       <h2>Print mode</h2>
       <p>Run one task, print the final response, and exit:</p>
-      <div class="code-block" data-copy><pre>loongcode -p "run the tests and report failures" /path/to/project</pre></div>
+      <div class="code-block" data-copy><pre>icode-agent -p "run the tests and report failures" /path/to/project</pre></div>
       <p>
         The workspace can be given as an argument, or set with
         <code>--cwd &lt;dir&gt;</code>. Print mode exits <code>0</code> when the run
@@ -49,7 +49,7 @@
         followed by a final result line. This is the mode for tooling: you get the
         agent's progress as data, not as terminal output.
       </p>
-      <div class="code-block" data-copy><pre>loongcode --mode json -p "find all TODO comments" /path/to/project</pre></div>
+      <div class="code-block" data-copy><pre>icode-agent --mode json -p "find all TODO comments" /path/to/project</pre></div>
       <p>The stream includes events such as:</p>
       <ul class="feature-list">
         <li><code>run_start</code> — the task and the model identity.</li>
@@ -74,10 +74,10 @@
         resume a specific one by id:
       </p>
       <div class="code-block"><pre># continue the most recent session in this workspace
-loongcode -c -p "now fix the issue you found" /path/to/project
+icode-agent -c -p "now fix the issue you found" /path/to/project
 
 # resume a specific session
-loongcode --resume &lt;id&gt; -p "add tests for that fix" /path/to/project</pre></div>
+icode-agent --resume &lt;id&gt; -p "add tests for that fix" /path/to/project</pre></div>
     </div>
   </section>
 
@@ -88,10 +88,10 @@ loongcode --resume &lt;id&gt; -p "add tests for that fix" /path/to/project</pre>
         A step that asks the agent to make the suite pass, and fails the job when
         it returns non-zero:
       </p>
-      <div class="code-block"><pre>loongcode -p "run the full test suite and fix any failures" "$PWD"
+      <div class="code-block"><pre>icode-agent -p "run the full test suite and fix any failures" "$PWD"
 status=$?
 if [ "$status" -ne 0 ]; then
-  echo "LoongCode did not reach a passing state." >&2
+  echo "iCode Agent did not reach a passing state." >&2
   exit 1
 fi</pre></div>
     </div>
@@ -105,12 +105,12 @@ fi</pre></div>
       </p>
       <ul class="feature-list">
         <li><code>AGENTS.md</code> (or <code>CLAUDE.md</code>) in the repository root is loaded into the system prompt, so CI runs follow your project's rules.</li>
-        <li>Global settings live at <code>~/.loongcode/settings.json</code> and can be overridden per project at <code>.loongcode/settings.json</code>.</li>
-        <li>Prompt templates (<code>.loongcode/prompts/*.md</code>) and skills (<code>.loongcode/skills/&lt;name&gt;/SKILL.md</code>) load automatically.</li>
+        <li>Global settings live at <code>~/.icode-agent/settings.json</code> and can be overridden per project at <code>.icode-agent/settings.json</code>.</li>
+        <li>Prompt templates (<code>.icode-agent/prompts/*.md</code>) and skills (<code>.icode-agent/skills/&lt;name&gt;/SKILL.md</code>) load automatically.</li>
       </ul>
       <p>
-        On a CI runner with no <code>~/.loongcode</code>, point
-        <code>LOONGCODE_CONFIG_DIR</code> at a prepared directory so the model
+        On a CI runner with no <code>~/.icode-agent</code>, point
+        <code>ICODE_AGENT_CONFIG_DIR</code> at a prepared directory so the model
         configuration is available.
       </p>
     </div>

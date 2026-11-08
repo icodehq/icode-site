@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Build, check and serve the LoongLab static website.
+"""Build, check and serve the iCode static website.
 
 Architecture is modelled on REA's `scripts/website.py` (MIT, Copyright (c)
 2026 morluto) -- authored HTML in `public/`, shared regions injected from
@@ -10,6 +10,7 @@ from __future__ import annotations
 
 import argparse
 import http.server
+import os
 import re
 import shutil
 import sys
@@ -22,8 +23,17 @@ PUBLIC = ROOT / "public"
 TEMPLATES = ROOT / "templates"
 OUT = ROOT / "_site"
 
-# Public origin, used for the sitemap and canonical URLs.
-SITE_ORIGIN = "https://loonglab.com"
+# Public origin, used for the sitemap and robots.txt. SITE_ORIGIN wins; on
+# Vercel, the project's production URL is the default; otherwise use the
+# canonical domain.
+SITE_ORIGIN = (
+    os.environ.get("SITE_ORIGIN")
+    or (
+        f"https://{os.environ['VERCEL_PROJECT_PRODUCTION_URL']}"
+        if os.environ.get("VERCEL_PROJECT_PRODUCTION_URL")
+        else "https://icodehq.com"
+    )
+).rstrip("/")
 
 # Region marker in a page -> template file whose rendered body replaces it.
 REGIONS = {
@@ -82,6 +92,12 @@ def build() -> None:
         elif src.suffix == ".html":
             dest.parent.mkdir(parents=True, exist_ok=True)
             dest.write_text(inject_regions(src.read_text("utf-8"), rel), "utf-8")
+        elif src.suffix == ".txt":
+            dest.parent.mkdir(parents=True, exist_ok=True)
+            dest.write_text(
+                src.read_text("utf-8").replace("${site_origin}", SITE_ORIGIN),
+                "utf-8",
+            )
         else:
             dest.parent.mkdir(parents=True, exist_ok=True)
             shutil.copy2(src, dest)

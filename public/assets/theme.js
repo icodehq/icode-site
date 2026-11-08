@@ -2,7 +2,7 @@
 // theme-color in sync. Blocking head script so there is no flash on navigation.
 (() => {
   const root = document.documentElement;
-  const key = "loonglab-theme";
+  const key = "icode-theme";
   const system = window.matchMedia("(prefers-color-scheme: dark)");
   const parse = (v) => (v === "light" || v === "dark" ? v : null);
 

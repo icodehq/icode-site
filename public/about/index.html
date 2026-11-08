@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>About LoongLab</title>
-  <meta name="description" content="LoongLab builds AI products. LoongCode, our first, is a terminal coding agent focused on cutting token consumption on long tasks." />
+  <title>About iCode</title>
+  <meta name="description" content="iCode builds the agent development environment: iCode Workbench for a team of coding agents on the desktop, and iCode Agent for focused work in the terminal." />
   <meta name="theme-color" content="#ffffff" />
   <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml" />
   <link rel="stylesheet" href="../assets/styles.css" />
@@ -18,10 +18,11 @@
   <section class="section">
     <div class="container">
       <p class="eyebrow">About</p>
-      <h1>LoongLab.</h1>
+      <h1>iCode.</h1>
       <p class="lede">
-        LoongLab builds AI products — tools that do real work for people who
-        build software.
+        iCode builds the agent development environment — tools that put coding
+        agents to work without taking the judgment away from the people doing the
+        work.
       </p>
     </div>
   </section>
@@ -34,37 +35,63 @@
         to respect your machine, and to explain what it is doing. We ship when a
         product is ready rather than announcing a roadmap.
       </p>
+      <p>
+        Both of our products are pre-1.0. They are usable today, and they change
+        quickly; the honest boundaries are documented rather than hidden.
+      </p>
     </div>
   </section>
 
   <section class="section">
     <div class="container">
-      <h2>LoongCode</h2>
-      <p>
-        <strong>LoongCode</strong> is our first product: a terminal coding agent
-        that works directly in your repository. It reads the code, makes changes,
-        runs your commands, and verifies its own work.
-      </p>
-      <p>
-        Its central advantage is <strong>cutting token consumption</strong>. Long
-        tasks are the hard case for a coding agent: the context window fills, the
-        agent loses the thread, and every request costs more. LoongCode manages
-        context at every boundary so long sessions cost less and stay coherent.
-      </p>
-      <div class="actions">
-        <a class="button button-primary" href="../get-started/">Get started</a>
-        <a class="button" href="https://github.com/LoongLab/LoongCode" rel="noopener">GitHub</a>
+      <p class="eyebrow">Products</p>
+      <h2>Two surfaces for the same work.</h2>
+      <div class="grid">
+        <article class="card">
+          <span class="tag">Desktop · ADE · Early access</span>
+          <h3>iCode Workbench</h3>
+          <p>
+            The control room for a team of coding agents. Claude Code, Codex, and
+            OpenCode run in parallel, each in its own Git worktree. Tasks,
+            approvals, schedules, review, and an editor live beside the terminal,
+            and a detached host keeps sessions alive across app restarts.
+          </p>
+          <p>
+            Mira spans every project: she answers “what needs me?”, brings
+            blockers to you, and acts through validated, bounded actions. Review,
+            merge, and push remain human decisions.
+          </p>
+          <p><a class="more" href="../workbench/">Explore iCode Workbench →</a></p>
+        </article>
+        <article class="card">
+          <span class="tag">Terminal · CLI</span>
+          <h3>iCode Agent</h3>
+          <p>
+            A focused terminal coding agent that works directly in your
+            repository. It reads the code, makes changes, runs your commands, and
+            verifies its own work.
+          </p>
+          <p>
+            Its central discipline is <strong>context management</strong>. Long
+            tasks are the hard case: the window fills, the agent loses the thread,
+            and every request costs more. iCode Agent manages context at every
+            boundary so long sessions stay coherent and affordable.
+          </p>
+          <p><a class="more" href="../agent/">Explore iCode Agent →</a></p>
+        </article>
       </div>
     </div>
   </section>
 
   <section class="section">
     <div class="container">
-      <h2>More to come</h2>
-      <p>
-        LoongCode is the first of a set of products. As each becomes ready, it
-        appears on this site.
-      </p>
+      <h2>What stays constant</h2>
+      <ul class="feature-list">
+        <li><strong>Local-first.</strong> Workbench keeps its state in local SQLite and adds no telemetry; Agent runs in your terminal and sends model traffic only to the endpoint you configure. Neither is a hosted service.</li>
+        <li><strong>Your models.</strong> Workbench orchestrates the harnesses you already use. Agent speaks the <code>openai</code> and <code>anthropic</code> protocols. Model traffic goes to the endpoint you configure.</li>
+        <li><strong>Human judgment.</strong> Agents can propose, change, and verify. A person still decides what to accept, merge, or ship.</li>
+        <li><strong>Open source.</strong> Workbench is MIT-licensed; Agent is Apache-2.0.</li>
+      </ul>
     </div>
   </section>
 
@@ -72,8 +99,11 @@
     <div class="container">
       <h2>Contact</h2>
       <p>
-        Questions, ideas or press:
-        <a href="https://github.com/LoongLab/LoongCode/issues" rel="noopener">open an issue</a>.
+        Questions, ideas, or press: open an issue on
+        <a href="https://github.com/icodehq/icode-agent/issues" rel="noopener">iCode Agent</a>,
+        or follow
+        <a href="https://github.com/icodehq" rel="noopener">iCode on GitHub</a>.
+        iCode Workbench is in early access; its repository is private for now.
       </p>
     </div>
   </section>
