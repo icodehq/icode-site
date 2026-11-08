@@ -28,7 +28,7 @@
       </p>
       <div class="actions">
         <a class="button button-primary" href="#workbench">Explore the workbench</a>
-        <a class="button" href="https://github.com/icodehq" rel="noopener">Visit iCode on GitHub</a>
+        <a class="button" href="https://github.com/icodehq/icode-workbench" rel="noopener">View on GitHub</a>
       </div>
       <p class="hero-note">Pre-1.0 · Linux (WSL2/WSLg) · Windows x64 · macOS x64 / arm64</p>
 
@@ -170,19 +170,18 @@
       <p class="eyebrow">Availability</p>
       <h2>Early access, before 1.0.</h2>
       <p>
-        iCode Workbench is pre-1.0 and currently shared with early testers. The
-        source repository is private while the release path is finished; CI
-        produces Linux x64, Windows x64, and macOS x64 / arm64 packages. This page
-        will link to the public repository when it opens. The source is
-        AGPL-3.0-only; a modified version offered to users over a network must
-        provide them the corresponding source.
+        iCode Workbench is pre-1.0 and in early access. The source is public under
+        AGPL-3.0-only; CI produces Linux x64, Windows x64, and macOS x64 / arm64
+        packages, but signed installers are not published yet. Build from source
+        for now. A modified version offered to users over a network must provide
+        them the corresponding source.
       </p>
       <p>
-        <strong>If you have access to the repository</strong>, build from source.
-        Requirements: Node 24.x (the repository pins 24.15.0), Corepack with pnpm
-        11.16.0, Git, and at least one harness on <code>PATH</code>. Linux also
-        needs <code>build-essential</code> and <code>python3</code>; macOS needs
-        Xcode Command Line Tools.
+        <strong>Build from source.</strong> Requirements: Node 24.x (the
+        repository pins 24.15.0), Corepack with pnpm 11.16.0, Git, and at least
+        one harness on <code>PATH</code>. Linux also needs
+        <code>build-essential</code> and <code>python3</code>; macOS needs Xcode
+        Command Line Tools.
       </p>
       <div class="code-block" data-copy><pre>git clone https://github.com/icodehq/icode-workbench.git
 cd icode-workbench
@@ -194,9 +193,10 @@ pnpm dev</pre></div>
         or open <strong>Mira</strong> and ask what needs you.
       </p>
       <p class="muted">
-        Packaging details and platform notes are in the repository README,
-        available to early testers. For the publicly available terminal agent,
-        see <a href="../agent/">iCode Agent</a>.
+        Packaging details and platform notes are in the
+        <a href="https://github.com/icodehq/icode-workbench#readme" rel="noopener">repository README</a>.
+        For the publicly available terminal agent, see
+        <a href="../agent/">iCode Agent</a>.
       </p>
     </div>
   </section>

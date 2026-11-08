@@ -42,9 +42,9 @@ vercel.json             Vercel config (framework: null, output: _site)
   not a recorded run.
 - **Workbench screenshots are real UI captures.** They show the app, not a mockup.
   Keep their captions tied to what is visible.
-- **Workbench is early access.** Its source repository is private while pre-1.0,
-  so public pages describe the product without linking to the repository. The
-  build commands are labelled for people who already have access.
+- **Workbench is early access.** Its source is public under AGPL-3.0-only, but
+  signed installers are not published yet; public pages point to the source and
+  the build-from-source path.
 - Claims about context mechanics are backed by `evidence/context-management.md`,
   which cites the exact source files.
 - Product limits are stated in `public/workbench/` and in the Agent FAQ rather
