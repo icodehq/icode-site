@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>iCode Workbench — the universal agent development environment</title>
-  <meta name="description" content="iCode Workbench is the universal ADE for a team of coding agents: parallel sessions in isolated Git worktrees, durable tasks, review in the session checkout, and Mira watching every project. Pre-1.0 and in early access." />
+  <meta name="description" content="iCode Workbench is the universal ADE for a team of coding agents: one sidebar, parallel sessions in isolated Git worktrees, durable tasks, Files/Search/Source Control in one inspector, row-level lifecycle actions, and Mira watching every project. Pre-1.0; unsigned installers are published on GitHub Releases." />
   <meta name="theme-color" content="#ffffff" />
   <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml" />
   <link rel="stylesheet" href="../assets/styles.css" />
@@ -23,18 +23,20 @@
         iCode Workbench is the universal ADE: every agent, every platform, one
         workbench. Run Claude Code, Codex, and OpenCode in parallel, each in its
         own Git worktree. Queue durable tasks, review changes where the agent
-        worked, and keep terminals alive when the app restarts — while Mira
-        watches every repository and tells you what needs you.
+        worked, manage any session from its own row, and keep terminals alive
+        when the app restarts — while Mira watches every repository and tells you
+        what needs you.
       </p>
       <div class="actions">
         <a class="button button-primary" href="#workbench">Explore the workbench</a>
+        <a class="button" href="https://github.com/icodehq/icode-workbench/releases/latest" rel="noopener">Download the latest release</a>
         <a class="button" href="https://github.com/icodehq/icode-workbench" rel="noopener">View on GitHub</a>
       </div>
       <p class="hero-note">Pre-1.0 · Linux (WSL2/WSLg) · Windows x64 · macOS x64 / arm64</p>
 
       <figure class="product-shot hero-shot">
-        <img src="../assets/workbench/projects-wall.png" width="1600" height="1000" alt="The iCode Workbench All projects wall showing in-flight sessions, items that need attention, and last activity across three projects" />
-        <figcaption>The Projects wall separates what is in flight, what needs you, and when each project was last active.</figcaption>
+        <img src="../assets/workbench/shell.png" width="1600" height="1000" alt="The iCode Workbench with the project and task sidebar, session and app tabs, a live terminal, and a Source Control diff in the inspector" />
+        <figcaption>One sidebar for every project, a live terminal, and a Source Control diff in the inspector.</figcaption>
       </figure>
     </div>
   </section>
@@ -45,13 +47,13 @@
       <h2>One environment, from first prompt to reviewed change.</h2>
       <div class="grid feature-grid">
         <article class="card">
-          <span class="tag">Portfolio</span>
-          <h3>One wall for every project.</h3>
+          <span class="tag">Sidebar</span>
+          <h3>One sidebar for the whole portfolio.</h3>
           <p>
-            Each row separates live direct sessions and queued tasks, the items
-            that need a person, and real last-activity timestamps. Filter by Needs
-            you, Live, or Idle, pin projects, and open a waiting task or session
-            directly from the attention list.
+            Pinned projects, direct sessions grouped by worktree, the
+            cross-project task queue, and live counts share one sidebar. Every
+            row opens its own menu: a session row carries details, sleep or wake,
+            restart, pin, and remove without switching to it first.
           </p>
         </article>
         <article class="card">
@@ -71,7 +73,8 @@
             A detached host owns the PTYs, terminal emulation, and exit truth.
             Closing the window or quitting the app does not stop a live session;
             reopening reattaches to the same PTY with its scrollback and
-            alternate-screen state intact.
+            alternate-screen state intact. Terminals follow the app appearance,
+            with a light ANSI palette on the light canvas.
           </p>
         </article>
         <article class="card">
@@ -88,10 +91,11 @@
           <span class="tag">Review</span>
           <h3>Review where the agent worked.</h3>
           <p>
-            Source Control is scoped to the session checkout: changes against the
-            task baseline, staged and untracked files, inline diffs, line notes
-            sent back to the agent, and commit, amend, push, history, cherry-pick,
-            revert, or reset.
+            Files, Search, and Source Control share the persistent inspector, and
+            the task workbench gives Files and Source Control full-width tabs.
+            Changes are scoped to the session checkout: stage, inspect inline
+            diffs, send line notes back to the agent, and commit, amend, push,
+            cherry-pick, revert, or reset.
           </p>
         </article>
         <article class="card">
@@ -113,20 +117,19 @@
         <p class="eyebrow">Mira · Cross-project assistant</p>
         <h2>She watches all of it. You keep the decisions.</h2>
         <p>
-          Mira is a person item in the rail — Projects · Schedules ┊ Mira ┊
-          Settings — with an avatar, live status, and an unread badge. One
+          Mira is a person in the sidebar, not another project tab. One
           conversation spans every repository, and her answers come from the real
           projects, tasks, sessions, diffs, and review state.
         </p>
         <ul class="feature-list">
           <li><strong>She can act.</strong> Through validated actions she creates, cancels, retries, and archives tasks, messages task sessions and project supervisors, and records non-binding review recommendations.</li>
           <li><strong>She is bounded.</strong> She has no shell and no project working directory. She cannot approve a proposal, decide a review, merge, push, or edit project code.</li>
-          <li><strong>She comes to you.</strong> Approvals, failures, waiting tasks, and review-ready work become proactive messages with a rail badge and an OS notification when no window is focused. Deduplication, an hourly budget, and quiet hours keep it from becoming noise.</li>
+          <li><strong>She comes to you.</strong> Approvals, failures, waiting tasks, and review-ready work become proactive messages with a sidebar badge and an OS notification when no window is focused. Deduplication, an hourly budget, and quiet hours keep it from becoming noise.</li>
         </ul>
       </div>
       <figure class="product-shot">
-        <img src="../assets/workbench/mira.png" width="1920" height="1032" loading="lazy" alt="Mira streaming a Markdown status report with a task table, live thinking-token count, and a Stop button" />
-        <figcaption>Mira streams a Markdown status report across projects while the run line shows the harness stage, elapsed time, and thinking tokens.</figcaption>
+        <img src="../assets/workbench/mira.png" width="1600" height="1000" loading="lazy" alt="Mira answering a cross-project question with a Needs a decision and In flight summary, beside the live project and task sidebar" />
+        <figcaption>Mira reads the real queue: review-ready work, running sessions, and uncommitted changes.</figcaption>
       </figure>
     </div>
   </section>
@@ -137,14 +140,58 @@
       <h2>See the task, then see the change.</h2>
       <div class="shot-row">
         <figure class="product-shot">
-          <img src="../assets/workbench/tasks.png" width="1600" height="1000" loading="lazy" alt="The task workbench showing a review-pending task with a live session, changes against its baseline, and a review recommendation" />
-          <figcaption>The task workbench: the instruction, the live session, the changes, and a review decision.</figcaption>
+          <img src="../assets/workbench/tasks.png" width="1600" height="1000" loading="lazy" alt="The task workbench showing a finished task waiting for review, its changes against the baseline, and the review decision" />
+          <figcaption>The task workbench: the instruction, the session, changes against the baseline, and a review decision.</figcaption>
         </figure>
         <figure class="product-shot">
-          <img src="../assets/workbench/session-review.png" width="1600" height="1000" loading="lazy" alt="Source Control inside a session, showing staged and untracked changes with an inline diff" />
-          <figcaption>Source Control in the session worktree: stage, review, and commit without leaving the app.</figcaption>
+          <img src="../assets/workbench/task-review.png" width="1600" height="1000" loading="lazy" alt="Source Control in the task workbench showing a committed rate-limit source file as a side-by-side diff" />
+          <figcaption>Source Control in the task worktree: a committed diff side by side, with the file list one toggle away.</figcaption>
         </figure>
       </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container-wide">
+      <p class="eyebrow">Session lifecycle</p>
+      <h2>Manage the session without opening it.</h2>
+      <p class="lede container-lede">
+        Details, sleep or wake, restart, pin, and remove are one right-click away.
+        Lifecycle actions target the row's session even when another session is on
+        screen, and an unavailable action explains why. If uncommitted or unmerged
+        work is at risk, removal names the files or the retained branch and keeps
+        the branch — there is no name to copy or type.
+      </p>
+      <div class="shot-row">
+        <figure class="product-shot">
+          <img src="../assets/workbench/session-menu.png" width="1600" height="1000" loading="lazy" alt="A session row context menu with Session details, Sleep session, Restart session, Pin to top, and Remove session" />
+          <figcaption>A session row's menu: details, sleep or wake, restart, pin, and remove. The action applies to that row, not to whichever session is open.</figcaption>
+        </figure>
+        <figure class="product-shot">
+          <img src="../assets/workbench/session-removal.png" width="1600" height="1000" loading="lazy" alt="The session removal dialog naming an uncommitted file with a single Delete changes and remove button" />
+          <figcaption>Work that would be lost is named before anything is deleted. The branch is retained; branch deletion stays a separate action.</figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container-wide split">
+      <div>
+        <p class="eyebrow">Schedules</p>
+        <h2>Recurring work joins the same queue.</h2>
+        <p>
+          Schedules create ordinary queued tasks on a cadence — once, daily,
+          weekdays, weekly, or every few hours — with queue-or-skip overlap
+          handling and run-now. Pausing a schedule leaves tasks already created
+          untouched, and every occurrence lands in the same task queue as work
+          you queued by hand.
+        </p>
+      </div>
+      <figure class="product-shot">
+        <img src="../assets/workbench/schedules.png" width="1600" height="1000" loading="lazy" alt="The Schedules tab with an enabled nightly dependency audit and a paused six-hour provider refresh" />
+        <figcaption>An enabled nightly audit and a paused six-hour refresh. Each occurrence becomes an ordinary queued task.</figcaption>
+      </figure>
     </div>
   </section>
 
@@ -154,11 +201,11 @@
       <h2>Terminal and editor, in the same checkout.</h2>
       <div class="shot-row">
         <figure class="product-shot">
-          <img src="../assets/workbench/session-terminal.png" width="1600" height="1000" loading="lazy" alt="A real shell session in its worktree, showing git status and recent commits" />
-          <figcaption>A real PTY in the session worktree; the detached host keeps it alive. The terminal keeps its own dark palette in both appearances.</figcaption>
+          <img src="../assets/workbench/session-terminal.png" width="1600" height="1000" loading="lazy" alt="A real shell session in its worktree, showing recent commits and a short prompt" />
+          <figcaption>A real PTY in the session worktree; the detached host keeps it alive. The terminal follows the app appearance, with a light ANSI palette on the light canvas.</figcaption>
         </figure>
         <figure class="product-shot">
-          <img src="../assets/workbench/files-editor.png" width="1600" height="1000" loading="lazy" alt="The Files panel with a worktree explorer and Monaco editor open on a TypeScript component" />
+          <img src="../assets/workbench/files-editor.png" width="1600" height="1000" loading="lazy" alt="The task Files tab with a worktree explorer and Monaco editor open on the new rate-limit source file" />
           <figcaption>Files and Monaco beside the terminal, in the same worktree.</figcaption>
         </figure>
       </div>
@@ -168,14 +215,19 @@
   <section class="section" id="install">
     <div class="container">
       <p class="eyebrow">Availability</p>
-      <h2>Early access, before 1.0.</h2>
+      <h2>Available now, before 1.0.</h2>
       <p>
-        iCode Workbench is pre-1.0 and in early access. The source is public under
-        AGPL-3.0-only; CI produces Linux x64, Windows x64, and macOS x64 / arm64
-        packages, but signed installers are not published yet. Build from source
-        for now. A modified version offered to users over a network must provide
-        them the corresponding source.
+        iCode Workbench is pre-1.0 and ships as an unsigned build. CI produces
+        Linux x64, Windows x64, and macOS x64 / arm64 packages for every tagged
+        release, and the installers are published on GitHub Releases. Windows
+        SmartScreen and macOS Gatekeeper warn on first launch; on macOS,
+        right-click the app and choose <strong>Open</strong>. The source is public
+        under AGPL-3.0-only, and a modified version offered to users over a
+        network must provide them the corresponding source.
       </p>
+      <div class="actions">
+        <a class="button button-primary" href="https://github.com/icodehq/icode-workbench/releases/latest" rel="noopener">Download the latest release</a>
+      </div>
       <p>
         <strong>Build from source.</strong> Requirements: Node 24.x (the
         repository pins 24.15.0), Corepack with pnpm 11.16.0, Git, and at least
