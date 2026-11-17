@@ -6,9 +6,13 @@ Static marketing site for iCode and its two products:
 - **iCode Agent** — the terminal coding agent.
 
 Framework-free, by design: authored HTML in `public/`, shared regions injected
-from `templates/`, output generated into `_site/`. No npm dependency, no bundler,
-no runtime backend. Deployment is a static directory, so the same output works on
-Vercel, Cloudflare Pages, or any static host.
+from `templates/`, translations in `i18n/`, output generated into `_site/`. No
+npm dependency, no bundler, no runtime backend. Deployment is a static directory,
+so the same output works on Vercel, Cloudflare Pages, or any static host.
+
+English is served from the site root; the other supported locales are emitted
+under their language code (`/zh-CN/`, `/ja/`, …) with localized metadata,
+`hreflang` links, a language menu and sitemap entries.
 
 ## Layout
 
@@ -25,7 +29,9 @@ public/                 authored source
   about/                company and product overview
   assets/               styles, theme/main/demo JS, logo, Workbench screenshots
 templates/              shared header/footer partials
-scripts/site.py         build / check / serve
+i18n/                   locale list, English source catalog and translations
+scripts/site.py         build / check / serve / extract
+scripts/i18n.py         block extraction and locale rendering
 evidence/               source-of-truth notes backing site claims
 _site/                  generated output (gitignored)
 vercel.json             Vercel config (framework: null, output: _site)
@@ -54,8 +60,9 @@ vercel.json             Vercel config (framework: null, output: _site)
 ## Commands
 
 ```sh
-python3 scripts/site.py check         # validate links, metadata, region markers
-python3 scripts/site.py build         # render templates into _site/ (+ sitemap)
+python3 scripts/site.py extract       # refresh the English catalog from public/
+python3 scripts/site.py check         # validate source, links and translations
+python3 scripts/site.py build         # render every locale into _site/
 python3 scripts/site.py serve         # build if needed, then preview :4173
 python3 scripts/site.py deploy-check  # check + build, then ready to deploy
 ```
@@ -73,6 +80,14 @@ SITE_ORIGIN=https://example.com python3 scripts/site.py build
 `public/robots.txt` contains `${site_origin}`; the build replaces it with the
 configured origin.
 
+## Translations
+
+Every page is rendered in all locales listed in `i18n/locales.json`. The English
+catalog is generated from the authored HTML, and block keys are content hashes so
+a changed English block cannot silently reuse an old translation. See
+[i18n/README.md](i18n/README.md) for the catalog format, translation rules, and
+the full workflow.
+
 ## Adding a page
 
 1. Add `public/<route>/index.html` with these markers where the shared chrome goes:
@@ -84,8 +99,10 @@ configured origin.
    ```
 
 2. Add a `<title>` and a `<meta name="description">` (both are checked).
-3. Use relative links (`../../assets/...`); the checker resolves them.
-4. Run `python3 scripts/site.py check`.
+3. Use relative links for pages. Localized builds rewrite shared asset URLs to
+   `/assets/...` automatically.
+4. Run `python3 scripts/site.py extract`, add the new blocks to every catalog,
+   then run `python3 scripts/site.py deploy-check`.
 
 ## Deploying to Vercel
 

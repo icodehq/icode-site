@@ -1,18 +1,19 @@
 <header class="site-header">
   <div class="site-header-inner">
-    <a class="brand" href="${base}">
-      <img class="brand-mark" src="${base}assets/logo.svg" alt="" width="26" height="26" />
+    <a class="brand" href="{{home_href}}">
+      <img class="brand-mark" src="/assets/logo.svg" alt="" width="26" height="26" />
       <span class="brand-name">iCode</span>
-      <span class="brand-caption">Agent development environment</span>
+      <span class="brand-caption">{{brand.caption}}</span>
     </a>
-    <nav class="site-nav" aria-label="Main">
-      <a href="${base}workbench/">Workbench</a>
-      <a href="${base}agent/">Agent</a>
-      <a href="${base}guides/">Guides</a>
-      <a href="${base}blog/">Blog</a>
-      <a href="${base}faq/">FAQ</a>
-      <a href="https://github.com/icodehq" rel="noopener">GitHub</a>
-      <button class="theme-toggle" type="button" data-theme-toggle aria-label="Toggle color theme">◐</button>
+    <nav class="site-nav" aria-label="{{nav.main}}">
+      <a href="{{workbench_href}}">{{nav.workbench}}</a>
+      <a href="{{agent_href}}">{{nav.agent}}</a>
+      <a href="{{guides_href}}">{{nav.guides}}</a>
+      <a href="{{blog_href}}">{{nav.blog}}</a>
+      <a href="{{faq_href}}">{{nav.faq}}</a>
+      <a href="{{github_url}}" rel="noopener">{{nav.github}}</a>
+      {{language_menu}}
+      <button class="theme-toggle" type="button" data-theme-toggle aria-label="{{theme.toggle}}" title="{{theme.toggle}}">◐</button>
     </nav>
   </div>
 </header>

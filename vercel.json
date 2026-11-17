@@ -3,5 +3,6 @@
   "framework": null,
   "buildCommand": "python3 scripts/site.py deploy-check",
   "outputDirectory": "_site",
-  "cleanUrls": true
+  "cleanUrls": true,
+  "trailingSlash": true
 }

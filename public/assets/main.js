@@ -32,21 +32,26 @@
     }
   });
 
+  const labels = {
+    copy: document.documentElement.dataset.copyLabel || "Copy",
+    copied: document.documentElement.dataset.copyCopied || "Copied",
+    failed: document.documentElement.dataset.copyFailed || "Copy failed",
+  };
   document.querySelectorAll("[data-copy]").forEach((block) => {
     const pre = block.querySelector("pre");
     if (!pre) return;
     const button = document.createElement("button");
     button.type = "button";
     button.className = "copy-button";
-    button.textContent = "Copy";
+    button.textContent = labels.copy;
     button.addEventListener("click", async () => {
       try {
         await navigator.clipboard.writeText(pre.textContent);
-        button.textContent = "Copied";
+        button.textContent = labels.copied;
       } catch {
-        button.textContent = "Copy failed";
+        button.textContent = labels.failed;
       }
-      setTimeout(() => (button.textContent = "Copy"), 1500);
+      setTimeout(() => (button.textContent = labels.copy), 1500);
     });
     block.style.position = "relative";
     button.style.position = "absolute";

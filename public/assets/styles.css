@@ -108,6 +108,57 @@ a { color: var(--accent); text-underline-offset: 2px; }
 }
 .theme-toggle:hover { background: var(--soft); }
 
+.language-menu { position: relative; }
+.language-menu summary {
+  cursor: pointer;
+  list-style: none;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+.language-menu summary::-webkit-details-marker { display: none; }
+.site-nav .language-menu summary::before,
+.site-nav .language-menu[open] summary::before { content: none; }
+.language-menu summary::after {
+  content: "";
+  display: inline-block;
+  margin-left: 0.35rem;
+  vertical-align: middle;
+  border-left: 3px solid transparent;
+  border-right: 3px solid transparent;
+  border-top: 4px solid currentColor;
+}
+.language-menu summary:hover { color: var(--ink); }
+.language-menu ul {
+  position: absolute;
+  right: 0;
+  top: calc(100% + 0.45rem);
+  z-index: 20;
+  min-width: 11rem;
+  margin: 0;
+  padding: 0.35rem 0;
+  list-style: none;
+  background: var(--page);
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  box-shadow: var(--shadow);
+}
+.language-menu a {
+  display: block;
+  padding: 0.3rem 0.8rem;
+  color: var(--muted);
+  text-decoration: none;
+  font-size: 0.9rem;
+  white-space: nowrap;
+}
+.language-menu a:hover { color: var(--ink); background: var(--soft); }
+.language-menu a[aria-current="page"] { color: var(--ink); font-weight: 600; }
+
+.translation-note {
+  color: var(--muted);
+  font-size: 0.8rem;
+  margin: 0.9rem 0 0;
+}
+
 /* Type -------------------------------------------------------------------- */
 
 h1 {
@@ -428,13 +479,12 @@ details p { margin: 0.7rem 0 0; color: var(--muted); }
   }
   .site-nav {
     width: 100%;
-    gap: 1rem;
-    overflow-x: auto;
+    flex-wrap: wrap;
+    gap: 0.65rem 1rem;
     padding-bottom: 0.15rem;
-    scrollbar-width: none;
   }
-  .site-nav::-webkit-scrollbar { display: none; }
   .site-nav a { white-space: nowrap; }
+  .language-menu { margin-left: auto; }
   .hero { padding: 3.25rem 0 2.75rem; }
   .section { padding: 2.75rem 0; }
   .site-footer-inner { padding-bottom: 2rem; }
