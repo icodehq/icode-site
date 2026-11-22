@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>iCode Workbench — the universal agent development environment</title>
-  <meta name="description" content="iCode Workbench is the universal ADE for a team of coding agents: one sidebar, parallel sessions in isolated Git worktrees, durable tasks, Files/Search/Source Control in one inspector, row-level lifecycle actions, and Mira watching every project. Pre-1.0; unsigned installers are published on GitHub Releases." />
+  <title>iCode Workbench — run a fleet of agents. Keep the judgment.</title>
+  <meta name="description" content="iCode Workbench is the open-source agent development environment for 44 CLI agents — Claude Code, Codex, OpenCode, and 40+ more — each in an isolated Git worktree. Queue durable tasks, review every change, and keep the judgment. Pre-1.0; unsigned installers are published on GitHub Releases." />
   <meta name="theme-color" content="#ffffff" />
   <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml" />
   <link rel="stylesheet" href="../assets/styles.css" />
@@ -17,22 +17,21 @@
 <main>
   <section class="hero">
     <div class="container">
-      <p class="eyebrow">iCode Workbench · Desktop ADE</p>
-      <h1>A control room for a team of coding agents.</h1>
+      <p class="eyebrow">iCode Workbench · Open-source agent development environment</p>
+      <h1>A control room for a fleet of CLI agents.</h1>
       <p class="lede">
-        iCode Workbench is the universal ADE: every agent, every platform, one
-        workbench. Run Claude Code, Codex, and OpenCode in parallel, each in its
-        own Git worktree. Queue durable tasks, review changes where the agent
-        worked, manage any session from its own row, and keep terminals alive
-        when the app restarts — while Mira watches every repository and tells you
-        what needs you.
+        iCode Workbench runs Claude Code, Codex, OpenCode, and 40+ more CLI
+        agents in parallel, each in its own Git worktree. Queue durable tasks,
+        review changes where the agent worked, manage any session from its own
+        row, and keep terminals alive when the app restarts — while Mira watches
+        every repository and tells you what needs you.
       </p>
       <div class="actions">
         <a class="button button-primary" href="#workbench">Explore the workbench</a>
         <a class="button" href="https://github.com/icodehq/icode-workbench/releases/latest" rel="noopener">Download the latest release</a>
         <a class="button" href="https://github.com/icodehq/icode-workbench" rel="noopener">View on GitHub</a>
       </div>
-      <p class="hero-note">Pre-1.0 · Linux (WSL2/WSLg) · Windows x64 · macOS x64 / arm64</p>
+      <p class="hero-note">Pre-1.0 · Windows x64 · Linux x64 (WSL2/WSLg) · macOS x64 / arm64</p>
 
       <figure class="product-shot hero-shot">
         <img src="../assets/workbench/shell.png" width="1600" height="1000" alt="The iCode Workbench with the project and task sidebar, session and app tabs, a live terminal, and a Source Control diff in the inspector" />
@@ -54,6 +53,16 @@
             cross-project task queue, and live counts share one sidebar. Every
             row opens its own menu: a session row carries details, sleep or wake,
             restart, pin, and remove without switching to it first.
+          </p>
+        </article>
+        <article class="card">
+          <span class="tag">Harnesses</span>
+          <h3>44 CLI agents, one workbench.</h3>
+          <p>
+            Claude Code, Codex, and OpenCode get native provider injection and
+            Mira's native conversation. 21 harnesses have managed status hooks.
+            44 are launchable — from GitHub Copilot and Gemini to Cursor, Cline,
+            Aider, Goose, Qwen Code, and more.
           </p>
         </article>
         <article class="card">
@@ -258,7 +267,7 @@ pnpm dev</pre></div>
       <div class="notice">
         <p><strong>Current limits, deliberately stated.</strong></p>
         <ul class="feature-list">
-          <li>Session activity is reported by Claude Code today; Codex, OpenCode, and shell sessions stay <code>unknown</code>.</li>
+          <li>Managed status hooks cover 21 harnesses; harnesses without a hook stay <code>unknown</code>.</li>
           <li>Mira’s streamed Markdown reply is Claude Code only. Codex and OpenCode show run stages and the final reply.</li>
           <li>Tasks are supervised, not autonomous: a permission prompt still waits for a person.</li>
           <li>Schedules are in-process timers and need iCode Workbench running.</li>
