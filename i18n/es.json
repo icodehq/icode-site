@@ -6,9 +6,7 @@
       "blocks": {
         "13d62df8487d": "Nuestros dos productos son pre-1.0. Ya se pueden usar y cambian rápido; los límites se documentan con honestidad en lugar de ocultarse.",
         "1f04de2d5797": "Preguntas, ideas o prensa: abre un issue en <a href=\"https://github.com/icodehq/icode-workbench/issues\" rel=\"noopener\">iCode Workbench</a> o <a href=\"https://github.com/icodehq/icode-agent/issues\" rel=\"noopener\">iCode Agent</a>, o sigue a <a href=\"https://github.com/icodehq\" rel=\"noopener\">iCode en GitHub</a>. iCode Workbench es pre-1.0; su código fuente es público bajo AGPL-3.0-only y los instaladores sin firma se publican en GitHub Releases.",
-        "2824e721fb69": "Escritorio · ADE · Pre-1.0",
         "35d9a793aa54": "iCode Agent",
-        "566be65a6d99": "La sala de control para un equipo de agentes de programación. Claude Code, Codex y OpenCode se ejecutan en paralelo, cada uno en su propio worktree de Git. Las tareas, las aprobaciones, las programaciones, la revisión y un editor conviven junto a la terminal; cada fila de sesión incluye sus propias acciones de ciclo de vida y un host independiente mantiene las sesiones vivas aunque la aplicación se reinicie.",
         "5db438e34032": "Su disciplina central es la <strong>gestión del contexto</strong>. Las tareas largas son el caso difícil: la ventana se llena, el agente pierde el hilo y cada petición cuesta más. iCode Agent gestiona el contexto en cada límite para que las sesiones largas sigan siendo coherentes y asequibles.",
         "6984683e1ddd": "<a class=\"more\" href=\"../workbench/\">Explora iCode Workbench →</a>",
         "6b21fb791ac0": "Acerca de",
@@ -27,11 +25,13 @@
         "dbaa550a513d": "<strong>Código abierto.</strong> Workbench es AGPL-3.0-only; Agent es Apache-2.0.",
         "e996625346fc": "Dos superficies para el mismo trabajo.",
         "f99020178a10": "Un agente de programación de terminal, centrado en la tarea, que trabaja directamente en tu repositorio. Lee el código, hace cambios, ejecuta tus comandos y verifica su propio trabajo.",
-        "fb288eb2633b": "iCode crea el entorno universal de desarrollo de agentes: herramientas que ponen a trabajar a los agentes de programación sin quitarles el juicio a las personas que hacen el trabajo.",
-        "fe0a091fdbfb": "Productos"
+        "fe0a091fdbfb": "Productos",
+        "79dbda2c5e70": "La sala de control para una flota de agentes CLI. Claude Code, Codex, OpenCode y más de 40 agentes se ejecutan en paralelo, cada uno en su propio worktree de Git. 44 son ejecutables, 21 tienen hooks de estado gestionados y los tres primeros obtienen inyección nativa de proveedores. Tareas, aprobaciones, programaciones, revisión y un editor viven junto a la terminal, cada fila de sesión tiene sus propias acciones de ciclo de vida y un host separado mantiene las sesiones vivas cuando la aplicación se reinicia.",
+        "9684f96479b0": "Escritorio · Código abierto · Pre-1.0",
+        "ca4463e24970": "iCode crea el entorno de desarrollo de agentes de código abierto: herramientas que ponen a trabajar una flota de agentes CLI sin quitar el criterio a las personas que hacen el trabajo."
       },
       "meta": {
-        "description": "iCode crea el entorno universal de desarrollo de agentes: iCode Workbench para un equipo de agentes de programación en el escritorio, e iCode Agent para el trabajo enfocado en la terminal.",
+        "description": "iCode crea el entorno de desarrollo de agentes de código abierto: iCode Workbench para ejecutar una flota de agentes CLI en paralelo, e iCode Agent para trabajar enfocado en la terminal.",
         "title": "Acerca de iCode"
       }
     },
@@ -45,7 +45,6 @@
         "18e5474fb749": "<strong>Resume de forma duradera</strong>: cuando el historial desborda de verdad, los turnos antiguos se resumen y se conservan los más recientes.",
         "1ae9ce77902b": "Gratis y de código abierto (Apache-2.0). Solo pagas a tu proveedor de modelos.",
         "20f398749e98": "Ejecuta la suite, lee el fallo, repara el código y demuestra que pasa.",
-        "2a45c02b5be7": "Workbench (pre-1.0) es el entorno de escritorio para un equipo de agentes: Claude Code, Codex y OpenCode en worktrees aislados, con tareas, revisión y Mira. Agent es la superficie de terminal enfocada: un repositorio, una sesión, ninguna ventana. Son productos separados con la misma disciplina, y cualquiera de los dos se puede usar por su cuenta.",
         "2d4466b70b26": "Una sesión ilustrativa que muestra el bucle explorar → cambiar → verificar. <a href=\"../first-investigation/\">Recorre tu primera tarea paso a paso →</a>",
         "53177eb72113": "iCode Agent trabaja directamente en tu repositorio: lee el código, hace cambios, ejecuta tus tests y verifica su propio trabajo mientras lo observas y lo guías desde tu terminal. Las tareas largas son el caso difícil, y el contexto es un presupuesto que defiende.",
         "6239d787de88": "Un resultado omitido conserva una ruta de vuelta a la salida completa, la evidencia de fallos nunca se oculta y la reducción nunca reescribe tu sesión guardada.",
@@ -69,7 +68,8 @@
         "f5984d283a4f": "Trae tu propio modelo",
         "f6e77588b318": "<strong>Cómo encaja con iCode Workbench.</strong>",
         "fb2dbad141ac": "Lo que puedes hacer",
-        "fdbab5708908": "Ejecutar una tarea larga es donde los agentes de programación se desmoronan: la ventana se llena de lecturas antiguas de archivos y de salida de comandos, el agente empieza a olvidar lo que hizo y cada petición cuesta más. iCode Agent trata el contexto como un presupuesto que defender, no como un cubo que llenar."
+        "fdbab5708908": "Ejecutar una tarea larga es donde los agentes de programación se desmoronan: la ventana se llena de lecturas antiguas de archivos y de salida de comandos, el agente empieza a olvidar lo que hizo y cada petición cuesta más. iCode Agent trata el contexto como un presupuesto que defender, no como un cubo que llenar.",
+        "c86d3ac5cc20": "Workbench (pre-1.0) es el entorno de escritorio de código abierto para una flota de agentes CLI: 44 son ejecutables, incluidos Claude Code, Codex, OpenCode y más de 40, cada uno en worktrees aislados, con tareas, revisión y Mira. Agent es la superficie de terminal enfocada: un repositorio, una sesión, sin ventana. Son productos separados con la misma disciplina, y cualquiera de los dos puede usarse por su cuenta."
       },
       "meta": {
         "description": "iCode Agent es un agente de programación de terminal que trabaja directamente en tu repositorio: explora, cambia, ejecuta y verifica. El contexto se limita, se reduce y se resume para que las tareas largas sigan siendo coherentes y asequibles.",
@@ -139,7 +139,6 @@
         "6ba1928ab768": "<strong>¿iCode Agent sube mi código?</strong>",
         "6c849cc1a34e": "iCode Agent es gratis y de código abierto (Apache-2.0). Solo pagas a tu proveedor de modelos por los tokens que usas, e iCode Agent está diseñado para mantener esa cifra baja en las tareas largas.",
         "87a098f6d4f8": "La compatibilidad multiplataforma está implementada para Windows, macOS y Linux. La verificación automatizada se realiza en Linux; la verificación nativa en Windows y macOS sigue pendiente.",
-        "8d3bf109594a": "<a href=\"../workbench/\">iCode Workbench</a> (pre-1.0) es el ADE de escritorio: ejecuta Claude Code, Codex y OpenCode en paralelo, cada uno en su propio worktree de Git, con tareas, revisión y Mira entre proyectos. iCode Agent es el agente de terminal enfocado que se describe en estas preguntas frecuentes. Son productos separados y cualquiera funciona por su cuenta.",
         "916a6869b85a": "Instala Node.js 22 o posterior y luego ejecuta <code>npm install -g @icodehq/icode-agent</code>. Consulta <a href=\"../get-started/\">Primeros pasos</a>.",
         "9c5424f73515": "El contexto se gestiona en cada límite: la salida se limita mientras se produce, los resultados de herramientas antiguos se reducen solo cuando una petición excedería su presupuesto y el historial que desborda se resume conservando los turnos recientes. Consulta <a href=\"../blog/context-management/\">cómo se gestiona el contexto</a>.",
         "ac55e4c8a33e": "<strong>¿Cuánto cuesta ejecutarlo?</strong>",
@@ -152,7 +151,8 @@
         "c1ef35d5c1e1": "No. Bun es el runtime de desarrollo para trabajar en iCode Agent. El paquete publicado se ejecuta en Node.js 22 o posterior.",
         "c67571442c5c": "Un resultado omitido se sustituye por un marcador que indica dónde sigue estando la salida completa, para que el agente pueda volver a leerla. La evidencia de fallos y los errores nunca se omiten, y la reducción solo cambia la petición que se envía: la sesión guardada conserva todos los resultados.",
         "c825abb9d30c": "<strong>¿Cómo mantiene iCode Agent bajo el consumo de tokens?</strong>",
-        "e5875ebc3b92": "<strong>¿Cómo instalo iCode Agent?</strong>"
+        "e5875ebc3b92": "<strong>¿Cómo instalo iCode Agent?</strong>",
+        "4ed5a226eee2": "<a href=\"../workbench/\">iCode Workbench</a> (pre-1.0) es el entorno de escritorio de código abierto para una flota de agentes CLI: 44 son ejecutables — incluidos Claude Code, Codex, OpenCode y más de 40 — cada uno en su propio worktree de Git, con tareas, revisión y Mira en todos los proyectos. iCode Agent es el agente de terminal enfocado que se describe en estas preguntas frecuentes. Son productos separados y cualquiera de los dos funciona por su cuenta."
       },
       "meta": {
         "description": "Respuestas sobre cómo instalar iCode Agent, elegir un modelo, qué puede hacer, cómo trata tu código y cuánto cuesta.",
@@ -372,17 +372,12 @@
       },
       "blocks": {
         "04c8d4557699": "<strong>Actúa con límites</strong>: las tareas de bajo riesgo pueden despacharse automáticamente bajo un tope diario; las rutas y palabras clave protegidas esperan a una persona.",
-        "09e111288ec2": "Workbench es la sala de control de escritorio para un equipo de agentes. Agent es la superficie de terminal enfocada a una tarea a la vez. Ambos trabajan en tu repositorio real y ambos te dejan las decisiones a ti.",
         "1f703fec62dd": "No tiene shell ni un directorio de trabajo de proyecto. No puede aprobar una propuesta, aceptar una revisión, fusionar ni hacer push. Eso sigue siendo decisión humana.",
-        "213e757ddb66": "Claude Code, Codex y OpenCode, cada uno en su propio worktree",
-        "2824e721fb69": "Escritorio · ADE · Pre-1.0",
         "2ac4dc629eed": "El trabajo sigue siendo tuyo.",
         "35d9a793aa54": "iCode Agent",
         "3818b3b39492": "Los proyectos, las sesiones, los worktrees, las tareas y las programaciones viven en SQLite local. No hay telemetría ni servicio alojado; el tráfico del modelo pertenece al harness que elegiste.",
-        "3b9d4e9de563": "Ejecuta agentes en paralelo, pon tareas duraderas en cola, revisa los cambios en el checkout de la sesión y gestiona cualquier sesión desde su propia fila. Un inspector persistente contiene Archivos, Buscar y Control de código fuente, mientras un host independiente mantiene las terminales vivas aunque la aplicación se reinicie.",
         "3ccd3ea39abd": "Una barra lateral para todos los proyectos, una terminal en vivo y un diff de Control de código fuente en el inspector.",
         "4303d8aa0848": "Dos superficies",
-        "4987dba82273": "El entorno universal de desarrollo de agentes",
         "4a8cf0800796": "Principios",
         "4b00a62591d9": "Empieza por la superficie que te encaje.",
         "5b986c4e6fe1": "Tareas, aprobaciones, programaciones e historial de tareas",
@@ -407,23 +402,28 @@
         "a928e6a5b3de": "Cada sesión nueva recibe su propio worktree de Git y su rama en el HEAD actual. Dos agentes en el mismo repositorio nunca editan los mismos archivos por accidente. Su fila de la barra lateral incluye detalles, dormir o despertar, reiniciar, fijar y eliminar; la eliminación nombra el trabajo en riesgo y conserva la rama.",
         "bd2b95684184": "Explora iCode Agent →",
         "c6f21307e57f": "Juicio",
-        "cb580425cce9": "Ejecuta un equipo de agentes de programación. Conserva el juicio.",
         "cd2df0b37d76": "Endpoints de modelo compatibles con OpenAI y Anthropic",
         "d255d256e63d": "Mira es una persona en la barra lateral, no otra pestaña de proyecto. Una sola conversación abarca todos los repositorios: lee la cola real, responde a «¿qué me necesita?» y puede crear, cancelar, reintentar o archivar trabajo mediante acciones validadas.",
         "d3796c33667e": "<strong>Acude a ti</strong>: las aprobaciones, los fallos, las tareas en espera y el trabajo listo para revisión llegan con una insignia en la barra lateral y una notificación del sistema cuando ninguna ventana tiene el foco.",
-        "d676f06ec8f9": "iCode Workbench es el ADE universal: todos los agentes, todas las plataformas, un solo banco de trabajo. Ejecuta Claude Code, Codex y OpenCode en paralelo, cada uno en su propio worktree de Git. Mira, tu asistente entre proyectos, observa todos los repositorios, te dice qué necesita tu atención y puede actuar entre ellos. Revisa el diff y mantén la terminal viva cuando la aplicación se reinicie.",
-        "dc39af971e14": "Usa Workbench cuando quieras un equipo y una sala de control. Usa Agent cuando quieras una sesión enfocada en la terminal. Ninguno te quita el juicio.",
         "de75dcb63e1f": "Mira lee la cola real: trabajo listo para revisión, sesiones en ejecución y cambios sin confirmar.",
         "ec17299b45f7": "Cómo funciona Mira",
         "ecaf59cd1eaf": "Explora iCode Workbench",
-        "f05b10fccff5": "Filas de sesión: detalles, dormir o despertar, reiniciar, fijar y eliminar",
         "f0a9d0325608": "Tu máquina guarda el estado.",
         "f1a0c1d5c51c": "Conoce a Mira",
-        "f1f8d63acca2": "Una compañera que observa todos tus proyectos."
+        "f1f8d63acca2": "Una compañera que observa todos tus proyectos.",
+        "2f6ece5a4bcf": "iCode Workbench ejecuta Claude Code, Codex, OpenCode y más de 40 agentes CLI en paralelo, cada uno en su propio worktree de Git. Pon tareas duraderas en cola, revisa cada cambio en el checkout donde se hizo y mantén las terminales vivas cuando la aplicación se reinicia, mientras Mira observa cada proyecto y te dice qué necesita tu atención.",
+        "6e5abb16709b": "Usa Workbench cuando quieras una flota y una sala de control. Usa Agent cuando quieras una sesión enfocada en la terminal. Ninguno te quita el criterio.",
+        "722b94ae4b19": "Ejecuta una flota de agentes CLI en paralelo, pon tareas duraderas en cola, revisa los cambios en el checkout de la sesión y gestiona cualquier sesión desde su propia fila. Un inspector persistente contiene Files, Search y Source Control, mientras que un host separado mantiene las terminales vivas cuando la aplicación se reinicia.",
+        "85768534ac0a": "Workbench es la sala de control de escritorio para una flota de agentes CLI. Agent es la superficie de terminal enfocada en una tarea a la vez. Ambos trabajan en tu repositorio real y ambos te dejan las decisiones.",
+        "9684f96479b0": "Escritorio · Código abierto · Pre-1.0",
+        "c7b8f7eb949a": "21 harnesses con hooks de estado gestionados",
+        "db3f4500303b": "44 agentes CLI ejecutables — Claude Code, Codex y OpenCode con inyección nativa de proveedores",
+        "f5613dba7e7b": "El entorno de desarrollo de agentes de código abierto",
+        "f8f7124c9462": "Ejecuta una flota de agentes. Un solo banco de trabajo. Conserva el criterio."
       },
       "meta": {
-        "description": "iCode Workbench es el ADE universal: todos los agentes, todas las plataformas, un solo banco de trabajo. Ejecuta Claude Code, Codex y OpenCode en paralelo, cada uno en su propio worktree de Git, con Mira observando todos los proyectos. iCode Agent es un agente de programación de terminal diseñado para mantener coherentes las tareas largas.",
-        "title": "iCode — el entorno universal de desarrollo de agentes"
+        "description": "iCode Workbench ejecuta Claude Code, Codex, OpenCode y más de 40 agentes CLI en paralelo, cada uno en su propio worktree de Git. Revisa cada cambio, pon tareas duraderas en cola y conserva el criterio. iCode Agent es el agente de terminal creado para sesiones largas.",
+        "title": "iCode — ejecuta una flota de agentes. Conserva el criterio."
       }
     },
     "workbench": {
@@ -473,11 +473,9 @@
         "7515956b0c2e": "¿Prefieres la terminal? Conoce iCode Agent",
         "814b2520869e": "Terminales",
         "87243de9ad8d": "El trabajo recurrente se une a la misma cola.",
-        "8929cb17a943": "Una sala de control para un equipo de agentes de programación.",
         "8dd8cc3d0552": "Las programaciones crean tareas normales en cola con una cadencia (una vez, a diario, los días laborables, semanalmente o cada pocas horas), con gestión del solapamiento de encolar u omitir y ejecución inmediata. Pausar una programación deja intactas las tareas ya creadas, y cada ejecución llega a la misma cola de tareas que el trabajo que encolaste a mano.",
         "909728574b86": "Abre Archivos junto a la terminal y trabaja en el mismo worktree que el agente está editando. Explora, renombra, duplica, mueve y busca; Monaco añade edición, diffs rápidos contra HEAD, blame en línea e historial del archivo.",
         "a037c51e9808": "Un PTY real en el worktree de la sesión; el host independiente lo mantiene vivo. La terminal sigue la apariencia de la aplicación, con una paleta ANSI clara sobre el lienzo claro.",
-        "a06488410238": "Pre-1.0 · Linux (WSL2/WSLg) · Windows x64 · macOS x64 / arm64",
         "a09412a7fbd4": "iCode Workbench es pre-1.0 y se distribuye como una compilación sin firma. CI produce paquetes para Linux x64, Windows x64 y macOS x64 / arm64 en cada versión etiquetada, y los instaladores se publican en GitHub Releases. Windows SmartScreen y macOS Gatekeeper avisan en el primer inicio; en macOS, haz clic derecho en la aplicación y elige <strong>Abrir</strong>. El código fuente es público bajo AGPL-3.0-only, y una versión modificada que se ofrezca a los usuarios por red debe proporcionarles el código correspondiente.",
         "a15fd33ab133": "El workbench de tareas: la instrucción, la sesión, los cambios frente a la línea base y una decisión de revisión.",
         "af83e4e23e49": "Los detalles, dormir o despertar, reiniciar, fijar y eliminar están a un clic derecho. Las acciones de ciclo de vida se aplican a la sesión de la fila aunque haya otra sesión en pantalla, y una acción no disponible explica por qué. Si hay trabajo sin confirmar o sin fusionar en riesgo, la eliminación nombra los archivos o la rama retenida y conserva la rama: no hay ningún nombre que copiar o escribir.",
@@ -488,12 +486,9 @@
         "c50fe582b390": "Mira · Asistente entre proyectos",
         "c61401225016": "Más a fondo en el workbench",
         "c954006a9209": "Los proyectos fijados, las sesiones directas agrupadas por worktree, la cola de tareas entre proyectos y los recuentos en vivo comparten una sola barra lateral. Cada fila abre su propio menú: una fila de sesión incluye detalles, dormir o despertar, reiniciar, fijar y eliminar sin cambiar primero a ella.",
-        "cbf6131951c6": "iCode Workbench · ADE de escritorio",
         "cca2e271a79f": "<strong>Acude a ti.</strong> Las aprobaciones, los fallos, las tareas en espera y el trabajo listo para revisión se convierten en mensajes proactivos con una insignia en la barra lateral y una notificación del sistema cuando ninguna ventana tiene el foco. La deduplicación, un presupuesto por hora y las horas de silencio evitan que se conviertan en ruido.",
-        "cedf64c12ea9": "Hoy, Claude Code informa de la actividad de la sesión; Codex, OpenCode y las sesiones de shell permanecen en <code>unknown</code>.",
         "d02414d78d0c": "Ciclo de vida de la sesión",
         "d0d5c90f4dd3": "Trabajo duradero, no pestañas de terminal.",
-        "d485e4acf309": "iCode Workbench es el ADE universal: todos los agentes, todas las plataformas, un solo banco de trabajo. Ejecuta Claude Code, Codex y OpenCode en paralelo, cada uno en su propio worktree de Git. Pon en cola tareas duraderas, revisa los cambios donde trabajó el agente, gestiona cualquier sesión desde su propia fila y mantén las terminales vivas cuando la aplicación se reinicie, mientras Mira observa todos los repositorios y te dice qué necesita tu atención.",
         "dbeeff85c446": "Revisa donde trabajó el agente.",
         "de75dcb63e1f": "Mira lee la cola real: trabajo listo para revisión, sesiones en ejecución y cambios sin confirmar.",
         "df081c698e5f": "<strong>Está acotada.</strong> No tiene shell ni un directorio de trabajo de proyecto. No puede aprobar una propuesta, decidir una revisión, fusionar, hacer push ni editar el código del proyecto.",
@@ -504,11 +499,19 @@
         "f49b511b6223": "Archivos, Buscar y Control de código fuente comparten el inspector persistente, y el workbench de tareas da a Archivos y Control de código fuente pestañas a todo el ancho. Los cambios se limitan al checkout de la sesión: prepara, inspecciona diffs en línea, envía notas de línea al agente y confirma, enmienda, haz push, haz cherry-pick, revierte o restablece.",
         "f5171c931c5c": "Barra lateral",
         "f7514442a12c": "Las programaciones son temporizadores dentro del proceso y necesitan que iCode Workbench esté en ejecución.",
-        "fff8462087ea": "Edita en el mismo checkout."
+        "fff8462087ea": "Edita en el mismo checkout.",
+        "25449842bff2": "Los hooks de estado gestionados cubren 21 harnesses; los harnesses sin hook permanecen en <code>unknown</code>.",
+        "57537e00b444": "Pre-1.0 · Windows x64 · Linux x64 (WSL2/WSLg) · macOS x64 / arm64",
+        "5c0b30066a1a": "Harnesses",
+        "78c3db47141d": "iCode Workbench · Entorno de desarrollo de agentes de código abierto",
+        "986ff6764ea4": "iCode Workbench ejecuta Claude Code, Codex, OpenCode y más de 40 agentes CLI en paralelo, cada uno en su propio worktree de Git. Pon tareas duraderas en cola, revisa los cambios donde trabajó el agente, gestiona cualquier sesión desde su propia fila y mantén las terminales vivas cuando la aplicación se reinicia, mientras Mira observa cada repositorio y te dice qué necesita tu atención.",
+        "c18d63d1ba99": "44 agentes CLI, un solo banco de trabajo.",
+        "dd6fc7017d7f": "Claude Code, Codex y OpenCode obtienen inyección nativa de proveedores y la conversación nativa de Mira. 21 harnesses tienen hooks de estado gestionados. 44 son ejecutables, desde GitHub Copilot y Gemini hasta Cursor, Cline, Aider, Goose, Qwen Code y más.",
+        "ec5f9d4b6940": "Una sala de control para una flota de agentes CLI."
       },
       "meta": {
-        "description": "iCode Workbench es el ADE universal para un equipo de agentes de programación: una barra lateral, sesiones en paralelo en worktrees de Git aislados, tareas duraderas, Archivos, Buscar y Control de código fuente en un solo inspector, acciones de ciclo de vida a nivel de fila y Mira observando cada proyecto. Pre-1.0; los instaladores sin firma se publican en GitHub Releases.",
-        "title": "iCode Workbench — el entorno universal de desarrollo de agentes"
+        "description": "iCode Workbench es el entorno de desarrollo de agentes de código abierto para 44 agentes CLI — Claude Code, Codex, OpenCode y más de 40 — cada uno en un worktree de Git aislado. Pon tareas duraderas en cola, revisa cada cambio y conserva el criterio. Pre-1.0; los instaladores sin firmar se publican en GitHub Releases.",
+        "title": "iCode Workbench — ejecuta una flota de agentes. Conserva el criterio."
       }
     }
   },

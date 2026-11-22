@@ -2,7 +2,7 @@
 
 Static marketing site for iCode and its two products:
 
-- **iCode Workbench** — the universal agent development environment (ADE).
+- **iCode Workbench** — the open-source agent development environment for a fleet of CLI agents.
 - **iCode Agent** — the terminal coding agent.
 
 Framework-free, by design: authored HTML in `public/`, shared regions injected
@@ -54,6 +54,8 @@ vercel.json             Vercel config (framework: null, output: _site)
   Windows SmartScreen and macOS Gatekeeper warnings.
 - Claims about context mechanics are backed by `evidence/context-management.md`,
   which cites the exact source files.
+- Harness counts (44 launchable, 21 managed hooks, 3 native) are backed by
+  `evidence/harness-catalog.md`, which cites the catalog and hook registry.
 - Product limits are stated in `public/workbench/` and in the Agent FAQ rather
   than hidden.
 
