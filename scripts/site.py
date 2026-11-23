@@ -947,7 +947,7 @@ def build() -> None:
             continue
         dest = OUT / rel
         dest.parent.mkdir(parents=True, exist_ok=True)
-        if src.suffix == ".txt":
+        if src.suffix in (".txt", ".json"):
             dest.write_text(
                 src.read_text("utf-8").replace("${site_origin}", SITE_ORIGIN),
                 "utf-8",

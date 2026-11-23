@@ -1,0 +1,4 @@
+Contact: https://github.com/icodehq/icode-workbench/security/advisories/new
+Expires: 2027-11-23T00:00:00.000Z
+Preferred-Languages: en
+Canonical: ${site_origin}/.well-known/security.txt

@@ -93,6 +93,7 @@
         "6cf3e5c6df4f": "A task is not a process. Explicit states, retries, and schedules for a fleet of coding agents.",
         "8010d1f4d069": "Assistant",
         "8613e0ed5355": "The review gate",
+        "b308efe1d4bb": "Essays on context, review, durable tasks, and the assistant that watches the queue.",
         "bd94a13293d4": "Guide · Workbench",
         "c6f21307e57f": "Judgment",
         "d325fcd91938": "Queue",
@@ -594,6 +595,7 @@
         "02c4734f8638": "Automate in CI",
         "0324386bac99": "Fix a failing test",
         "044fecdda2f8": "Each guide starts with a task and a concrete target. Give iCode Agent the goal and let it investigate, change and verify.",
+        "070ad0140a16": "Four iCode Agent recipes and one Workbench guide for running a fleet.",
         "11e47b1a8dc7": "Run agents in parallel",
         "1cdcf958adf4": "Track down a bug",
         "20f398749e98": "Run the suite, read the failure, repair the code, and prove it passes.",
@@ -607,7 +609,8 @@
         "bab80e773130": "Set up worktrees, scope tasks, queue the fleet, and review without merge chaos.",
         "bd581c9e710a": "Guides.",
         "c2487f47449f": "Reproduce it, follow the evidence to the cause, then fix and verify.",
-        "d7a484140f5f": "Workflow"
+        "d7a484140f5f": "Workflow",
+        "e3eb1d688b08": "Five task-shaped guides."
       },
       "meta": {
         "description": "Step-by-step iCode Agent guides for common work: fixing failing tests, refactoring a module, tracking down a bug, and automating tasks in scripts and CI.",
@@ -914,7 +917,6 @@
         "ee4e9d7d4bd1": "The Schedules tab with an enabled nightly dependency audit and a paused six-hour provider refresh"
       },
       "blocks": {
-        "016b251d63d0": "New to parallel agents? Read <a href=\"/guides/parallel-agents/\">how to run a fleet without merge chaos</a>.",
         "044b63d83db5": "Source Control in the task worktree: a committed diff side by side, with the file list one toggle away.",
         "090ec5f560fc": "Tasks",
         "0a046cdfef2f": "Download the latest release",
@@ -935,6 +937,7 @@
         "3ccd3ea39abd": "One sidebar for every project, a live terminal, and a Source Control diff in the inspector.",
         "3d0a244df3d1": "About iCode",
         "3dd8d78dd831": "A detached host owns the PTYs, terminal emulation, and exit truth. Closing the window or quitting the app does not stop a live session; reopening reattaches to the same PTY with its scrollback and alternate-screen state intact. Terminals follow the app appearance, with a light ANSI palette on the light canvas.",
+        "400f7bcdbdba": "Go deeper: <a href=\"/guides/parallel-agents/\">run a fleet in parallel</a>, <a href=\"/compare/orca/\">compare with Orca</a>, <a href=\"/blog/agent-review-workflow/\">review the gate</a>, <a href=\"/blog/agent-task-queue/\">run a task queue</a>, or <a href=\"/blog/mira-cross-project-assistant/\">meet Mira</a>.",
         "43165c8de740": "One environment, from first prompt to reviewed change.",
         "46cfb3934a0d": "In practice",
         "4f17d3d2f83b": "Packaging details and platform notes are in the <a href=\"https://github.com/icodehq/icode-workbench#readme\" rel=\"noopener\">repository README</a>. For the publicly available terminal agent, see <a href=\"../agent/\">iCode Agent</a>.",
@@ -959,7 +962,6 @@
         "a037c51e9808": "A real PTY in the session worktree; the detached host keeps it alive. The terminal follows the app appearance, with a light ANSI palette on the light canvas.",
         "a09412a7fbd4": "iCode Workbench is pre-1.0 and ships as an unsigned build. CI produces Linux x64, Windows x64, and macOS x64 / arm64 packages for every tagged release, and the installers are published on GitHub Releases. Windows SmartScreen and macOS Gatekeeper warn on first launch; on macOS, right-click the app and choose <strong>Open</strong>. The source is public under AGPL-3.0-only, and a modified version offered to users over a network must provide them the corresponding source.",
         "a15fd33ab133": "The task workbench: the instruction, the session, changes against the baseline, and a review decision.",
-        "a811d7fc11f6": "Comparing tools? See <a href=\"/compare/orca/\">iCode Workbench vs Orca</a>.",
         "af83e4e23e49": "Details, sleep or wake, restart, pin, and remove are one right-click away. Lifecycle actions target the row's session even when another session is on screen, and an unavailable action explains why. If uncommitted or unmerged work is at risk, removal names the files or the retained branch and keeps the branch — there is no name to copy or type.",
         "b1405d0d4fdb": "Tasks are supervised, not autonomous: a permission prompt still waits for a person.",
         "ba0b971baa55": "Explore the workbench",

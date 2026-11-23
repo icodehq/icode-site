@@ -99,7 +99,8 @@
         "6cf3e5c6df4f": "Eine Aufgabe ist kein Prozess. Explizite Zustände, Wiederholungen und Zeitpläne für eine Flotte von Coding-Agenten.",
         "8010d1f4d069": "Assistent",
         "506cfc89cd02": "Was ein projektübergreifender Assistent tun sollte",
-        "fe2dabe4d5f6": "Ein begrenzter Assistent liest die echte Warteschlange, lenkt Aufmerksamkeit und kann nicht mergen, pushen oder genehmigen."
+        "fe2dabe4d5f6": "Ein begrenzter Assistent liest die echte Warteschlange, lenkt Aufmerksamkeit und kann nicht mergen, pushen oder genehmigen.",
+        "b308efe1d4bb": "Essays zu Kontext, Review, dauerhaften Aufgaben und dem Assistenten, der die Warteschlange beobachtet."
       },
       "meta": {
         "description": "Essays und Notizen von iCode: Wie Coding-Agenten Token verbrauchen, warum Kontextmanagement zählt und wie eine Flotte ohne Merge-Chaos läuft.",
@@ -255,7 +256,9 @@
         "d7a484140f5f": "Workflow",
         "11e47b1a8dc7": "Agenten parallel ausführen",
         "93ef7c636865": "Workbench",
-        "bab80e773130": "Worktrees einrichten, Aufgaben abgrenzen, die Flotte einreihen und ohne Merge-Chaos prüfen."
+        "bab80e773130": "Worktrees einrichten, Aufgaben abgrenzen, die Flotte einreihen und ohne Merge-Chaos prüfen.",
+        "e3eb1d688b08": "Fünf aufgabenorientierte Anleitungen.",
+        "070ad0140a16": "Vier iCode-Agent-Rezepte und eine Workbench-Anleitung für den Betrieb einer Flotte."
       },
       "meta": {
         "description": "Schritt-für-Schritt-Anleitungen für iCode Agent: Tests reparieren, Module refaktorieren, Bugs aufspüren und Aufgaben in Skripten und CI automatisieren.",
@@ -459,8 +462,6 @@
         "ee4e9d7d4bd1": "Der Zeitpläne-Tab mit einem aktivierten nächtlichen Abhängigkeitsaudit und einer pausierten sechsstündlichen Anbieteraktualisierung"
       },
       "blocks": {
-        "016b251d63d0": "Neu bei parallelen Agenten? Lies <a href=\"/guides/parallel-agents/\">wie du eine Flotte ohne Merge-Chaos betreibst</a>.",
-        "a811d7fc11f6": "Vergleichst du Tools? Sieh dir <a href=\"/compare/orca/\">iCode Workbench vs. Orca</a> an.",
         "044b63d83db5": "Quellcodeverwaltung im Aufgaben-Worktree: ein committeter Diff nebeneinander, mit der Dateiliste nur einen Umschalter entfernt.",
         "090ec5f560fc": "Aufgaben",
         "0a046cdfef2f": "Die neueste Version herunterladen",
@@ -529,7 +530,8 @@
         "986ff6764ea4": "iCode Workbench führt Claude Code, Codex, OpenCode und über 40 weitere CLI-Agenten parallel aus, jeder in seinem eigenen Git-Worktree. Stelle dauerhafte Aufgaben in die Warteschlange, prüfe Änderungen dort, wo der Agent gearbeitet hat, verwalte jede Sitzung direkt aus ihrer Zeile und halte Terminals am Leben, wenn die App neu startet — während Mira jedes Repository beobachtet und dir sagt, was dich braucht.",
         "c18d63d1ba99": "44 CLI-Agenten, eine Werkbank.",
         "dd6fc7017d7f": "Claude Code, Codex und OpenCode erhalten native Provider-Injektion und Miras native Konversation. 21 Harnesses haben verwaltete Status-Hooks. 44 sind startbar — von GitHub Copilot und Gemini bis Cursor, Cline, Aider, Goose, Qwen Code und mehr.",
-        "ec5f9d4b6940": "Ein Kontrollraum für eine Flotte von CLI-Agenten."
+        "ec5f9d4b6940": "Ein Kontrollraum für eine Flotte von CLI-Agenten.",
+        "400f7bcdbdba": "Mehr erfahren: <a href=\"/guides/parallel-agents/\">eine Flotte parallel betreiben</a>, <a href=\"/compare/orca/\">mit Orca vergleichen</a>, <a href=\"/blog/agent-review-workflow/\">das Review-Gate</a>, <a href=\"/blog/agent-task-queue/\">eine Aufgabenwarteschlange</a> oder <a href=\"/blog/mira-cross-project-assistant/\">Mira kennenlernen</a>."
       },
       "meta": {
         "description": "iCode Workbench ist die Open-Source-Umgebung für 44 CLI-Agenten, jeder in einem isolierten Git-Worktree. Aufgaben einreihen, Änderungen prüfen, Urteil behalten.",

@@ -1,0 +1,67 @@
+{
+  "name": "iCode",
+  "url": "${site_origin}/",
+  "description": "iCode builds an open-source agent development environment. iCode Workbench runs a fleet of CLI coding agents in parallel, each in an isolated Git worktree, with a review-first workflow. iCode Agent is a terminal coding agent that manages its context window on long tasks.",
+  "products": [
+    {
+      "name": "iCode Workbench",
+      "url": "${site_origin}/workbench/",
+      "description": "Run 44 CLI coding agents in parallel, queue durable tasks, review changes where the agent worked, and keep terminals alive across app restarts.",
+      "license": "AGPL-3.0",
+      "platforms": ["Windows", "Linux", "macOS"]
+    },
+    {
+      "name": "iCode Agent",
+      "url": "${site_origin}/agent/",
+      "description": "A terminal coding agent that explores, edits, runs tests, and verifies its own work while defending its context budget.",
+      "license": "Apache-2.0",
+      "platforms": ["Windows", "macOS", "Linux"]
+    }
+  ],
+  "guides": [
+    {
+      "title": "Run multiple coding agents in parallel",
+      "url": "${site_origin}/guides/parallel-agents/"
+    },
+    {
+      "title": "Fix a failing test",
+      "url": "${site_origin}/guides/fix-a-failing-test/"
+    },
+    {
+      "title": "Refactor a module",
+      "url": "${site_origin}/guides/refactor-a-module/"
+    },
+    {
+      "title": "Track down a bug",
+      "url": "${site_origin}/guides/track-down-a-bug/"
+    },
+    {
+      "title": "Automate in CI",
+      "url": "${site_origin}/guides/automate-in-ci/"
+    }
+  ],
+  "essays": [
+    {
+      "title": "The context window is a budget",
+      "url": "${site_origin}/blog/context-management/"
+    },
+    {
+      "title": "The review gate",
+      "url": "${site_origin}/blog/agent-review-workflow/"
+    },
+    {
+      "title": "Durable tasks, not terminal tabs",
+      "url": "${site_origin}/blog/agent-task-queue/"
+    },
+    {
+      "title": "What a cross-project agent assistant should do",
+      "url": "${site_origin}/blog/mira-cross-project-assistant/"
+    }
+  ],
+  "comparisons": [
+    {
+      "title": "iCode Workbench vs Orca",
+      "url": "${site_origin}/compare/orca/"
+    }
+  ]
+}

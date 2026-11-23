@@ -99,7 +99,8 @@
         "6cf3e5c6df4f": "任务不是进程。面向编码智能体舰队的显式状态、重试和计划。",
         "8010d1f4d069": "助手",
         "506cfc89cd02": "跨项目助手应该做什么",
-        "fe2dabe4d5f6": "有边界的助手读取真实队列、引导注意力，但不能合并、推送或批准。"
+        "fe2dabe4d5f6": "有边界的助手读取真实队列、引导注意力，但不能合并、推送或批准。",
+        "b308efe1d4bb": "关于上下文、审查、持久任务以及守望队列的助手的文章。"
       },
       "meta": {
         "description": "iCode 的文章与笔记：编码智能体如何消耗 token、上下文管理为何重要，以及如何在没有合并混乱的情况下运行智能体舰队。",
@@ -255,7 +256,9 @@
         "d7a484140f5f": "工作流",
         "11e47b1a8dc7": "并行运行智能体",
         "93ef7c636865": "Workbench",
-        "bab80e773130": "设置工作树、划定任务范围、将智能体舰队加入队列，并在没有合并混乱的情况下进行审查。"
+        "bab80e773130": "设置工作树、划定任务范围、将智能体舰队加入队列，并在没有合并混乱的情况下进行审查。",
+        "e3eb1d688b08": "五个以任务为导向的指南。",
+        "070ad0140a16": "四个 iCode Agent 配方，以及一个用于运行智能体舰队的 Workbench 指南。"
       },
       "meta": {
         "description": "面向常见工作的 iCode Agent 分步指南：修复失败的测试、重构模块、追踪 bug，以及在脚本和 CI 中自动化任务。",
@@ -459,8 +462,6 @@
         "ee4e9d7d4bd1": "计划标签页，包含一个已启用的夜间依赖审计和一个已暂停的每六小时提供商刷新"
       },
       "blocks": {
-        "016b251d63d0": "刚开始使用并行智能体？请阅读<a href=\"/guides/parallel-agents/\">如何在没有合并混乱的情况下运行智能体舰队</a>。",
-        "a811d7fc11f6": "正在比较工具？请查看 <a href=\"/compare/orca/\">iCode Workbench 与 Orca 对比</a>。",
         "044b63d83db5": "任务工作树中的源代码管理：并排显示已提交的 diff，文件列表只需切换一下即可看到。",
         "090ec5f560fc": "任务",
         "0a046cdfef2f": "下载最新版本",
@@ -529,7 +530,8 @@
         "986ff6764ea4": "iCode Workbench 并行运行 Claude Code、Codex、OpenCode 以及 40+ 个 CLI 智能体，每个都在独立的 Git 工作树中。排队持久任务，在智能体工作的地方审查改动，从每一行管理任意会话，并在应用重启时让终端继续运行——同时由 Mira 关注每个仓库并告诉你什么需要你。",
         "c18d63d1ba99": "44 个 CLI 智能体，一个工作台。",
         "dd6fc7017d7f": "Claude Code、Codex 和 OpenCode 支持原生提供商注入和 Mira 的原生对话。21 个智能体框架拥有托管状态钩子。44 个可启动——从 GitHub Copilot 和 Gemini 到 Cursor、Cline、Aider、Goose、Qwen Code 等。",
-        "ec5f9d4b6940": "CLI 智能体舰队的控制室。"
+        "ec5f9d4b6940": "CLI 智能体舰队的控制室。",
+        "400f7bcdbdba": "深入了解：<a href=\"/guides/parallel-agents/\">并行运行智能体舰队</a>、<a href=\"/compare/orca/\">与 Orca 对比</a>、<a href=\"/blog/agent-review-workflow/\">审查关口</a>、<a href=\"/blog/agent-task-queue/\">任务队列</a>，或<a href=\"/blog/mira-cross-project-assistant/\">了解 Mira</a>。"
       },
       "meta": {
         "description": "iCode Workbench 是面向 44 个 CLI 智能体的开源开发环境，每个智能体都在隔离的 Git 工作树中运行。排队任务、审查变更、保留判断权。",

@@ -99,7 +99,8 @@
         "6cf3e5c6df4f": "Uma tarefa não é um processo. Estados explícitos, novas tentativas e agendamentos para uma frota de agentes de programação.",
         "8010d1f4d069": "Assistente",
         "506cfc89cd02": "O que um assistente entre projetos deveria fazer",
-        "fe2dabe4d5f6": "Um assistente delimitado lê a fila real, direciona a atenção e não pode fazer merge, push ou aprovar."
+        "fe2dabe4d5f6": "Um assistente delimitado lê a fila real, direciona a atenção e não pode fazer merge, push ou aprovar.",
+        "b308efe1d4bb": "Ensaios sobre contexto, revisão, tarefas duráveis e o assistente que observa a fila."
       },
       "meta": {
         "description": "Ensaios e notas do iCode: como os agentes consomem tokens, por que o contexto importa e como executar uma frota sem caos de merge.",
@@ -255,7 +256,9 @@
         "d7a484140f5f": "Fluxo de trabalho",
         "11e47b1a8dc7": "Execute agentes em paralelo",
         "93ef7c636865": "Workbench",
-        "bab80e773130": "Configure worktrees, delimite tarefas, enfileire a frota e revise sem caos de merge."
+        "bab80e773130": "Configure worktrees, delimite tarefas, enfileire a frota e revise sem caos de merge.",
+        "e3eb1d688b08": "Cinco guias baseados em tarefas.",
+        "070ad0140a16": "Quatro receitas do iCode Agent e um guia do Workbench para executar uma frota."
       },
       "meta": {
         "description": "Guias passo a passo do iCode Agent para trabalho comum: corrigir testes com falha, refatorar um módulo, rastrear um bug e automatizar tarefas em scripts e CI.",
@@ -459,8 +462,6 @@
         "ee4e9d7d4bd1": "A aba Agendamentos com uma auditoria noturna de dependências habilitada e uma atualização de provedor pausada a cada seis horas"
       },
       "blocks": {
-        "016b251d63d0": "Novo em agentes paralelos? Leia <a href=\"/guides/parallel-agents/\">como executar uma frota sem caos de merge</a>.",
-        "a811d7fc11f6": "Comparando ferramentas? Veja <a href=\"/compare/orca/\">iCode Workbench vs Orca</a>.",
         "044b63d83db5": "Controle de código-fonte no worktree da tarefa: um diff confirmado lado a lado, com a lista de arquivos a um clique.",
         "090ec5f560fc": "Tarefas",
         "0a046cdfef2f": "Baixe a versão mais recente",
@@ -529,7 +530,8 @@
         "986ff6764ea4": "O iCode Workbench executa Claude Code, Codex, OpenCode e mais de 40 agentes CLI em paralelo, cada um em seu próprio worktree do Git. Coloque tarefas duráveis na fila, revise as mudanças onde o agente trabalhou, gerencie qualquer sessão a partir de sua própria linha e mantenha os terminais vivos quando o aplicativo reiniciar — enquanto a Mira observa cada repositório e informa o que precisa de você.",
         "c18d63d1ba99": "44 agentes CLI, uma única bancada.",
         "dd6fc7017d7f": "Claude Code, Codex e OpenCode recebem injeção nativa de provedores e a conversa nativa da Mira. 21 harnesses têm hooks de status gerenciados. 44 são executáveis — do GitHub Copilot e Gemini ao Cursor, Cline, Aider, Goose, Qwen Code e mais.",
-        "ec5f9d4b6940": "Uma sala de controle para uma frota de agentes CLI."
+        "ec5f9d4b6940": "Uma sala de controle para uma frota de agentes CLI.",
+        "400f7bcdbdba": "Saiba mais: <a href=\"/guides/parallel-agents/\">executar uma frota em paralelo</a>, <a href=\"/compare/orca/\">comparar com Orca</a>, <a href=\"/blog/agent-review-workflow/\">o portão de revisão</a>, <a href=\"/blog/agent-task-queue/\">uma fila de tarefas</a> ou <a href=\"/blog/mira-cross-project-assistant/\">conhecer Mira</a>."
       },
       "meta": {
         "description": "O iCode Workbench é o ambiente open source para 44 agentes CLI, cada um em um worktree Git isolado. Enfileire tarefas, revise mudanças, mantenha o julgamento.",
