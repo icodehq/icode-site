@@ -192,7 +192,19 @@
         "c67571442c5c": "Un résultat retenu est remplacé par un marqueur qui indique où se trouve encore la sortie complète, afin que l’agent puisse la relire. Les preuves d’échec et les erreurs ne sont jamais retenues, et la réduction ne modifie que la requête envoyée — la session enregistrée conserve chaque résultat.",
         "c825abb9d30c": "<strong>Comment iCode Agent limite-t-il l’usage des tokens ?</strong>",
         "e5875ebc3b92": "<strong>Comment installer iCode Agent ?</strong>",
-        "4ed5a226eee2": "<a href=\"../workbench/\">iCode Workbench</a> (pre-1.0) est l'environnement de bureau open source pour une flotte d'agents CLI : 44 sont exécutables — dont Claude Code, Codex, OpenCode et plus de 40 autres — chacun dans son propre worktree Git, avec tâches, revue et Mira sur tous les projets. iCode Agent est l'agent terminal concentré décrit dans cette FAQ. Ce sont des produits distincts, et chacun fonctionne seul."
+        "4ed5a226eee2": "<a href=\"../workbench/\">iCode Workbench</a> (pre-1.0) est l'environnement de bureau open source pour une flotte d'agents CLI : 44 sont exécutables — dont Claude Code, Codex, OpenCode et plus de 40 autres — chacun dans son propre worktree Git, avec tâches, revue et Mira sur tous les projets. iCode Agent est l'agent terminal concentré décrit dans cette FAQ. Ce sont des produits distincts, et chacun fonctionne seul.",
+        "a1a3b2f7b13c": "<strong>Comment iCode Agent décide-t-il quels fichiers lire ?</strong>",
+        "38ff3009580f": "Il part de votre tâche, parcourt le dépôt et lit les fichiers qui comptent. Un fichier ou un test nommé resserre la recherche ; un objectif large lui laisse plus de place pour enquêter. Chaque recherche et chaque lecture sont visibles pendant qu’il travaille, ce qui vous permet de le rediriger tôt.",
+        "5c67df52a05e": "<strong>Puis-je l’utiliser dans un monorepo ?</strong>",
+        "88b489ba454f": "Oui. Lancez iCode Agent dans le package que vous voulez modifier, ou passez <code>--cwd</code> vers ce package. Limitez la commande de test au même package pour que l’agent vérifie la bonne chose, et gardez les instructions partagées à la racine du dépôt.",
+        "64c7f8879bb0": "<strong>Que se passe-t-il quand une commande demande une approbation ?</strong>",
+        "fbbbb486edf6": "Les exécutions interactives demandent avant les commandes qui nécessitent une permission, et la tâche attend votre réponse. Approuvez la commande précise ou redirigez l’agent vers une approche plus sûre. Ne laissez pas une exécution attendre sans surveillance si elle a besoin d’une décision.",
+        "c47867e1812b": "<strong>Comment vérifier ce qui a changé ?</strong>",
+        "367dc5cd56a9": "Lisez le diff avant le résumé. Vérifiez les fichiers que la tâche possédait et ceux qu’il a touchés malgré tout, exécutez la commande de vérification vous-même, et refusez ou redirigez tout ce qui sort du périmètre. La checklist complète est dans <a href=\"/blog/agent-review-workflow/\">la porte de revue</a>.",
+        "dd148ed5c764": "<strong>Puis-je lancer plusieurs sessions Agent dans le même dépôt ?</strong>",
+        "fcbe0858acef": "Utilisez un worktree Git séparé par session. Deux agents dans un même checkout entreront en collision. Le <a href=\"/guides/parallel-agents/\">guide des agents en parallèle</a> couvre les worktrees, le cadrage des tâches et l’ordre de fusion ; Workbench automatise le même modèle pour une flotte.",
+        "a1d883f68925": "<strong>Que mettre dans AGENTS.md ?</strong>",
+        "d18d51b4298f": "La commande de test, les conventions qui comptent, les chemins que l’agent ne doit pas toucher et ce que « terminé » signifie pour ce dépôt. Gardez-le court et précis ; il est lu à chaque exécution. Si une règle est importante, énoncez-la comme une règle, pas comme une préférence. Les instructions propres au package vont dans le package ; les règles partagées à la racine du dépôt. Un fichier court est aussi plus facile à garder à jour."
       },
       "meta": {
         "description": "Réponses sur l’installation d’iCode Agent, le choix d’un modèle, ses capacités, la façon dont il traite votre code et son coût.",
@@ -348,7 +360,20 @@
         "d208fde745ff": "Ce qui se passe",
         "f441d1f8c7d9": "Appuyez sur Échap pour annuler, ou Alt+Entrée pour mettre un suivi en file.",
         "f76f7489ecbc": "<strong>Vérifier.</strong> Il relance les tests et rapporte le résultat. S’ils échouent encore, il continue.",
-        "f911ed31f99b": "<strong>Reproduire.</strong> Il exécute votre commande de test et lit l’échec réel."
+        "f911ed31f99b": "<strong>Reproduire.</strong> Il exécute votre commande de test et lit l’échec réel.",
+        "2c445dd5994f": "Avant de commencer",
+        "816fbc36045f": "Partez d’un worktree propre, connaissez la commande de test exacte et notez si l’échec est déterministe. Si le test est instable, exécutez-le deux fois avant de demander à l’agent de corriger quoi que ce soit. Une correction pour un test instable est une supposition tant que vous ne savez pas que l’échec est stable.",
+        "111c827f51d8": "Quand la correction est mauvaise",
+        "0c1765b6340a": "Surveillez trois raccourcis : modifier le test pour qu’il corresponde au code, affaiblir une assertion, ou corriger le symptôme sans la cause. Si le diff touche à la fois le test et le code de production, demandez quel changement est la correction et quel est l’ajustement. Une suite au vert n’est pas une preuve si le test a été modifié pour passer.",
+        "92a77140e532": "Si l’agent ne peut pas expliquer la cause racine en une ou deux phrases, arrêtez et demandez les preuves : la sortie de l’échec, la ligne qui l’a causé et pourquoi le changement traite cette ligne. Une histoire plausible n’est pas un diagnostic.",
+        "2dfe1873ccb8": "Ce qu’il faut vérifier",
+        "faf966ae6625": "Avant d’accepter le changement : le test échouait avant la correction, le même test passe après, l’assertion n’a pas été affaiblie, le diff se limite au chemin en échec et aucun fichier sans rapport n’a changé. Exécutez la commande vous-même. Si la suite est lente, exécutez d’abord le fichier en échec, puis la suite complète avant de commit.",
+        "fde1fd668096": "Un mode d’échec : le test instable",
+        "9a1ddc420750": "Parfois l’échec est environnemental : dépendance à l’ordre, fixture partagée, hypothèse de timing. Demandez à l’agent de le reproduire deux fois et de dire si l’échec est stable. S’il ne l’est pas, corrigez l’isolation du test avant le code. Sinon, la correction passera une fois et échouera à nouveau en CI.",
+        "ba31f84e5532": "Un exemple concret",
+        "280904c5d626": "Prenez un échec dans <code>tests/report/builder.test.ts</code>. L’agent doit d’abord exécuter ce fichier, lire <code>builder.ts</code> et le test, puis identifier la branche qui produit la mauvaise sortie. Une bonne correction modifie la branche de production, pas la valeur attendue dans le test. Après l’édition, il exécute le fichier, puis la suite complète, et rapporte les deux résultats. Demandez-lui ensuite pourquoi la branche était fausse et quelle entrée la déclenche.",
+        "6004f2ece9c0": "S’il a modifié la valeur attendue, arrêtez : le test était la spécification, et la correction vient de réécrire la spécification. S’il a modifié un formateur partagé utilisé par d’autres tests, exécutez aussi ces tests ; la correction peut être juste pour ce cas et fausse pour un autre. Une seconde exécution n’est pas de la paranoïa. Exécutez le fichier en échec, puis la suite, puis le fichier à nouveau. Si le résultat change, l’isolation du test fait partie du problème.",
+        "580fae8e2994": "Le point de l’exemple est l’ordre : reproduire, lire, modifier la plus petite branche de production, vérifier à deux niveaux. L’agent peut faire les quatre ; votre travail est de vérifier qu’il n’a sauté ni la première ni la dernière."
       },
       "meta": {
         "description": "Un workflow iCode Agent pas à pas : reproduire l’échec d’un test, lire le code, le réparer et vérifier la correction — avec les prompts exacts à utiliser.",

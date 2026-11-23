@@ -192,7 +192,19 @@
         "c67571442c5c": "Um resultado retido é substituído por um marcador que indica onde a saída completa ainda está, para que o agente possa lê-la de volta. Evidências de falha e erros nunca são retidos, e a redução altera apenas a requisição enviada — a sessão salva mantém todos os resultados.",
         "c825abb9d30c": "<strong>Como o iCode Agent mantém o uso de tokens baixo?</strong>",
         "e5875ebc3b92": "<strong>Como instalo o iCode Agent?</strong>",
-        "4ed5a226eee2": "<a href=\"../workbench/\">iCode Workbench</a> (pre-1.0) é o ambiente desktop de código aberto para uma frota de agentes CLI: 44 são executáveis — incluindo Claude Code, Codex, OpenCode e mais de 40 — cada um em seu próprio worktree do Git, com tarefas, revisão e Mira em todos os projetos. O iCode Agent é o agente de terminal focado descrito nestas perguntas frequentes. São produtos separados, e qualquer um dos dois funciona sozinho."
+        "4ed5a226eee2": "<a href=\"../workbench/\">iCode Workbench</a> (pre-1.0) é o ambiente desktop de código aberto para uma frota de agentes CLI: 44 são executáveis — incluindo Claude Code, Codex, OpenCode e mais de 40 — cada um em seu próprio worktree do Git, com tarefas, revisão e Mira em todos os projetos. O iCode Agent é o agente de terminal focado descrito nestas perguntas frequentes. São produtos separados, e qualquer um dos dois funciona sozinho.",
+        "a1a3b2f7b13c": "<strong>Como o iCode Agent decide quais arquivos ler?</strong>",
+        "38ff3009580f": "Ele parte da sua tarefa, busca no repositório e lê os arquivos que importam. Um arquivo ou teste nomeado estreita a busca; um objetivo amplo dá mais espaço para investigar. Cada busca e leitura fica visível enquanto ele trabalha, então você pode redirecioná-lo cedo.",
+        "5c67df52a05e": "<strong>Posso usá-lo em um monorepo?</strong>",
+        "88b489ba454f": "Sim. Inicie o iCode Agent no pacote que você quer alterar, ou passe <code>--cwd</code> para esse pacote. Limite o comando de teste ao mesmo pacote para que o agente verifique a coisa certa, e mantenha as instruções compartilhadas na raiz do repositório.",
+        "64c7f8879bb0": "<strong>O que acontece quando um comando precisa de aprovação?</strong>",
+        "fbbbb486edf6": "Execuções interativas perguntam antes de comandos que exigem permissão, e a tarefa espera sua resposta. Aprove o comando específico ou redirecione o agente para uma abordagem mais segura. Não deixe uma execução esperando sem atenção se ela precisa de uma decisão.",
+        "c47867e1812b": "<strong>Como reviso o que mudou?</strong>",
+        "367dc5cd56a9": "Leia o diff antes do resumo. Verifique os arquivos que a tarefa possuía e os que ele tocou mesmo assim, execute o comando de verificação você mesmo e rejeite ou redirecione qualquer coisa fora do escopo. A lista completa está em <a href=\"/blog/agent-review-workflow/\">o portão de revisão</a>.",
+        "dd148ed5c764": "<strong>Posso executar mais de uma sessão do Agent no mesmo repositório?</strong>",
+        "fcbe0858acef": "Use um worktree Git separado por sessão. Dois agentes em um checkout vão colidir. O <a href=\"/guides/parallel-agents/\">guia de agentes em paralelo</a> cobre worktrees, delimitação de tarefas e ordem de merge; o Workbench automatiza o mesmo modelo para uma frota.",
+        "a1d883f68925": "<strong>O que devo colocar no AGENTS.md?</strong>",
+        "d18d51b4298f": "O comando de teste, as convenções que importam, os caminhos que o agente não deve tocar e o que “pronto” significa para este repositório. Mantenha curto e específico; ele é lido em cada execução. Se uma regra é importante, declare-a como regra, não como preferência. Instruções específicas do pacote ficam no pacote; regras compartilhadas na raiz do repositório. Um arquivo curto também é mais fácil de manter atualizado."
       },
       "meta": {
         "description": "Respostas sobre como instalar o iCode Agent, escolher um modelo, o que ele pode fazer, como ele trata seu código e quanto custa.",
@@ -348,7 +360,20 @@
         "d208fde745ff": "O que acontece",
         "f441d1f8c7d9": "Pressione Esc para abortar ou Alt+Enter para enfileirar uma mensagem de acompanhamento.",
         "f76f7489ecbc": "<strong>Verificar.</strong> Ele executa os testes de novo e informa o resultado. Se ainda falharem, ele continua.",
-        "f911ed31f99b": "<strong>Reproduzir.</strong> Ele executa seu comando de teste e lê a falha real."
+        "f911ed31f99b": "<strong>Reproduzir.</strong> Ele executa seu comando de teste e lê a falha real.",
+        "2c445dd5994f": "Antes de começar",
+        "816fbc36045f": "Comece de um worktree limpo, saiba o comando de teste exato e anote se a falha é determinística. Se o teste for instável, execute-o duas vezes antes de pedir ao agente para corrigir qualquer coisa. Uma correção para um teste instável é um palpite até você saber que a falha é estável.",
+        "111c827f51d8": "Quando a correção está errada",
+        "0c1765b6340a": "Observe três atalhos: mudar o teste para corresponder ao código, enfraquecer uma asserção ou corrigir o sintoma sem a causa. Se o diff toca tanto o teste quanto o código de produção, pergunte qual mudança é a correção e qual é a adaptação. Uma suíte verde não é prova se o teste foi alterado para passar.",
+        "92a77140e532": "Se o agente não conseguir explicar a causa raiz em uma ou duas frases, pare e peça as evidências: a saída da falha, a linha que a causou e por que a mudança aborda essa linha. Uma história plausível não é um diagnóstico.",
+        "2dfe1873ccb8": "O que verificar",
+        "faf966ae6625": "Antes de aceitar a mudança: o teste falhou antes da correção, o mesmo teste passa depois, a asserção não foi enfraquecida, o diff se limita ao caminho que falha e nenhum arquivo não relacionado mudou. Execute o comando você mesmo. Se a suíte for lenta, execute primeiro o arquivo que falha e depois a suíte completa antes do commit.",
+        "fde1fd668096": "Um modo de falha: o teste instável",
+        "9a1ddc420750": "Às vezes a falha é ambiental: dependência de ordem, um fixture compartilhado, uma suposição de timing. Peça ao agente para reproduzir duas vezes e informar se a falha é estável. Se não for, corrija o isolamento do teste antes do código. Caso contrário, a correção passará uma vez e falhará de novo na CI.",
+        "ba31f84e5532": "Um exemplo prático",
+        "280904c5d626": "Tome uma falha em <code>tests/report/builder.test.ts</code>. O agente deve executar primeiro esse arquivo, ler <code>builder.ts</code> e o teste, e identificar o ramo que produz a saída errada. Uma boa correção muda o ramo de produção, não o valor esperado no teste. Depois da edição, ele executa o arquivo e depois a suíte completa, e informa os dois resultados. Em seguida, peça que explique por que o ramo estava errado e qual entrada o dispara.",
+        "6004f2ece9c0": "Se ele mudou o valor esperado, pare: o teste era a especificação, e a correção acabou de reescrever a especificação. Se mudou um formatador compartilhado usado por outros testes, execute esses testes também; a correção pode estar certa para este caso e errada para outro. Uma segunda execução não é paranoia. Execute o arquivo que falha, depois a suíte, depois o arquivo de novo. Se o resultado mudar, o isolamento do teste faz parte do problema.",
+        "580fae8e2994": "O ponto do exemplo é a ordem: reproduzir, ler, mudar o menor ramo de produção, verificar em dois níveis. O agente pode fazer os quatro; seu trabalho é conferir que ele não pulou o primeiro nem o último."
       },
       "meta": {
         "description": "Um fluxo de trabalho passo a passo do iCode Agent: reproduza uma falha de teste, leia o código, corrija e verifique a correção — com os prompts exatos a usar.",

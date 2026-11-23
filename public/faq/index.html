@@ -76,6 +76,30 @@
         <summary><strong>Is it ready for production use?</strong></summary>
         <p>iCode Agent is in early experimental development and changes quickly. See the <a href="https://github.com/icodehq/icode-agent/blob/master/CHANGELOG.md" rel="noopener">changelog</a> for what each release includes.</p>
       </details>
+      <details>
+        <summary><strong>How does iCode Agent decide which files to read?</strong></summary>
+        <p>It starts from your task, searches the repository, and reads the files that matter. A named file or test narrows the search; a broad goal gives it more room to investigate. Each search and read is visible as it works, so you can redirect it early.</p>
+      </details>
+      <details>
+        <summary><strong>Can I use it in a monorepo?</strong></summary>
+        <p>Yes. Start iCode Agent in the package you want to change, or pass <code>--cwd</code> to that package. Scope the test command to the same package so the agent verifies the right thing, and keep shared instructions in the repository root.</p>
+      </details>
+      <details>
+        <summary><strong>What happens when a command needs approval?</strong></summary>
+        <p>Interactive runs ask before commands that need permission, and the task waits for your answer. Approve the specific command or redirect the agent with a safer approach. Do not leave a run waiting unattended if it needs a decision.</p>
+      </details>
+      <details>
+        <summary><strong>How do I review what it changed?</strong></summary>
+        <p>Read the diff before the summary. Check the files the task owned and the files it touched anyway, run the verification command yourself, and reject or redirect anything outside scope. See <a href="/blog/agent-review-workflow/">the review gate</a> for the full checklist.</p>
+      </details>
+      <details>
+        <summary><strong>Can I run more than one Agent session in the same repository?</strong></summary>
+        <p>Use a separate Git worktree per session. Two agents in one checkout will collide. The <a href="/guides/parallel-agents/">parallel-agents guide</a> covers worktrees, task scoping, and merge order; Workbench automates the same model for a fleet.</p>
+      </details>
+      <details>
+        <summary><strong>What should I put in AGENTS.md?</strong></summary>
+        <p>The test command, the conventions that matter, the paths the agent should not touch, and what “done” means for this repository. Keep it short and specific; it is read on every run. If a rule is important, state it as a rule, not a preference. Package-specific instructions belong in the package; shared rules belong at the repository root. A short file is also easier to keep current.</p>
+      </details>
     </div>
   </section>
 </main>

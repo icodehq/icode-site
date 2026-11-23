@@ -192,7 +192,19 @@
         "c67571442c5c": "Ein zurückgehaltenes Ergebnis wird durch einen Marker ersetzt, der nennt, wo die vollständige Ausgabe noch liegt, sodass der Agent sie nachlesen kann. Fehlerbelege und Fehler werden nie zurückgehalten, und die Reduktion ändert nur die gesendete Anfrage — die gespeicherte Sitzung behält jedes Ergebnis.",
         "c825abb9d30c": "<strong>Wie hält iCode Agent den Token-Verbrauch niedrig?</strong>",
         "e5875ebc3b92": "<strong>Wie installiere ich iCode Agent?</strong>",
-        "4ed5a226eee2": "<a href=\"../workbench/\">iCode Workbench</a> (pre-1.0) ist die Open-Source-Desktop-Umgebung für eine Flotte von CLI-Agenten: 44 sind startbar — darunter Claude Code, Codex, OpenCode und über 40 weitere — jeder in seinem eigenen Git-Worktree, mit Aufgaben, Review und Mira über alle Projekte hinweg. iCode Agent ist der fokussierte Terminal-Agent, der in dieser FAQ beschrieben wird. Es sind getrennte Produkte, und jedes funktioniert für sich."
+        "4ed5a226eee2": "<a href=\"../workbench/\">iCode Workbench</a> (pre-1.0) ist die Open-Source-Desktop-Umgebung für eine Flotte von CLI-Agenten: 44 sind startbar — darunter Claude Code, Codex, OpenCode und über 40 weitere — jeder in seinem eigenen Git-Worktree, mit Aufgaben, Review und Mira über alle Projekte hinweg. iCode Agent ist der fokussierte Terminal-Agent, der in dieser FAQ beschrieben wird. Es sind getrennte Produkte, und jedes funktioniert für sich.",
+        "a1a3b2f7b13c": "<strong>Wie entscheidet iCode Agent, welche Dateien gelesen werden?</strong>",
+        "38ff3009580f": "Es beginnt bei deiner Aufgabe, durchsucht das Repository und liest die Dateien, die zählen. Eine genannte Datei oder ein Test verengt die Suche; ein breites Ziel gibt ihm mehr Raum zum Untersuchen. Jede Suche und jedes Lesen ist sichtbar, während es arbeitet, sodass du früh eingreifen kannst.",
+        "5c67df52a05e": "<strong>Kann ich es in einem Monorepo verwenden?</strong>",
+        "88b489ba454f": "Ja. Starte iCode Agent in dem Paket, das du ändern willst, oder übergib <code>--cwd</code> für dieses Paket. Beschränke den Testbefehl auf dasselbe Paket, damit der Agent das Richtige verifiziert, und halte gemeinsame Anweisungen im Repository-Root.",
+        "64c7f8879bb0": "<strong>Was passiert, wenn ein Befehl eine Freigabe braucht?</strong>",
+        "fbbbb486edf6": "Interaktive Läufe fragen vor Befehlen, die eine Berechtigung brauchen, und die Aufgabe wartet auf deine Antwort. Gib den konkreten Befehl frei oder lenke den Agenten auf einen sichereren Weg. Lass einen Lauf nicht unbeaufsichtigt warten, wenn er eine Entscheidung braucht.",
+        "c47867e1812b": "<strong>Wie prüfe ich, was geändert wurde?</strong>",
+        "367dc5cd56a9": "Lies den Diff vor der Zusammenfassung. Prüfe die Dateien, die zur Aufgabe gehörten, und die Dateien, die er trotzdem angefasst hat, führe den Verifikationsbefehl selbst aus und lehne alles außerhalb des Rahmens ab oder lenke es um. Die vollständige Checkliste steht im <a href=\"/blog/agent-review-workflow/\">Review-Gate</a>.",
+        "dd148ed5c764": "<strong>Kann ich mehr als eine Agent-Sitzung im selben Repository ausführen?</strong>",
+        "fcbe0858acef": "Nutze einen eigenen Git-Worktree pro Sitzung. Zwei Agenten in einem Checkout kollidieren. Die <a href=\"/guides/parallel-agents/\">Parallel-Agenten-Anleitung</a> behandelt Worktrees, Aufgabenabgrenzung und Merge-Reihenfolge; Workbench automatisiert dasselbe Modell für eine Flotte.",
+        "a1d883f68925": "<strong>Was gehört in AGENTS.md?</strong>",
+        "d18d51b4298f": "Den Testbefehl, die wichtigen Konventionen, die Pfade, die der Agent nicht anfassen soll, und was „fertig“ für dieses Repository bedeutet. Halte es kurz und konkret; es wird bei jedem Lauf gelesen. Wenn eine Regel wichtig ist, formuliere sie als Regel, nicht als Präferenz. Paketspezifische Anweisungen gehören ins Paket; gemeinsame Regeln an den Repository-Root. Eine kurze Datei bleibt außerdem leichter aktuell."
       },
       "meta": {
         "description": "Antworten zur Installation von iCode Agent, zur Modellwahl, zu seinen Fähigkeiten, zum Umgang mit deinem Code und zu den Kosten.",
@@ -348,7 +360,20 @@
         "d208fde745ff": "Was passiert",
         "f441d1f8c7d9": "Drücke Esc zum Abbrechen oder Alt+Enter, um eine Folgenachricht einzureihen.",
         "f76f7489ecbc": "<strong>Verifizieren.</strong> Er führt die Tests erneut aus und meldet das Ergebnis. Wenn sie weiterhin fehlschlagen, macht er weiter.",
-        "f911ed31f99b": "<strong>Reproduzieren.</strong> Er führt deinen Testbefehl aus und liest den tatsächlichen Fehlschlag."
+        "f911ed31f99b": "<strong>Reproduzieren.</strong> Er führt deinen Testbefehl aus und liest den tatsächlichen Fehlschlag.",
+        "2c445dd5994f": "Bevor du beginnst",
+        "816fbc36045f": "Starte von einem sauberen Worktree, kenne den genauen Testbefehl und notiere, ob der Fehler deterministisch ist. Wenn der Test flaky ist, führe ihn zweimal aus, bevor du den Agenten um eine Korrektur bittest. Eine Korrektur für einen flaky Test ist eine Vermutung, bis du weißt, dass der Fehler stabil ist.",
+        "111c827f51d8": "Wenn die Korrektur falsch ist",
+        "0c1765b6340a": "Achte auf drei Abkürzungen: den Test an den Code anpassen, eine Assertion abschwächen oder das Symptom ohne die Ursache beheben. Wenn der Diff sowohl den Test als auch den Produktionscode berührt, frage, welche Änderung die Korrektur und welche die Anpassung ist. Eine grüne Suite ist kein Beweis, wenn der Test geändert wurde, damit er besteht.",
+        "92a77140e532": "Wenn der Agent die Ursache nicht in ein oder zwei Sätzen erklären kann, stoppe und frage nach den Belegen: die fehlschlagende Ausgabe, die Zeile, die sie verursacht hat, und warum die Änderung diese Zeile adressiert. Eine plausible Geschichte ist keine Diagnose.",
+        "2dfe1873ccb8": "Was zu verifizieren ist",
+        "faf966ae6625": "Bevor du die Änderung akzeptierst: Der Test ist vor der Korrektur fehlgeschlagen, derselbe Test besteht danach, die Assertion wurde nicht abgeschwächt, der Diff ist auf den fehlerhaften Pfad begrenzt und keine unabhängigen Dateien wurden geändert. Führe den Befehl selbst aus. Wenn die Suite langsam ist, führe zuerst die fehlschlagende Datei aus, dann die vollständige Suite vor dem Commit.",
+        "fde1fd668096": "Ein Fehlermodus: der flaky Test",
+        "9a1ddc420750": "Manchmal ist der Fehler umgebungsbedingt: Reihenfolgeabhängigkeit, ein geteiltes Fixture, eine Timing-Annahme. Bitte den Agenten, ihn zweimal zu reproduzieren und zu berichten, ob der Fehler stabil ist. Wenn nicht, repariere zuerst die Testisolierung, dann den Code. Sonst besteht die Korrektur einmal und scheitert in CI erneut.",
+        "ba31f84e5532": "Ein ausgearbeitetes Beispiel",
+        "280904c5d626": "Nimm einen Fehler in <code>tests/report/builder.test.ts</code>. Der Agent sollte zuerst diese Datei ausführen, <code>builder.ts</code> und den Test lesen und den Zweig identifizieren, der die falsche Ausgabe erzeugt. Eine gute Korrektur ändert den Produktionszweig, nicht den erwarteten Wert im Test. Nach der Änderung führt er die Datei und dann die vollständige Suite aus und berichtet beide Ergebnisse. Frage ihn dann, warum der Zweig falsch war und welche Eingabe ihn auslöst.",
+        "6004f2ece9c0": "Wenn er den erwarteten Wert geändert hat, stoppe: Der Test war die Spezifikation, und die Korrektur hat gerade die Spezifikation umgeschrieben. Wenn er einen geteilten Formatter geändert hat, den andere Tests nutzen, führe diese Tests ebenfalls aus; die Korrektur kann für diesen Fall richtig und für einen anderen falsch sein. Ein zweiter Lauf ist keine Paranoia. Führe die fehlschlagende Datei aus, dann die Suite, dann die Datei erneut. Wenn sich das Ergebnis ändert, ist die Testisolierung Teil des Problems.",
+        "580fae8e2994": "Der Punkt des Beispiels ist die Reihenfolge: reproduzieren, lesen, den kleinsten Produktionszweig ändern, auf zwei Ebenen verifizieren. Der Agent kann alle vier; deine Aufgabe ist zu prüfen, dass er die erste oder die letzte nicht übersprungen hat."
       },
       "meta": {
         "description": "Ein Schritt-für-Schritt-Workflow mit iCode Agent: Testfehler reproduzieren, Code lesen, reparieren und die Korrektur verifizieren — mit passenden Prompts.",

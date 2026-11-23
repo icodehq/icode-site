@@ -82,6 +82,88 @@ Make the failing test pass without changing the test itself.</pre></div>
 
   <section class="section">
     <div class="container">
+      <h2>Before you start</h2>
+      <p>
+        Start from a clean worktree, know the exact test command, and note whether
+        the failure is deterministic. If the test is flaky, run it twice before
+        asking the agent to fix anything. A fix for a flaky test is a guess until
+        you know the failure is stable.
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2>When the fix is wrong</h2>
+      <p>
+        Watch for three shortcuts: changing the test to match the code, weakening
+        an assertion, or fixing the symptom without the cause. If the diff touches
+        both the test and the production code, ask which change is the fix and
+        which is the accommodation. A passing suite is not proof if the test was
+        changed to pass.
+      </p>
+      <p>
+        If the agent cannot explain the root cause in one or two sentences, stop
+        and ask for the evidence: the failing output, the line that caused it, and
+        why the change addresses that line. A plausible story is not a diagnosis.
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2>A worked example</h2>
+      <p>
+        Take a failure in <code>tests/report/builder.test.ts</code>. The agent
+        should run that file first, read <code>builder.ts</code> and the test, and
+        identify the branch that produces the wrong output. A good fix changes the
+        production branch, not the expected value in the test. After the edit, it
+        runs the file, then the full suite, and reports both results. Then ask it
+        to explain why the branch was wrong and what input triggers it.
+      </p>
+      <p>
+        If it changed the expected value, stop: the test was the specification,
+        and the fix just rewrote the specification. If it changed a shared
+        formatter used by other tests, run those tests too; the fix may be correct
+        for this case and wrong for another. A second run is not paranoia. Run the
+        failing file, then the suite, then the file again. If the result changes,
+        test isolation is part of the problem.
+      </p>
+      <p>
+        The point of the example is the order: reproduce, read, change the
+        smallest production branch, verify at two levels. The agent can do all
+        four; your job is to check that it did not skip the first or the last.
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2>What to verify</h2>
+      <p>
+        Before you accept the change: the test failed before the fix, the same
+        test passes after, the assertion was not weakened, the diff is limited to
+        the failing path, and no unrelated files changed. Run the command
+        yourself. If the suite is slow, run the failing file first, then the full
+        suite before you commit.
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2>A failure mode: the flaky test</h2>
+      <p>
+        Sometimes the failure is environmental: order dependence, a shared
+        fixture, a timing assumption. Ask the agent to reproduce it twice and
+        report whether the failure is stable. If it is not, fix the test isolation
+        before the code. Otherwise the fix will pass once and fail again in CI.
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
       <div class="actions">
         <a class="button button-primary" href="../">All guides</a>
         <a class="button" href="../../first-investigation/">Your first task</a>
