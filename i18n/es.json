@@ -331,7 +331,17 @@
         "cd43faec84da": "Añade <code>--mode json</code> para transmitir cada evento de ejecución como una línea JSON, seguida de una línea de resultado final. Este es el modo para herramientas: obtienes el progreso del agente como datos, no como salida de terminal.",
         "dce2428786cb": "Modo de impresión",
         "de84b0001968": "El flujo incluye eventos como:",
-        "f8a08ca7d662": "<code>tool_call</code> y <code>tool_result</code>: cada herramienta que usó el agente y lo que devolvió."
+        "f8a08ca7d662": "<code>tool_call</code> y <code>tool_result</code>: cada herramienta que usó el agente y lo que devolvió.",
+        "2bad1feed9a7": "Antes de automatizar",
+        "ad078d0843e2": "Decide qué significa el éxito antes de la primera ejecución: una suite en verde, un archivo concreto, un resultado JSON o un exit distinto de cero. Preaprueba los comandos que necesita el job, fija el modelo y la configuración, y establece un timeout y un presupuesto. Un agente en CI sin condición de éxito es un paseo aleatorio muy caro.",
+        "7e129e0a6410": "Modos de fallo",
+        "ff5bdae3f8d9": "El primer fallo es la no determinación: el agente toma un camino distinto en cada ejecución, así que el job es inestable. Fija el modelo, el prompt y la configuración. El segundo es una ejecución sin límites: sin timeout y sin presupuesto de tokens. El tercero son los secretos: un agente que puede leer el entorno puede filtrarlo en logs o en un diff.",
+        "76bdd1dc187c": "El cuarto es que el agente edite tests para que CI pase. Trata los cambios de tests como salida revisable, no como éxito automático. El quinto es el coste: un bucle de reintentos o una tarea amplia puede gastar más de lo que vale el job. Ponle un límite.",
+        "2dfe1873ccb8": "Qué verificar",
+        "8e5784a94701": "Antes de confiar en el job: el código de salida coincide con el resultado, el stream JSON tiene un resultado final, el diff o artefacto está disponible para revisión, los logs no contienen secretos, y la ejecución tiene timeout y presupuesto. Ejecuta el job una vez con un fallo conocido y confirma que falla; un paso de CI que solo pasa no está verificado.",
+        "ba31f84e5532": "Un ejemplo práctico",
+        "3d4499ceff44": "Un script que pide al agente ejecutar la suite y corregir fallos debería capturar primero la línea base: el comando, la salida del fallo y un timeout. Después de la ejecución, debería comprobar el código de salida, conservar el stream JSON como artefacto y fallar el job si el resultado final no es un pase. Si el agente cambió un test, el job debería mostrar el diff en lugar de tratarlo como éxito.",
+        "9aef6471f9fc": "El mismo patrón sirve para una tarea de docs o lint: define el comando, la condición de éxito y el artefacto antes de la primera ejecución. El agente es el trabajador; el job es el contrato."
       },
       "meta": {
         "description": "Ejecuta iCode Agent sin interacción: imprime la respuesta con -p, transmite eventos como líneas JSON con --mode json y continúa sesiones en CI.",
@@ -401,7 +411,16 @@
         "a1e9187cce71": "La tarea",
         "d208fde745ff": "Qué ocurre",
         "da062d9e6864": "Aquí es donde se obtiene el valor: el agente propone, tú decides. Un buen prompt para una refactorización pide un razonamiento que puedas comprobar, no solo un resultado:",
-        "f34a4944d5dd": "Nada se reescribe por completo: <code>edit</code> cambia un tramo concreto y <code>write</code> solo se usa para archivos realmente nuevos. El diff siempre está visible antes de que lo aceptes."
+        "f34a4944d5dd": "Nada se reescribe por completo: <code>edit</code> cambia un tramo concreto y <code>write</code> solo se usa para archivos realmente nuevos. El diff siempre está visible antes de que lo aceptes.",
+        "2c445dd5994f": "Antes de empezar",
+        "802d435850d1": "Empieza desde un worktree limpio con una suite de tests en verde. Si los tests ya fallan, corrige o registra esos fallos primero; de lo contrario no podrás distinguir tu refactor de la línea base. Anota la superficie pública que no debe cambiar: funciones exportadas, tipos, rutas, flags de CLI. Un refactor que cambia el comportamiento es un cambio de feature vestido de refactor.",
+        "f28fff6fe7bb": "Qué significa “hecho”",
+        "10194c2780dc": "Hecho significa que el comportamiento no cambió, cada consumidor está actualizado, los tests pasan y el diff es lo bastante mecánico para revisarlo. El cambio debería ser sobre todo movimientos, renombrados y extracción, no lógica nueva. Si el diff añade una feature, detente y sepáralo. Quien revisa debería poder explicar el cambio en una frase sin leer todo el archivo.",
+        "7e129e0a6410": "Modos de fallo",
+        "890d989bc808": "El fallo más común es mezclar un refactor con una feature. El agente ve una mejora cercana y la toma; el diff ahora cambia comportamiento y forma a la vez. Pide solo el refactor y pon la feature en una tarea separada. El segundo fallo es cambiar una API pública sin revisar a los consumidores. Un refactor que actualiza el módulo pero no a sus llamadores no está hecho.",
+        "cd173969f332": "El tercero es debilitar tests para que pase la nueva forma. Si el test cambió, pregunta si cambió el comportamiento. El cuarto es una reescritura amplia: un diff que toca todos los archivos es difícil de revisar y fácil de equivocar. Prefiere pasos pequeños con la suite en verde entre ellos.",
+        "2dfe1873ccb8": "Qué verificar",
+        "1cd256b772a7": "Antes de aceptar: la suite pasaba antes y pasa después; la superficie pública no cambió o el cambio es intencional; cada llamador está actualizado; el diff contiene movimientos y renombrados en lugar de lógica nueva; no cambiaron archivos no relacionados; y los tests siguen afirmando el mismo comportamiento. Ejecuta la suite tú mismo y lee el diff en el orden en que se hizo el cambio."
       },
       "meta": {
         "description": "Un flujo paso a paso con iCode Agent: mapea los llamadores de un módulo, refactoriza con diffs revisados y verifica que nada se rompió.",
@@ -428,7 +447,17 @@
         "d66c3ba1f1ea": "<strong>Sigue la evidencia.</strong> Rastrea desde el síntoma hacia la causa: el código que llama, los datos, el estado. Un fallo es información, y sigue tirando del hilo.",
         "f0f70fcdd408": "Esa última línea importa: una buena caza de errores pregunta si esto es una instancia de un patrón y no un caso aislado.",
         "f2a72d24e48e": "Un parche que hace desaparecer un síntoma no es lo mismo que un error corregido. Pide el razonamiento y pregunta si se atiende la causa:",
-        "fb312f33c373": "La parte difícil de un error suele no ser la corrección, sino encontrar la causa. iCode Agent sigue la evidencia por el código y te dice qué encontró, en lugar de adivinar un parche."
+        "fb312f33c373": "La parte difícil de un error suele no ser la corrección, sino encontrar la causa. iCode Agent sigue la evidencia por el código y te dice qué encontró, en lugar de adivinar un parche.",
+        "464e5a0f4c08": "Una reproducción es el primer entregable",
+        "326d1b488574": "Antes de un arreglo, consigue una reproducción: un test que falla, un comando con entrada exacta o una secuencia de pasos. La reproducción es la especificación del arreglo. Si el agente no puede reproducirlo, no aceptes un parche; pídele que construya primero la reproducción, o aporta el entorno y la entrada que disparan el bug. Un bug que no puedes activar es un bug que no puedes confirmar como arreglado.",
+        "7e129e0a6410": "Modos de fallo",
+        "6f50c2bf4976": "Vigila el arreglo del síntoma: el error desaparece, pero la causa sigue ahí. Vigila cambios especulativos que tocan varios archivos sin una historia causal. Vigila una dependencia del entorno — una versión, una configuración, una carrera — que el agente tapa con un reintento o una comprobación de null.",
+        "108ec71aa136": "Vigila también el test de regresión ausente. Un arreglo sin un test que falla antes y pasa después volverá a regresar. Si el bug es una instancia de un patrón, pregunta dónde más puede ocurrir; el mismo error suele aparecer en rutas de código hermanas.",
+        "2dfe1873ccb8": "Qué verificar",
+        "cc81551775d5": "Antes de aceptar: la reproducción falla antes del cambio y pasa después; un test de regresión cubre la causa, no solo el síntoma; la causa raíz se explica en una o dos frases; el diff se limita a la causa; y no cambió comportamiento no relacionado. Ejecuta la reproducción tú mismo, luego la suite más amplia.",
+        "ba31f84e5532": "Un ejemplo práctico",
+        "43d961a410a2": "Supón que un nombre duplicado sobrescribe el original. Una buena reproducción es un test que crea un registro, guarda un segundo con el mismo nombre y comprueba que el primero sigue existiendo. El agente debería ejecutarlo, leer el camino de conflicto e identificar dónde el segundo guardado sobrescribe el primero en lugar de devolver un error. El arreglo pertenece a esa rama, no a la UI. Después del arreglo, la reproducción pasa, y un test de regresión la mantiene así.",
+        "717d2713b047": "El ejemplo importa porque la reproducción nombra el comportamiento. Un test que solo afirma “sin error” pasaría aunque el segundo registro sobrescribiera el primero. La aserción es la especificación; hazla específica. Si el agente propone una comprobación de null cerca del botón de guardar, pregunta cómo aborda la sobrescritura."
       },
       "meta": {
         "description": "Un flujo paso a paso con iCode Agent: reproduce un bug, sigue la evidencia hasta la causa, corrígelo y verifica la solución.",

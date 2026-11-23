@@ -93,6 +93,65 @@ Explain what this module does, then suggest a refactor — but make no edits yet
 
   <section class="section">
     <div class="container">
+      <h2>Before you start</h2>
+      <p>
+        Start from a clean worktree with a passing test suite. If the tests are
+        already failing, fix or record those failures first; otherwise you cannot
+        tell your refactor from the baseline. Write down the public surface that
+        must not change: exported functions, types, routes, CLI flags. A refactor
+        that changes behavior is a feature change wearing a refactor's clothes.
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2>What "done" means</h2>
+      <p>
+        Done means the behavior is unchanged, every caller is updated, the tests
+        pass, and the diff is mechanical enough to review. The change should be
+        mostly moves, renames, and extraction — not new logic. If the diff adds a
+        feature, stop and split it. The reviewer should be able to explain the
+        change in one sentence without reading the whole file.
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2>Failure modes</h2>
+      <p>
+        The most common failure is mixing a refactor with a feature. The agent
+        sees a nearby improvement and takes it; the diff now changes behavior and
+        shape at once. Ask for the refactor only, and put the feature in a
+        separate task. The second failure is changing a public API without
+        checking consumers. A refactor that updates the module but not its callers
+        is not done.
+      </p>
+      <p>
+        The third is weakening tests to make the new shape pass. If the test
+        changed, ask whether the behavior changed. The fourth is a broad rewrite:
+        a diff that touches every file is hard to review and easy to get wrong.
+        Prefer small steps with a green suite between them.
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2>What to verify</h2>
+      <p>
+        Before you accept: the suite passed before and passes after; the public
+        surface is unchanged or the change is intentional; every caller is
+        updated; the diff contains moves and renames rather than new logic; no
+        unrelated files changed; and the tests still assert the same behavior. Run
+        the suite yourself, and read the diff in the order the change was made.
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
       <div class="actions">
         <a class="button button-primary" href="../">All guides</a>
         <a class="button" href="../fix-a-failing-test/">Fix a failing test</a>

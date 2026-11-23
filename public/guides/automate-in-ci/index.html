@@ -120,6 +120,69 @@ fi</pre></div>
 
   <section class="section">
     <div class="container">
+      <h2>Before you automate</h2>
+      <p>
+        Decide what success means before the first run: a passing suite, a
+        specific file, a JSON result, or a nonzero exit. Pre-approve the commands
+        the job needs, pin the model and config, and set a timeout and a budget.
+        An agent in CI without a success condition is a very expensive random
+        walk.
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2>Failure modes</h2>
+      <p>
+        The first failure is non-determinism: the agent takes a different path
+        each run, so the job is flaky. Pin the model, the prompt, and the config.
+        The second is an unbounded run: no timeout and no token budget. The third
+        is secrets — an agent that can read the environment can leak it into logs
+        or a diff.
+      </p>
+      <p>
+        The fourth is the agent editing tests to make CI pass. Treat test changes
+        as reviewable output, not automatic success. The fifth is cost: a retry
+        loop or a broad task can spend more than the job is worth. Cap it.
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2>What to verify</h2>
+      <p>
+        Before you trust the job: the exit code matches the outcome, the JSON
+        stream has a final result, the diff or artifact is available for review,
+        the logs contain no secrets, and the run has a timeout and a budget. Run
+        the job once with a known failure and confirm it fails; a CI step that
+        only passes is not verified.
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2>A worked example</h2>
+      <p>
+        A script that asks the agent to run the suite and fix failures should
+        first capture the baseline: the command, the failing output, and a
+        timeout. After the run, it should check the exit code, keep the JSON
+        stream as an artifact, and fail the job if the final result is not a
+        pass. If the agent changed a test, the job should surface the diff rather
+        than treating it as success.
+      </p>
+      <p>
+        The same pattern works for a docs or lint task: define the command, the
+        success condition, and the artifact before the first run. The agent is
+        the worker; the job is the contract.
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
       <div class="actions">
         <a class="button button-primary" href="../">All guides</a>
         <a class="button" href="../../get-started/">Get started</a>

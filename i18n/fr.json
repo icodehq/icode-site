@@ -331,7 +331,17 @@
         "cd43faec84da": "Ajoutez <code>--mode json</code> pour diffuser chaque événement d’exécution sous forme de ligne JSON, suivie d’une ligne de résultat finale. C’est le mode pour l’outillage : vous obtenez la progression de l’agent sous forme de données, et non de sortie terminal.",
         "dce2428786cb": "Mode impression",
         "de84b0001968": "Le flux comprend des événements tels que :",
-        "f8a08ca7d662": "<code>tool_call</code> et <code>tool_result</code> — chaque outil utilisé par l’agent et ce qu’il a renvoyé."
+        "f8a08ca7d662": "<code>tool_call</code> et <code>tool_result</code> — chaque outil utilisé par l’agent et ce qu’il a renvoyé.",
+        "2bad1feed9a7": "Avant d’automatiser",
+        "ad078d0843e2": "Décidez ce que signifie le succès avant le premier run : une suite au vert, un fichier précis, un résultat JSON ou un exit non nul. Pré-approuvez les commandes dont le job a besoin, épinglez le modèle et la configuration, et fixez un timeout et un budget. Un agent en CI sans condition de succès est une promenade aléatoire très coûteuse.",
+        "7e129e0a6410": "Modes d’échec",
+        "ff5bdae3f8d9": "Le premier échec est le non-déterminisme : l’agent prend un chemin différent à chaque run, donc le job est instable. Épinglez le modèle, le prompt et la configuration. Le deuxième est un run sans limite : pas de timeout ni de budget de tokens. Le troisième, ce sont les secrets — un agent qui peut lire l’environnement peut le fuiter dans les logs ou un diff.",
+        "76bdd1dc187c": "Le quatrième est que l’agent modifie les tests pour faire passer la CI. Traitez les changements de tests comme une sortie à relire, pas comme un succès automatique. Le cinquième est le coût : une boucle de retry ou une tâche large peut dépenser plus que le job ne vaut. Plafonnez-le.",
+        "2dfe1873ccb8": "Ce qu’il faut vérifier",
+        "8e5784a94701": "Avant de faire confiance au job : le code de sortie correspond au résultat, le flux JSON a un résultat final, le diff ou l’artefact est disponible pour relecture, les logs ne contiennent pas de secrets, et le run a un timeout et un budget. Lancez le job une fois avec un échec connu et confirmez qu’il échoue ; une étape CI qui ne fait que passer n’est pas vérifiée.",
+        "ba31f84e5532": "Un exemple concret",
+        "3d4499ceff44": "Un script qui demande à l’agent d’exécuter la suite et de corriger les échecs doit d’abord capturer la ligne de base : la commande, la sortie de l’échec et un timeout. Après le run, il doit vérifier le code de sortie, conserver le flux JSON comme artefact et faire échouer le job si le résultat final n’est pas un succès. Si l’agent a modifié un test, le job doit exposer le diff au lieu de le traiter comme un succès.",
+        "9aef6471f9fc": "Le même schéma fonctionne pour une tâche de docs ou de lint : définissez la commande, la condition de succès et l’artefact avant le premier run. L’agent est l’exécutant ; le job est le contrat."
       },
       "meta": {
         "description": "Exécutez iCode Agent sans interaction : réponse finale avec -p, événements en lignes JSON avec --mode json et reprise de sessions en CI.",
@@ -401,7 +411,16 @@
         "a1e9187cce71": "La tâche",
         "d208fde745ff": "Ce qui se passe",
         "da062d9e6864": "C’est là que vous tirez la valeur : l’agent propose, vous décidez. Un bon prompt pour un refactor demande un raisonnement vérifiable, pas seulement un résultat :",
-        "f34a4944d5dd": "Rien n’est réécrit en bloc : <code>edit</code> modifie un segment ciblé et <code>write</code> ne sert qu’aux fichiers réellement nouveaux. Le diff est toujours visible avant que vous l’acceptiez."
+        "f34a4944d5dd": "Rien n’est réécrit en bloc : <code>edit</code> modifie un segment ciblé et <code>write</code> ne sert qu’aux fichiers réellement nouveaux. Le diff est toujours visible avant que vous l’acceptiez.",
+        "2c445dd5994f": "Avant de commencer",
+        "802d435850d1": "Partez d’un worktree propre avec une suite de tests au vert. Si les tests échouent déjà, corrigez ou consignez ces échecs d’abord ; sinon vous ne pourrez pas distinguer votre refactoring de la ligne de base. Notez la surface publique qui ne doit pas changer : fonctions exportées, types, routes, flags CLI. Un refactoring qui change le comportement est un changement de fonctionnalité déguisé en refactoring.",
+        "f28fff6fe7bb": "Ce que « terminé » signifie",
+        "10194c2780dc": "Terminé signifie que le comportement est inchangé, que chaque appelant est mis à jour, que les tests passent et que le diff est assez mécanique pour être relu. Le changement doit surtout être des déplacements, des renommages et des extractions — pas de la nouvelle logique. Si le diff ajoute une fonctionnalité, arrêtez et séparez-la. La personne qui révise doit pouvoir expliquer le changement en une phrase sans lire tout le fichier.",
+        "7e129e0a6410": "Modes d’échec",
+        "890d989bc808": "L’échec le plus courant est de mélanger un refactoring avec une fonctionnalité. L’agent voit une amélioration proche et la prend ; le diff change désormais le comportement et la forme à la fois. Demandez uniquement le refactoring et mettez la fonctionnalité dans une tâche séparée. Le deuxième échec est de modifier une API publique sans vérifier les consommateurs. Un refactoring qui met à jour le module mais pas ses appelants n’est pas terminé.",
+        "cd173969f332": "Le troisième est d’affaiblir les tests pour faire passer la nouvelle forme. Si le test a changé, demandez si le comportement a changé. Le quatrième est une réécriture large : un diff qui touche tous les fichiers est difficile à relire et facile à rater. Préférez de petits pas avec une suite au vert entre eux.",
+        "2dfe1873ccb8": "Ce qu’il faut vérifier",
+        "1cd256b772a7": "Avant d’accepter : la suite passait avant et passe après ; la surface publique est inchangée ou le changement est intentionnel ; chaque appelant est mis à jour ; le diff contient des déplacements et des renommages plutôt que de la nouvelle logique ; aucun fichier sans rapport n’a changé ; et les tests affirment toujours le même comportement. Exécutez la suite vous-même et lisez le diff dans l’ordre où le changement a été fait."
       },
       "meta": {
         "description": "Un workflow iCode Agent pas à pas : cartographier les appelants d'un module, refactoriser avec des diffs relus et vérifier que rien n'est cassé.",
@@ -428,7 +447,17 @@
         "d66c3ba1f1ea": "<strong>Suivre les indices.</strong> Il remonte du symptôme vers la cause : le code appelant, les données, l’état. Un échec est une information, et il continue de tirer le fil.",
         "f0f70fcdd408": "Cette dernière ligne compte : une bonne chasse au bug demande si le bug est un cas particulier d’un schéma plus général, et non un incident isolé.",
         "f2a72d24e48e": "Un correctif qui fait disparaître un symptôme n’est pas un bug corrigé. Demandez le raisonnement, et si la cause est traitée :",
-        "fb312f33c373": "La partie difficile d’un bug n’est généralement pas la correction — c’est de trouver la cause. iCode Agent suit les indices dans le code et vous dit ce qu’il a trouvé, au lieu de deviner un correctif."
+        "fb312f33c373": "La partie difficile d’un bug n’est généralement pas la correction — c’est de trouver la cause. iCode Agent suit les indices dans le code et vous dit ce qu’il a trouvé, au lieu de deviner un correctif.",
+        "464e5a0f4c08": "Une reproduction est le premier livrable",
+        "326d1b488574": "Avant une correction, obtenez une reproduction : un test en échec, une commande avec l’entrée exacte, ou une séquence d’étapes. La reproduction est la spécification de la correction. Si l’agent ne peut pas la reproduire, n’acceptez pas de patch ; demandez-lui de construire d’abord la reproduction, ou fournissez l’environnement et l’entrée qui déclenchent le bug. Un bug que vous ne pouvez pas déclencher est un bug dont vous ne pouvez pas confirmer la correction.",
+        "7e129e0a6410": "Modes d’échec",
+        "6f50c2bf4976": "Surveillez la correction du symptôme : l’erreur disparaît, mais la cause est toujours là. Surveillez les changements spéculatifs qui touchent plusieurs fichiers sans histoire causale. Surveillez une dépendance à l’environnement — une version, une configuration, une course — que l’agent masque avec un retry ou une vérification de null.",
+        "108ec71aa136": "Surveillez aussi le test de régression manquant. Une correction sans test qui échoue avant et passe après régressera. Si le bug est une instance d’un motif, demandez où il peut se produire ailleurs ; la même erreur apparaît souvent dans des chemins de code voisins.",
+        "2dfe1873ccb8": "Ce qu’il faut vérifier",
+        "cc81551775d5": "Avant d’accepter : la reproduction échoue avant le changement et passe après ; un test de régression couvre la cause, pas seulement le symptôme ; la cause racine est expliquée en une ou deux phrases ; le diff se limite à la cause ; et aucun comportement sans rapport n’a changé. Exécutez la reproduction vous-même, puis la suite plus large.",
+        "ba31f84e5532": "Un exemple concret",
+        "43d961a410a2": "Supposons qu’un nom en double écrase l’original. Une bonne reproduction est un test qui crée un enregistrement, en sauvegarde un second avec le même nom et vérifie que le premier existe toujours. L’agent doit l’exécuter, lire le chemin de conflit et identifier où le second enregistrement écrase le premier au lieu de renvoyer une erreur. La correction appartient à cette branche, pas à l’UI. Après la correction, la reproduction passe, et un test de régression la maintient.",
+        "717d2713b047": "L’exemple compte parce que la reproduction nomme le comportement. Un test qui affirme seulement « pas d’erreur » passerait même si le second enregistrement écrasait le premier. L’assertion est la spécification ; rendez-la précise. Si l’agent propose une vérification de null près du bouton d’enregistrement, demandez comment cela traite l’écrasement."
       },
       "meta": {
         "description": "Un workflow iCode Agent pas à pas : reproduire un bug, suivre les indices jusqu'à la cause, corriger et vérifier la solution.",

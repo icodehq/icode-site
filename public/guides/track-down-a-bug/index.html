@@ -86,6 +86,73 @@ Show me every place this same bug could occur.</pre></div>
 
   <section class="section">
     <div class="container">
+      <h2>A reproduction is the first deliverable</h2>
+      <p>
+        Before a fix, get a reproduction: a failing test, a command with exact
+        input, or a sequence of steps. The reproduction is the specification for
+        the fix. If the agent cannot reproduce it, do not accept a patch; ask it
+        to build the reproduction first, or supply the environment and input that
+        trigger the bug. A bug you cannot trigger is a bug you cannot confirm you
+        fixed.
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2>Failure modes</h2>
+      <p>
+        Watch for a symptom fix: the error disappears, but the cause is still
+        there. Watch for speculative changes that touch several files without a
+        causal story. Watch for an environment dependency — a version, a config,
+        a race — that the agent papers over with a retry or a null check.
+      </p>
+      <p>
+        Also watch for the missing regression test. A fix without a test that
+        fails before and passes after will regress. If the bug is one instance of
+        a pattern, ask where else it can occur; the same mistake often appears in
+        sibling code paths.
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2>What to verify</h2>
+      <p>
+        Before you accept: the reproduction fails before the change and passes
+        after; a regression test covers the cause, not just the symptom; the root
+        cause is explained in one or two sentences; the diff is limited to the
+        cause; and no unrelated behavior changed. Run the reproduction yourself,
+        then the broader suite.
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2>A worked example</h2>
+      <p>
+        Suppose a duplicate name overwrites the original. A good reproduction is
+        a test that creates a record, saves a second record with the same name,
+        and asserts the first still exists. The agent should run it, read the
+        conflict path, and identify where the second save overwrites the first
+        instead of returning an error. The fix belongs at that branch, not in the
+        UI. After the fix, the reproduction passes, and a regression test keeps it
+        passing.
+      </p>
+      <p>
+        The example matters because the reproduction names the behavior. A test
+        that only asserts “no error” would pass even if the second record
+        overwrote the first. The assertion is the specification; make it specific.
+        If the agent proposes a null check near the save button, ask how that
+        addresses the overwrite.
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
       <div class="actions">
         <a class="button button-primary" href="../">All guides</a>
         <a class="button" href="../fix-a-failing-test/">Fix a failing test</a>

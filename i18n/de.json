@@ -331,7 +331,17 @@
         "cd43faec84da": "Füge <code>--mode json</code> hinzu, um jedes Laufereignis als JSON-Zeile zu streamen, gefolgt von einer abschließenden Ergebniszeile. Das ist der Modus für Tooling: Du erhältst den Fortschritt des Agenten als Daten, nicht als Terminalausgabe.",
         "dce2428786cb": "Print-Modus",
         "de84b0001968": "Der Stream enthält unter anderem Ereignisse wie:",
-        "f8a08ca7d662": "<code>tool_call</code> und <code>tool_result</code> — jedes vom Agenten verwendete Tool und was es zurückgegeben hat."
+        "f8a08ca7d662": "<code>tool_call</code> und <code>tool_result</code> — jedes vom Agenten verwendete Tool und was es zurückgegeben hat.",
+        "2bad1feed9a7": "Bevor du automatisierst",
+        "ad078d0843e2": "Entscheide vor dem ersten Lauf, was Erfolg bedeutet: eine grüne Suite, eine bestimmte Datei, ein JSON-Ergebnis oder ein Exit ungleich null. Gib die Befehle frei, die der Job braucht, pinne Modell und Konfiguration und setze ein Timeout und ein Budget. Ein Agent in CI ohne Erfolgsbedingung ist ein sehr teurer Irrläufer.",
+        "7e129e0a6410": "Fehlermodi",
+        "ff5bdae3f8d9": "Der erste Fehler ist Nichtdeterminismus: Der Agent nimmt bei jedem Lauf einen anderen Pfad, also ist der Job flaky. Pinne Modell, Prompt und Konfiguration. Der zweite ist ein unbegrenzter Lauf: kein Timeout und kein Token-Budget. Der dritte sind Secrets — ein Agent, der die Umgebung lesen kann, kann sie in Logs oder einen Diff leaken.",
+        "76bdd1dc187c": "Der vierte ist, dass der Agent Tests ändert, damit CI besteht. Behandle Teständerungen als prüfbare Ausgabe, nicht als automatischen Erfolg. Der fünfte sind Kosten: Eine Retry-Schleife oder eine breite Aufgabe kann mehr ausgeben, als der Job wert ist. Begrenze es.",
+        "2dfe1873ccb8": "Was zu verifizieren ist",
+        "8e5784a94701": "Bevor du dem Job vertraust: Der Exit-Code passt zum Ergebnis, der JSON-Stream hat ein Endergebnis, der Diff oder das Artefakt ist zur Prüfung verfügbar, die Logs enthalten keine Secrets, und der Lauf hat ein Timeout und ein Budget. Führe den Job einmal mit einem bekannten Fehler aus und bestätige, dass er fehlschlägt; ein CI-Schritt, der nur besteht, ist nicht verifiziert.",
+        "ba31f84e5532": "Ein ausgearbeitetes Beispiel",
+        "3d4499ceff44": "Ein Skript, das den Agenten bittet, die Suite auszuführen und Fehler zu beheben, sollte zuerst die Baseline erfassen: den Befehl, die fehlschlagende Ausgabe und ein Timeout. Nach dem Lauf sollte es den Exit-Code prüfen, den JSON-Stream als Artefakt behalten und den Job fehlschlagen lassen, wenn das Endergebnis kein Pass ist. Wenn der Agent einen Test geändert hat, sollte der Job den Diff zeigen, statt ihn als Erfolg zu behandeln.",
+        "9aef6471f9fc": "Dasselbe Muster funktioniert für eine Docs- oder Lint-Aufgabe: Definiere den Befehl, die Erfolgsbedingung und das Artefakt vor dem ersten Lauf. Der Agent ist der Arbeiter; der Job ist der Vertrag."
       },
       "meta": {
         "description": "iCode Agent nicht interaktiv ausführen: mit -p die Antwort ausgeben, mit --mode json Ereignisse als JSON-Zeilen streamen und Sitzungen in CI fortsetzen.",
@@ -401,7 +411,16 @@
         "a1e9187cce71": "Die Aufgabe",
         "d208fde745ff": "Was passiert",
         "da062d9e6864": "Hier entsteht der Wert: Der Agent schlägt vor, du entscheidest. Ein guter Prompt für ein Refactoring fragt nach nachvollziehbarer Begründung, nicht nur nach einem Ergebnis:",
-        "f34a4944d5dd": "Nichts wird komplett neu geschrieben: <code>edit</code> ändert einen Zielabschnitt, und <code>write</code> wird nur für wirklich neue Dateien verwendet. Der Diff ist immer sichtbar, bevor du ihn annimmst."
+        "f34a4944d5dd": "Nichts wird komplett neu geschrieben: <code>edit</code> ändert einen Zielabschnitt, und <code>write</code> wird nur für wirklich neue Dateien verwendet. Der Diff ist immer sichtbar, bevor du ihn annimmst.",
+        "2c445dd5994f": "Bevor du beginnst",
+        "802d435850d1": "Starte von einem sauberen Worktree mit einer grünen Testsuite. Wenn die Tests bereits fehlschlagen, behebe oder dokumentiere diese Fehler zuerst; sonst kannst du dein Refactoring nicht von der Baseline unterscheiden. Schreibe die öffentliche Oberfläche auf, die sich nicht ändern darf: exportierte Funktionen, Typen, Routen, CLI-Flags. Ein Refactoring, das Verhalten ändert, ist eine Feature-Änderung im Refactoring-Gewand.",
+        "f28fff6fe7bb": "Was „fertig“ bedeutet",
+        "10194c2780dc": "Fertig bedeutet: Das Verhalten ist unverändert, jeder Aufrufer ist aktualisiert, die Tests bestehen, und der Diff ist mechanisch genug zum Prüfen. Die Änderung sollte überwiegend aus Verschieben, Umbenennen und Extrahieren bestehen — nicht aus neuer Logik. Wenn der Diff ein Feature hinzufügt, stoppe und teile ihn. Der Reviewer sollte die Änderung in einem Satz erklären können, ohne die ganze Datei zu lesen.",
+        "7e129e0a6410": "Fehlermodi",
+        "890d989bc808": "Der häufigste Fehler ist, ein Refactoring mit einem Feature zu mischen. Der Agent sieht eine nahe Verbesserung und nimmt sie mit; der Diff ändert jetzt Verhalten und Form gleichzeitig. Verlange nur das Refactoring und lege das Feature in eine separate Aufgabe. Der zweite Fehler ist, eine öffentliche API zu ändern, ohne die Konsumenten zu prüfen. Ein Refactoring, das das Modul, aber nicht seine Aufrufer aktualisiert, ist nicht fertig.",
+        "cd173969f332": "Der dritte ist, Tests abzuschwächen, damit die neue Form besteht. Wenn sich der Test geändert hat, frage, ob sich das Verhalten geändert hat. Der vierte ist ein breiter Rewrite: Ein Diff, der jede Datei berührt, ist schwer zu prüfen und leicht falsch. Bevorzuge kleine Schritte mit einer grünen Suite dazwischen.",
+        "2dfe1873ccb8": "Was zu verifizieren ist",
+        "1cd256b772a7": "Bevor du akzeptierst: Die Suite bestand vorher und besteht nachher; die öffentliche Oberfläche ist unverändert oder die Änderung ist beabsichtigt; jeder Aufrufer ist aktualisiert; der Diff enthält Verschiebungen und Umbenennungen statt neuer Logik; keine unabhängigen Dateien wurden geändert; und die Tests prüfen weiterhin dasselbe Verhalten. Führe die Suite selbst aus und lies den Diff in der Reihenfolge der Änderung."
       },
       "meta": {
         "description": "Ein Schritt-für-Schritt-Workflow mit iCode Agent: Aufrufer eines Moduls abbilden, gezielt refaktorieren und prüfen, dass nichts bricht — mit passenden Prompts.",
@@ -428,7 +447,17 @@
         "d66c3ba1f1ea": "<strong>Den Belegen folgen.</strong> Er verfolgt das Symptom zurück zur Ursache: den aufrufenden Code, die Daten, den Zustand. Ein Fehlschlag ist Information, und er zieht den Faden weiter.",
         "f0f70fcdd408": "Die letzte Zeile zählt: Eine gute Fehlersuche fragt, ob dies ein Fall eines Musters ist und kein einmaliges Vorkommen.",
         "f2a72d24e48e": "Ein Patch, der ein Symptom verschwinden lässt, ist nicht dasselbe wie ein behobener Bug. Frag nach der Begründung und danach, ob die Ursache adressiert ist:",
-        "fb312f33c373": "Das Schwierige an einem Bug ist meist nicht die Korrektur — es ist das Finden der Ursache. iCode Agent folgt den Belegen durch den Code und sagt dir, was er gefunden hat, statt einen Patch zu raten."
+        "fb312f33c373": "Das Schwierige an einem Bug ist meist nicht die Korrektur — es ist das Finden der Ursache. iCode Agent folgt den Belegen durch den Code und sagt dir, was er gefunden hat, statt einen Patch zu raten.",
+        "464e5a0f4c08": "Eine Reproduktion ist das erste Ergebnis",
+        "326d1b488574": "Vor einer Korrektur brauchst du eine Reproduktion: einen fehlschlagenden Test, einen Befehl mit exakter Eingabe oder eine Schrittfolge. Die Reproduktion ist die Spezifikation für die Korrektur. Wenn der Agent sie nicht reproduzieren kann, akzeptiere keinen Patch; bitte ihn, zuerst die Reproduktion zu bauen, oder liefere Umgebung und Eingabe, die den Bug auslösen. Einen Bug, den du nicht auslösen kannst, kannst du nicht als behoben bestätigen.",
+        "7e129e0a6410": "Fehlermodi",
+        "6f50c2bf4976": "Achte auf eine Symptomkorrektur: Der Fehler verschwindet, aber die Ursache bleibt. Achte auf spekulative Änderungen, die mehrere Dateien ohne kausale Geschichte berühren. Achte auf eine Umgebungsabhängigkeit — eine Version, eine Konfiguration, ein Race —, die der Agent mit einem Retry oder einem Null-Check übertüncht.",
+        "108ec71aa136": "Achte auch auf den fehlenden Regressionstest. Eine Korrektur ohne einen Test, der vorher fehlschlägt und nachher besteht, wird wieder regressieren. Wenn der Bug ein Fall eines Musters ist, frage, wo er sonst auftreten kann; derselbe Fehler erscheint oft in benachbarten Codepfaden.",
+        "2dfe1873ccb8": "Was zu verifizieren ist",
+        "cc81551775d5": "Bevor du akzeptierst: Die Reproduktion schlägt vor der Änderung fehl und besteht danach; ein Regressionstest deckt die Ursache ab, nicht nur das Symptom; die Ursache ist in ein oder zwei Sätzen erklärt; der Diff ist auf die Ursache begrenzt; und kein unabhängiges Verhalten hat sich geändert. Führe die Reproduktion selbst aus, dann die breitere Suite.",
+        "ba31f84e5532": "Ein ausgearbeitetes Beispiel",
+        "43d961a410a2": "Angenommen, ein doppelter Name überschreibt das Original. Eine gute Reproduktion ist ein Test, der einen Datensatz erstellt, einen zweiten mit demselben Namen speichert und prüft, dass der erste noch existiert. Der Agent sollte ihn ausführen, den Konfliktpfad lesen und feststellen, wo der zweite Save den ersten überschreibt, statt einen Fehler zurückzugeben. Die Korrektur gehört an diesen Zweig, nicht in die UI. Nach der Korrektur besteht die Reproduktion, und ein Regressionstest hält sie grün.",
+        "717d2713b047": "Das Beispiel ist wichtig, weil die Reproduktion das Verhalten benennt. Ein Test, der nur „kein Fehler“ prüft, würde auch bestehen, wenn der zweite Datensatz den ersten überschreibt. Die Assertion ist die Spezifikation; mache sie konkret. Wenn der Agent einen Null-Check nahe dem Speichern-Button vorschlägt, frage, wie das die Überschreibung adressiert."
       },
       "meta": {
         "description": "Ein Schritt-für-Schritt-Workflow mit iCode Agent: einen Bug reproduzieren, den Belegen folgen, die Ursache beweisen und die Korrektur verifizieren.",
