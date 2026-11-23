@@ -102,6 +102,34 @@
 
   <section class="section">
     <div class="container">
+      <h2>A worked example: one task, two strategies</h2>
+      <p>
+        Take a refactor that touches six files in a report module. The task is
+        bounded, the tests are fast, and the reviewer will need to see the diff.
+      </p>
+      <p>
+        Strategy A is one long session. The agent reads the six files, runs the
+        suite, follows a stack trace, edits, and reads the result. The context
+        grows with every step. After enough turns the window compacts, and the
+        summary keeps the goal but loses the exact line, the failed approach, and
+        the reason the second attempt worked. The diff may still be correct. The
+        reviewer cannot tell from the session what was ruled out.
+      </p>
+      <p>
+        Strategy B is a bounded task with a handoff. The agent works in its own
+        worktree and, at a chosen point, writes a handoff note: the task, the
+        constraints, the files and lines, what was tried and ruled out, the
+        verification command, the review state, and the next step. A fresh session
+        reads the note and continues. The code can be identical to Strategy A. The
+        difference is that the second session starts with evidence, and the
+        reviewer can check the same fields. The handoff costs a few minutes; the
+        lost thread costs a review.
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
       <h2>Why this matters for cost</h2>
       <p>
         Cost in a coding agent is not one number — it is the size of every request,
@@ -112,6 +140,156 @@
       <p class="lede">
         The goal is not the smallest possible context. It is the smallest context
         that still answers the question — with a way back to the rest.
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2>What to measure</h2>
+      <p>
+        You cannot tell whether context management is working from the bad
+        sessions alone. Log four numbers: window usage at the start of each turn,
+        compactions per task, cache hit rate if the harness exposes it, and rework
+        rate — changes that were reverted or re-explained after a compaction. A
+        minimal log line is enough:
+      </p>
+      <div class="code-block" data-copy><pre>{"task":"refactor-builder","turn":18,"window_pct":0.72,"compactions":1,"cache_hit":0.81,"rework":0}</pre></div>
+      <p>
+        The leading indicator is the combination: rising compactions with flat
+        task completion means the task is too large, or the handoff is losing
+        information. Fix the boundary before adding more context.
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2>When to start fresh instead</h2>
+      <p>
+        Compaction is not the only move. Continue when the goal is unchanged and
+        the context is still relevant. Rewind when a recent branch went wrong but
+        earlier context is useful. Compact when the goal is unchanged but the
+        context is noisy. Clear when you are switching to unrelated work. Start a
+        new session or worktree when the task is new or independent. The test is
+        simple: has the goal changed, or only the noise?
+      </p>
+      <p>
+        A new worktree is the cleanest boundary for independent work: the next
+        session starts from a clean checkout and a bounded task, not from a
+        summary of every branch and every unfinished experiment. For the queue
+        model behind that, see
+        <a href="/blog/agent-task-queue/">durable tasks, not terminal tabs</a>.
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2>Three failure modes</h2>
+      <p>
+        <strong>Compacting too late.</strong> A summary written under pressure is
+        worse than one written at a chosen boundary. If the window is already
+        full, the model is summarizing a degraded conversation. Compact with a
+        focus hint before the limit, while the task and the open questions are
+        still clear.
+      </p>
+      <p>
+        <strong>Losing the constraints.</strong> Rules and invariants are exactly
+        what a summary tends to compress. If a constraint must survive, restate it
+        in the next prompt or keep it outside the summary. A task that remembers
+        the goal but forgets the safety rule is not a safe task.
+      </p>
+      <p>
+        <strong>Reviewing the summary instead of the diff.</strong> The recap
+        describes intent; the diff describes behavior. If the reviewer only reads
+        the recap, the gate is a summary of a summary. Read the change in the
+        checkout, run the verification, and decide from the evidence.
+      </p>
+      <p>
+        All three are handoff failures, not model failures. The fix is the same:
+        make the boundary explicit, and leave evidence on both sides of it.
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2>A long-task checklist</h2>
+      <p>
+        Before a long task, check six things: the task statement has a done
+        condition and an out-of-scope list; each task has its own worktree and
+        branch; shared contracts land on main before parallel work starts; the
+        verification command is known and fast enough to run; a handoff note
+        exists before context is compacted; and a reviewer is available for every
+        completed task. If any item is missing, fix it before the first prompt —
+        not after the first compaction.
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2>A handoff template</h2>
+      <p>
+        A handoff note is not a transcript summary. It is a small structured
+        artifact the next session — or the next person — can act on. Copy this into
+        a plan file, task record, or commit message:
+      </p>
+      <div class="code-block" data-copy><pre>## Task
+&lt;one sentence, copied exactly&gt;
+
+## Constraints
+- &lt;must stay true&gt;
+
+## Files and lines
+- path/to/file.ts:62 — &lt;why it matters&gt;
+
+## Tried and ruled out
+- &lt;approach&gt; — &lt;why it failed&gt;
+
+## Verification
+- &lt;command&gt; — &lt;last result&gt;
+
+## Review state
+- &lt;branch, commit, diff summary, open questions&gt;
+
+## Next step
+&lt;one action&gt;</pre></div>
+      <p>
+        The fields earn their place: exact identifiers survive summarization,
+        failed approaches prevent loops, verification lets the next session prove
+        the fix, and review state tells a person what to inspect. For the decision
+        that follows, see <a href="/blog/agent-review-workflow/">the review gate</a>.
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2>What good looks like</h2>
+      <p>
+        A good long-task session is not the one with the largest window. It is the
+        one where the next person can reconstruct what happened without reading
+        the whole transcript. The task statement names the goal and the
+        constraints. The worktree holds only this task. The handoff note is
+        written before the window is full. The verification command is in the
+        note, and the diff is reviewed in the checkout where the agent worked.
+      </p>
+      <p>
+        That standard is deliberately boring. It does not depend on a model
+        remembering a detail across forty turns. It depends on artifacts that
+        survive the model: the task, the branch, the note, the command, the
+        commit, the review decision. When the session ends, those artifacts are
+        what remain.
+      </p>
+      <p>
+        The same standard applies to a fleet. If every task has the same
+        artifacts, the queue is auditable: you can see what was asked, what
+        changed, how it was verified, and who decided. The context window is a
+        budget; the artifacts are the accounting. An auditable queue is not a
+        bureaucracy; it is what lets a person trust a fleet without reading every
+        transcript.
       </p>
     </div>
   </section>
