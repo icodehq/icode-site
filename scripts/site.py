@@ -61,6 +61,7 @@ OG_HEIGHT = 630
 OG_ALT_KEY = "social.imageAlt"
 ARTICLE_ROUTES = {
     "blog/context-management",
+    "blog/agent-review-workflow",
     "guides/parallel-agents",
     "guides/fix-a-failing-test",
     "guides/refactor-a-module",
@@ -70,7 +71,11 @@ ARTICLE_ROUTES = {
 
 # Routes that exist only in English. They are built once, canonicalized to the
 # English URL, and omitted from the localized builds and hreflang alternates.
-ENGLISH_ONLY_ROUTES = {"guides/parallel-agents", "compare/orca"}
+ENGLISH_ONLY_ROUTES = {
+    "guides/parallel-agents",
+    "compare/orca",
+    "blog/agent-review-workflow",
+}
 
 # Update a route only when its page content actually changes. These dates drive
 # sitemap <lastmod> and TechArticle dateModified; they must not follow the build.
@@ -84,6 +89,7 @@ CONTENT_DATES = {
     "first-investigation": "2026-11-09",
     "blog": "2026-11-09",
     "blog/context-management": "2026-11-23",
+    "blog/agent-review-workflow": "2026-11-23",
     "guides": "2026-11-09",
     "guides/parallel-agents": "2026-11-23",
     "guides/fix-a-failing-test": "2026-11-23",
@@ -94,6 +100,7 @@ CONTENT_DATES = {
 }
 ARTICLE_PUBLISHED = {
     "blog/context-management": "2026-10-14",
+    "blog/agent-review-workflow": "2026-11-23",
     "guides/parallel-agents": "2026-11-23",
     "guides/fix-a-failing-test": "2026-10-14",
     "guides/refactor-a-module": "2026-10-14",

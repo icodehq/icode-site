@@ -88,7 +88,12 @@
         "3c31673025e5": "Worktrees, cadrage des tâches, la porte de revue et l’ordre de fusion pour une flotte d’agents CLI.",
         "693368c6dd3f": "Lire le guide →",
         "2573e45ba1d1": "Notes sur la construction avec des agents de programmation.",
-        "6919c86411b2": "iCode · Blog"
+        "6919c86411b2": "iCode · Blog",
+        "decd7ca80010": "Derniers articles",
+        "c6f21307e57f": "Jugement",
+        "8613e0ed5355": "La porte de revue",
+        "e03493a4b684": "Une tâche au vert n’est pas une tâche relue. Ce qu’il faut vérifier avant que le diff d’un agent n’atteigne main.",
+        "599da9d5b253": "Lire l’essai →"
       },
       "meta": {
         "description": "Essais et notes d’iCode : comment les agents consomment des tokens, pourquoi le contexte compte et comment exécuter une flotte sans chaos de fusion.",

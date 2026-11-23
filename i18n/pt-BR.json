@@ -88,7 +88,12 @@
         "3c31673025e5": "Worktrees, delimitação de tarefas, o portão de revisão e a ordem de merge para uma frota de agentes CLI.",
         "693368c6dd3f": "Ler o guia →",
         "2573e45ba1d1": "Notas sobre construir com agentes de programação.",
-        "6919c86411b2": "iCode · Blog"
+        "6919c86411b2": "iCode · Blog",
+        "decd7ca80010": "Mais recentes",
+        "c6f21307e57f": "Julgamento",
+        "8613e0ed5355": "O portão de revisão",
+        "e03493a4b684": "Uma tarefa verde não é uma tarefa revisada. O que verificar antes que o diff de um agente chegue à main.",
+        "599da9d5b253": "Ler o ensaio →"
       },
       "meta": {
         "description": "Ensaios e notas do iCode: como os agentes consomem tokens, por que o contexto importa e como executar uma frota sem caos de merge.",

@@ -88,7 +88,12 @@
         "3c31673025e5": "Worktrees, Aufgabenabgrenzung, das Review-Gate und die Merge-Reihenfolge für eine Flotte von CLI-Agenten.",
         "693368c6dd3f": "Anleitung lesen →",
         "2573e45ba1d1": "Notizen zum Bauen mit Coding-Agenten.",
-        "6919c86411b2": "iCode · Blog"
+        "6919c86411b2": "iCode · Blog",
+        "decd7ca80010": "Neueste",
+        "c6f21307e57f": "Urteil",
+        "8613e0ed5355": "Das Review-Gate",
+        "e03493a4b684": "Ein grüner Task ist kein geprüfter Task. Was du prüfen solltest, bevor ein Agent-Diff main erreicht.",
+        "599da9d5b253": "Essay lesen →"
       },
       "meta": {
         "description": "Essays und Notizen von iCode: Wie Coding-Agenten Token verbrauchen, warum Kontextmanagement zählt und wie eine Flotte ohne Merge-Chaos läuft.",

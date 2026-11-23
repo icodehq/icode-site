@@ -88,7 +88,12 @@
         "3c31673025e5": "Worktrees, delimitación de tareas, la puerta de revisión y el orden de fusión para una flota de agentes CLI.",
         "693368c6dd3f": "Leer la guía →",
         "2573e45ba1d1": "Notas sobre cómo construir con agentes de programación.",
-        "6919c86411b2": "iCode · Blog"
+        "6919c86411b2": "iCode · Blog",
+        "decd7ca80010": "Lo último",
+        "c6f21307e57f": "Criterio",
+        "8613e0ed5355": "La puerta de revisión",
+        "e03493a4b684": "Una tarea en verde no es una tarea revisada. Qué comprobar antes de que el diff de un agente llegue a main.",
+        "599da9d5b253": "Leer el ensayo →"
       },
       "meta": {
         "description": "Ensayos y notas de iCode: cómo los agentes consumen tokens, por qué importa el contexto y cómo ejecutar una flota sin caos de fusiones.",

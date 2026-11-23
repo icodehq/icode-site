@@ -24,6 +24,7 @@
 ## Writing
 
 - [The context window is a budget](${site_origin}/blog/context-management/)
+- [The review gate](${site_origin}/blog/agent-review-workflow/)
 
 ## Source code
 
