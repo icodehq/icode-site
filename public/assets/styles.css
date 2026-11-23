@@ -515,7 +515,8 @@ details p { margin: 0.7rem 0 0; color: var(--muted); }
   .site-nav::-webkit-scrollbar { display: none; }
   .site-nav a { white-space: nowrap; font-size: 0.85rem; }
   .site-nav .nav-faq,
-  .site-nav .nav-github { display: none; }
+  .site-nav .nav-github,
+  .site-nav .nav-compare { display: none; }
   .language-menu { flex: none; margin-left: 0; }
   .language-menu summary { white-space: nowrap; }
   .hero { padding: 3.25rem 0 2.75rem; }

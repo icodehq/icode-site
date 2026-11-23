@@ -237,7 +237,10 @@
         "a6777c24ca6a": "Ein Modul refaktorieren",
         "bd581c9e710a": "Anleitungen.",
         "c2487f47449f": "Reproduziere ihn, folge den Belegen bis zur Ursache, behebe den Bug und verifiziere die Korrektur.",
-        "d7a484140f5f": "Workflow"
+        "d7a484140f5f": "Workflow",
+        "11e47b1a8dc7": "Agenten parallel ausführen",
+        "93ef7c636865": "Workbench",
+        "bab80e773130": "Worktrees einrichten, Aufgaben abgrenzen, die Flotte einreihen und ohne Merge-Chaos prüfen."
       },
       "meta": {
         "description": "Schritt-für-Schritt-Anleitungen für iCode Agent: Tests reparieren, Module refaktorieren, Bugs aufspüren und Aufgaben in Skripten und CI automatisieren.",
@@ -419,7 +422,9 @@
         "c7b8f7eb949a": "21 Harnesses mit verwalteten Status-Hooks",
         "db3f4500303b": "44 startbare CLI-Agenten — Claude Code, Codex und OpenCode mit nativer Provider-Injektion",
         "f5613dba7e7b": "Die Open-Source-Entwicklungsumgebung für Agenten",
-        "f8f7124c9462": "Betreibe eine Flotte von Agenten. Eine Werkbank. Behalte das Urteil."
+        "f8f7124c9462": "Betreibe eine Flotte von Agenten. Eine Werkbank. Behalte das Urteil.",
+        "6092ab8d0560": "Neu bei parallelen Agenten? Lies <a href=\"/guides/parallel-agents/\">wie du eine Flotte ohne Merge-Chaos betreibst</a>. Vergleichst du Tools? Sieh dir <a href=\"/compare/orca/\">iCode Workbench vs. Orca</a> an.",
+        "eb4d3e9794c0": "Mehr erfahren"
       },
       "meta": {
         "description": "iCode Workbench führt Claude Code, Codex, OpenCode und 40+ CLI-Agenten parallel aus, jeder in einem eigenen Git-Worktree. Änderungen prüfen, Urteil behalten.",
@@ -552,6 +557,8 @@
     "nav.main": "Hauptnavigation",
     "nav.workbench": "Workbench",
     "theme.toggle": "Farbschema umschalten",
-    "social.imageAlt": "iCode Workbench: eine Werkbank für eine Flotte von CLI-Agenten"
+    "social.imageAlt": "iCode Workbench: eine Werkbank für eine Flotte von CLI-Agenten",
+    "nav.compare": "Vergleich",
+    "footer.compare": "Vergleich"
   }
 }

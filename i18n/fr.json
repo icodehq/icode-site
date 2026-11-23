@@ -237,7 +237,10 @@
         "a6777c24ca6a": "Refactoriser un module",
         "bd581c9e710a": "Guides.",
         "c2487f47449f": "Reproduisez-le, suivez les indices jusqu’à la cause, puis corrigez et vérifiez.",
-        "d7a484140f5f": "Workflow"
+        "d7a484140f5f": "Workflow",
+        "11e47b1a8dc7": "Exécuter des agents en parallèle",
+        "93ef7c636865": "Workbench",
+        "bab80e773130": "Configurez des worktrees, cadrez les tâches, mettez la flotte en file et révisez sans chaos de fusion."
       },
       "meta": {
         "description": "Guides iCode Agent pas à pas : corriger des tests, refactoriser un module, traquer un bug et automatiser des tâches dans des scripts et en CI.",
@@ -419,7 +422,9 @@
         "c7b8f7eb949a": "21 harness avec hooks d'état gérés",
         "db3f4500303b": "44 agents CLI exécutables — Claude Code, Codex et OpenCode avec injection native de fournisseurs",
         "f5613dba7e7b": "L'environnement de développement d'agents open source",
-        "f8f7124c9462": "Pilotez une flotte d'agents. Un seul atelier. Gardez le jugement."
+        "f8f7124c9462": "Pilotez une flotte d'agents. Un seul atelier. Gardez le jugement.",
+        "6092ab8d0560": "Nouveau avec les agents en parallèle ? Lisez <a href=\"/guides/parallel-agents/\">comment exécuter une flotte sans chaos de fusion</a>. Vous comparez des outils ? Consultez <a href=\"/compare/orca/\">iCode Workbench vs Orca</a>.",
+        "eb4d3e9794c0": "Pour aller plus loin"
       },
       "meta": {
         "description": "iCode Workbench exécute Claude Code, Codex, OpenCode et 40+ agents CLI en parallèle, chacun dans son worktree Git. Relisez les changements, gardez le jugement.",
@@ -552,6 +557,8 @@
     "nav.main": "Navigation principale",
     "nav.workbench": "Workbench",
     "theme.toggle": "Changer de thème",
-    "social.imageAlt": "iCode Workbench : un atelier pour une flotte d’agents CLI"
+    "social.imageAlt": "iCode Workbench : un atelier pour une flotte d’agents CLI",
+    "nav.compare": "Comparer",
+    "footer.compare": "Comparer"
   }
 }

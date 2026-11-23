@@ -237,7 +237,10 @@
         "a6777c24ca6a": "Refatore um módulo",
         "bd581c9e710a": "Guias.",
         "c2487f47449f": "Reproduza o problema, siga as evidências até a causa, depois corrija e verifique.",
-        "d7a484140f5f": "Fluxo de trabalho"
+        "d7a484140f5f": "Fluxo de trabalho",
+        "11e47b1a8dc7": "Execute agentes em paralelo",
+        "93ef7c636865": "Workbench",
+        "bab80e773130": "Configure worktrees, delimite tarefas, enfileire a frota e revise sem caos de merge."
       },
       "meta": {
         "description": "Guias passo a passo do iCode Agent para trabalho comum: corrigir testes com falha, refatorar um módulo, rastrear um bug e automatizar tarefas em scripts e CI.",
@@ -419,7 +422,9 @@
         "c7b8f7eb949a": "21 harnesses com hooks de status gerenciados",
         "db3f4500303b": "44 agentes CLI executáveis — Claude Code, Codex e OpenCode com injeção nativa de provedores",
         "f5613dba7e7b": "O ambiente de desenvolvimento de agentes de código aberto",
-        "f8f7124c9462": "Execute uma frota de agentes. Uma única bancada. Mantenha o julgamento."
+        "f8f7124c9462": "Execute uma frota de agentes. Uma única bancada. Mantenha o julgamento.",
+        "6092ab8d0560": "Novo em agentes paralelos? Leia <a href=\"/guides/parallel-agents/\">como executar uma frota sem caos de merge</a>. Comparando ferramentas? Veja <a href=\"/compare/orca/\">iCode Workbench vs Orca</a>.",
+        "eb4d3e9794c0": "Saiba mais"
       },
       "meta": {
         "description": "O iCode Workbench executa Claude Code, Codex, OpenCode e 40+ agentes CLI em paralelo, cada um no seu worktree Git. Revise cada mudança e mantenha o julgamento.",
@@ -552,6 +557,8 @@
     "nav.main": "Principal",
     "nav.workbench": "Workbench",
     "theme.toggle": "Alternar tema de cores",
-    "social.imageAlt": "iCode Workbench: uma bancada para uma frota de agentes CLI"
+    "social.imageAlt": "iCode Workbench: uma bancada para uma frota de agentes CLI",
+    "nav.compare": "Comparar",
+    "footer.compare": "Comparar"
   }
 }

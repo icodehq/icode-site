@@ -237,7 +237,10 @@
         "a6777c24ca6a": "重构模块",
         "bd581c9e710a": "指南。",
         "c2487f47449f": "复现问题，沿着证据找到原因，然后修复并验证。",
-        "d7a484140f5f": "工作流"
+        "d7a484140f5f": "工作流",
+        "11e47b1a8dc7": "并行运行智能体",
+        "93ef7c636865": "Workbench",
+        "bab80e773130": "设置工作树、划定任务范围、将智能体舰队加入队列，并在没有合并混乱的情况下进行审查。"
       },
       "meta": {
         "description": "面向常见工作的 iCode Agent 分步指南：修复失败的测试、重构模块、追踪 bug，以及在脚本和 CI 中自动化任务。",
@@ -419,7 +422,9 @@
         "c7b8f7eb949a": "21 个智能体框架支持托管状态钩子",
         "db3f4500303b": "44 个可启动的 CLI 智能体——Claude Code、Codex 和 OpenCode 支持原生提供商注入",
         "f5613dba7e7b": "开源智能体开发环境",
-        "f8f7124c9462": "运行一支智能体舰队。一个工作台。保留判断权。"
+        "f8f7124c9462": "运行一支智能体舰队。一个工作台。保留判断权。",
+        "6092ab8d0560": "刚开始使用并行智能体？请阅读<a href=\"/guides/parallel-agents/\">如何在没有合并混乱的情况下运行智能体舰队</a>。正在比较工具？请查看 <a href=\"/compare/orca/\">iCode Workbench 与 Orca 对比</a>。",
+        "eb4d3e9794c0": "深入了解"
       },
       "meta": {
         "description": "iCode Workbench 并行运行 Claude Code、Codex、OpenCode 及 40+ 个 CLI 智能体，每个都在独立 Git 工作树中。审查每处变更，保留最终判断权。",
@@ -552,6 +557,8 @@
     "nav.main": "主导航",
     "nav.workbench": "Workbench",
     "theme.toggle": "切换颜色主题",
-    "social.imageAlt": "iCode Workbench：管理 CLI 智能体舰队的统一工作台"
+    "social.imageAlt": "iCode Workbench：管理 CLI 智能体舰队的统一工作台",
+    "nav.compare": "对比",
+    "footer.compare": "对比"
   }
 }

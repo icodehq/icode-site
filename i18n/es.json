@@ -237,7 +237,10 @@
         "a6777c24ca6a": "Refactoriza un módulo",
         "bd581c9e710a": "Guías.",
         "c2487f47449f": "Reprodúcelo, sigue la evidencia hasta la causa y luego corrige y verifica.",
-        "d7a484140f5f": "Flujo de trabajo"
+        "d7a484140f5f": "Flujo de trabajo",
+        "11e47b1a8dc7": "Ejecuta agentes en paralelo",
+        "93ef7c636865": "Workbench",
+        "bab80e773130": "Configura worktrees, delimita tareas, encola la flota y revisa sin caos de fusiones."
       },
       "meta": {
         "description": "Guías paso a paso de iCode Agent: corregir tests, refactorizar un módulo, rastrear un error y automatizar tareas en scripts y CI.",
@@ -419,7 +422,9 @@
         "c7b8f7eb949a": "21 harnesses con hooks de estado gestionados",
         "db3f4500303b": "44 agentes CLI ejecutables — Claude Code, Codex y OpenCode con inyección nativa de proveedores",
         "f5613dba7e7b": "El entorno de desarrollo de agentes de código abierto",
-        "f8f7124c9462": "Ejecuta una flota de agentes. Un solo banco de trabajo. Conserva el criterio."
+        "f8f7124c9462": "Ejecuta una flota de agentes. Un solo banco de trabajo. Conserva el criterio.",
+        "6092ab8d0560": "¿Nuevo con los agentes en paralelo? Lee <a href=\"/guides/parallel-agents/\">cómo ejecutar una flota sin caos de fusiones</a>. ¿Comparas herramientas? Consulta <a href=\"/compare/orca/\">iCode Workbench vs. Orca</a>.",
+        "eb4d3e9794c0": "Más a fondo"
       },
       "meta": {
         "description": "iCode Workbench ejecuta Claude Code, Codex, OpenCode y 40+ agentes CLI en paralelo, cada uno en su worktree de Git. Revisa cada cambio y conserva el criterio.",
@@ -552,6 +557,8 @@
     "nav.main": "Principal",
     "nav.workbench": "Workbench",
     "theme.toggle": "Cambiar el tema de color",
-    "social.imageAlt": "iCode Workbench: un banco de trabajo para una flota de agentes CLI"
+    "social.imageAlt": "iCode Workbench: un banco de trabajo para una flota de agentes CLI",
+    "nav.compare": "Comparar",
+    "footer.compare": "Comparar"
   }
 }
