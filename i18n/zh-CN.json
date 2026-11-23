@@ -439,6 +439,8 @@
         "ee4e9d7d4bd1": "计划标签页，包含一个已启用的夜间依赖审计和一个已暂停的每六小时提供商刷新"
       },
       "blocks": {
+        "016b251d63d0": "刚开始使用并行智能体？请阅读<a href=\"/guides/parallel-agents/\">如何在没有合并混乱的情况下运行智能体舰队</a>。",
+        "a811d7fc11f6": "正在比较工具？请查看 <a href=\"/compare/orca/\">iCode Workbench 与 Orca 对比</a>。",
         "044b63d83db5": "任务工作树中的源代码管理：并排显示已提交的 diff，文件列表只需切换一下即可看到。",
         "090ec5f560fc": "任务",
         "0a046cdfef2f": "下载最新版本",
@@ -516,6 +518,7 @@
     }
   },
   "ui": {
+    "article.meta": "发布于 {published} · 更新于 {updated} · iCode 团队",
     "brand.caption": "智能体开发环境",
     "copy.copied": "已复制",
     "copy.failed": "复制失败",

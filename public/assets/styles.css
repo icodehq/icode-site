@@ -108,7 +108,13 @@ a { color: var(--accent); text-underline-offset: 2px; }
 }
 .theme-toggle:hover { background: var(--soft); }
 
-.language-menu { position: relative; }
+.language-menu {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  padding: 0;
+  border-bottom: 0;
+}
 .language-menu summary {
   cursor: pointer;
   list-style: none;
@@ -142,6 +148,7 @@ a { color: var(--accent); text-underline-offset: 2px; }
   border-radius: 6px;
   box-shadow: var(--shadow);
 }
+.language-menu:not([open]) ul { display: none; }
 .language-menu a {
   display: block;
   padding: 0.3rem 0.8rem;
@@ -350,6 +357,20 @@ figure { margin: 0; }
 .feature-list li { margin: 0.5rem 0; }
 .feature-list strong { color: var(--ink); }
 
+/* Tables ------------------------------------------------------------------ */
+
+.table-wrap { margin: 1.6rem 0; overflow-x: auto; }
+.table-wrap table { width: 100%; border-collapse: collapse; font-size: 0.95rem; }
+.table-wrap th,
+.table-wrap td {
+  text-align: left;
+  padding: 0.65rem 0.8rem;
+  border-bottom: 1px solid var(--line);
+  vertical-align: top;
+}
+.table-wrap th { color: var(--ink); font-weight: 600; }
+.table-wrap td { color: var(--muted); }
+
 /* Footer ------------------------------------------------------------------ */
 
 .site-footer { border-top: 1px solid var(--line); margin-top: 1rem; }
@@ -459,6 +480,12 @@ details p { margin: 0.7rem 0 0; color: var(--muted); }
 }
 .copy-button:hover { color: var(--ink); }
 
+.article-meta-line {
+  margin: 1rem 0 0;
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+
 
 /* Responsive -------------------------------------------------------------- */
 
@@ -479,12 +506,18 @@ details p { margin: 0.7rem 0 0; color: var(--muted); }
   }
   .site-nav {
     width: 100%;
-    flex-wrap: wrap;
-    gap: 0.65rem 1rem;
-    padding-bottom: 0.15rem;
+    flex-wrap: nowrap;
+    gap: 0.5rem 0.6rem;
+    padding-bottom: 0.35rem;
+    overflow-x: auto;
+    scrollbar-width: none;
   }
-  .site-nav a { white-space: nowrap; }
-  .language-menu { margin-left: auto; }
+  .site-nav::-webkit-scrollbar { display: none; }
+  .site-nav a { white-space: nowrap; font-size: 0.85rem; }
+  .site-nav .nav-faq,
+  .site-nav .nav-github { display: none; }
+  .language-menu { flex: none; margin-left: 0; }
+  .language-menu summary { white-space: nowrap; }
   .hero { padding: 3.25rem 0 2.75rem; }
   .section { padding: 2.75rem 0; }
   .site-footer-inner { padding-bottom: 2rem; }

@@ -61,10 +61,44 @@ OG_HEIGHT = 630
 OG_ALT_KEY = "social.imageAlt"
 ARTICLE_ROUTES = {
     "blog/context-management",
+    "guides/parallel-agents",
     "guides/fix-a-failing-test",
     "guides/refactor-a-module",
     "guides/track-down-a-bug",
     "guides/automate-in-ci",
+}
+
+# Routes that exist only in English. They are built once, canonicalized to the
+# English URL, and omitted from the localized builds and hreflang alternates.
+ENGLISH_ONLY_ROUTES = {"guides/parallel-agents", "compare/orca"}
+
+# Update a route only when its page content actually changes. These dates drive
+# sitemap <lastmod> and TechArticle dateModified; they must not follow the build.
+CONTENT_DATES = {
+    "": "2026-11-23",
+    "workbench": "2026-11-23",
+    "agent": "2026-11-23",
+    "about": "2026-11-23",
+    "faq": "2026-11-23",
+    "get-started": "2026-11-09",
+    "first-investigation": "2026-11-09",
+    "blog": "2026-11-09",
+    "blog/context-management": "2026-11-23",
+    "guides": "2026-11-09",
+    "guides/parallel-agents": "2026-11-23",
+    "guides/fix-a-failing-test": "2026-11-23",
+    "guides/refactor-a-module": "2026-11-23",
+    "guides/track-down-a-bug": "2026-11-23",
+    "guides/automate-in-ci": "2026-11-23",
+    "compare/orca": "2026-11-23",
+}
+ARTICLE_PUBLISHED = {
+    "blog/context-management": "2026-10-14",
+    "guides/parallel-agents": "2026-11-23",
+    "guides/fix-a-failing-test": "2026-10-14",
+    "guides/refactor-a-module": "2026-10-14",
+    "guides/track-down-a-bug": "2026-10-14",
+    "guides/automate-in-ci": "2026-10-14",
 }
 PRODUCTS = {
     "workbench": {
@@ -106,6 +140,8 @@ def load_catalog(code: str) -> dict:
 
 
 def href_for(locale: dict, route: str) -> str:
+    if route in ENGLISH_ONLY_ROUTES:
+        return f"/{route}/"
     path = "" if route == "" else f"{route}/"
     return f"/{locale['code']}/{path}" if locale["code"] != "en" else f"/{path}"
 
@@ -115,6 +151,8 @@ def absolute_url(locale: dict, route: str) -> str:
 
 
 def language_menu(locale: dict, route: str, ui: dict) -> str:
+    if route in ENGLISH_ONLY_ROUTES:
+        return ""
     items = []
     for entry in LOCALES:
         current = ' aria-current="page"' if entry["code"] == locale["code"] else ""
@@ -132,6 +170,16 @@ def language_menu(locale: dict, route: str, ui: dict) -> str:
 
 def head_links(locale: dict, route: str) -> str:
     links = [f'<link rel="canonical" href="{absolute_url(locale, route)}" />']
+    if route in ENGLISH_ONLY_ROUTES:
+        links.append(
+            f'<link rel="alternate" hreflang="en" '
+            f'href="{absolute_url(ENGLISH, route)}" />'
+        )
+        links.append(
+            f'<link rel="alternate" hreflang="x-default" '
+            f'href="{absolute_url(ENGLISH, route)}" />'
+        )
+        return "\n  ".join(links)
     for entry in LOCALES:
         links.append(
             f'<link rel="alternate" hreflang="{entry["htmlLang"]}" '
@@ -184,12 +232,13 @@ def social_meta(locale: dict, route: str, meta: dict, ui: dict) -> str:
         f'<meta property="og:url" content="{_attr(page_url)}" />',
         f'<meta property="og:locale" content="{_attr(_og_locale(locale))}" />',
     ]
-    for entry in LOCALES:
-        if entry["code"] != locale["code"]:
-            lines.append(
-                f'<meta property="og:locale:alternate" '
-                f'content="{_attr(entry["ogLocale"])}" />'
-            )
+    if route not in ENGLISH_ONLY_ROUTES:
+        for entry in LOCALES:
+            if entry["code"] != locale["code"]:
+                lines.append(
+                    f'<meta property="og:locale:alternate" '
+                    f'content="{_attr(entry["ogLocale"])}" />'
+                )
     lines += [
         f'<meta property="og:image" content="{_attr(image)}" />',
         f'<meta property="og:image:secure_url" content="{_attr(image)}" />',
@@ -330,6 +379,8 @@ def json_ld(locale: dict, route: str, meta: dict, ui: dict) -> str:
                 "inLanguage": locale["htmlLang"],
                 "url": page_url,
                 "image": image_url,
+                "datePublished": ARTICLE_PUBLISHED[route],
+                "dateModified": CONTENT_DATES[route],
                 "author": {"@id": org_id},
                 "publisher": {"@id": org_id},
                 "mainEntityOfPage": {"@id": page_id},
@@ -498,6 +549,14 @@ def inject_regions(html: str, locale: dict, route: str, ui: dict, href, language
         "nav.github": ui["nav.github"],
         "theme.toggle": ui["theme.toggle"],
         "language_menu": language_menu_html,
+        "article.meta": (
+            ui["article.meta"].format(
+                published=ARTICLE_PUBLISHED[route],
+                updated=CONTENT_DATES[route],
+            )
+            if route in ARTICLE_ROUTES
+            else ""
+        ),
         "footer.tagline": ui["footer.tagline"],
         "footer.workbench": ui["footer.workbench"],
         "footer.agent": ui["footer.agent"],
@@ -522,6 +581,20 @@ def inject_regions(html: str, locale: dict, route: str, ui: dict, href, language
         if html.count(begin) != 1 or html.count(end) != 1:
             raise SystemExit(f"{locale['code']}/{route}: expected one {region} marker")
         body = render_template(template, values)
+        html = re.sub(
+            re.escape(begin) + r".*?" + re.escape(end),
+            begin + "\n" + body + end,
+            html,
+            flags=re.DOTALL,
+        )
+    if route in ARTICLE_ROUTES:
+        begin = "<!-- BEGIN:article-meta -->"
+        end = "<!-- END:article-meta -->"
+        if html.count(begin) != 1 or html.count(end) != 1:
+            raise SystemExit(
+                f"{locale['code']}/{route}: expected one article-meta marker"
+            )
+        body = render_template("article-meta.html.tmpl", values)
         html = re.sub(
             re.escape(begin) + r".*?" + re.escape(end),
             begin + "\n" + body + end,
@@ -658,9 +731,14 @@ def social_meta_ok() -> list[str]:
             issues.append(f"{page}: og:url mismatch")
         if prop("og:locale") != locale["ogLocale"]:
             issues.append(f"{page}: og:locale mismatch")
-        expected_alternates = {
-            entry["ogLocale"] for entry in LOCALES if entry["code"] != locale["code"]
-        }
+        if route in ENGLISH_ONLY_ROUTES:
+            expected_alternates = set()
+        else:
+            expected_alternates = {
+                entry["ogLocale"]
+                for entry in LOCALES
+                if entry["code"] != locale["code"]
+            }
         alternates = meta.meta_props.get("og:locale:alternate", [])
         if set(alternates) != expected_alternates or len(alternates) != len(
             expected_alternates
@@ -747,12 +825,32 @@ def social_meta_ok() -> list[str]:
     return issues
 
 
+def check_dates(routes: dict[str, Path]) -> None:
+    missing = sorted(set(routes) - set(CONTENT_DATES))
+    extra = sorted(set(CONTENT_DATES) - set(routes))
+    issues = []
+    if missing:
+        issues.append("CONTENT_DATES missing: " + ", ".join(missing))
+    if extra:
+        issues.append("CONTENT_DATES unused: " + ", ".join(extra))
+    for route in sorted(ARTICLE_ROUTES):
+        if route not in ARTICLE_PUBLISHED:
+            issues.append(f"ARTICLE_PUBLISHED missing: {route}")
+    if issues:
+        raise SystemExit("Content date check failed:\n- " + "\n- ".join(issues))
+
+
 def check_sources() -> None:
     issues: list[str] = []
     for path in sorted(PUBLIC.rglob("*.html")):
         rel = path.relative_to(PUBLIC)
         text = path.read_text("utf-8")
-        for region in REGIONS:
+        rel_route = rel.parent.as_posix()
+        rel_route = "" if rel_route == "." else rel_route
+        required_regions = list(REGIONS)
+        if rel_route in ARTICLE_ROUTES:
+            required_regions.append("article-meta")
+        for region in required_regions:
             if text.count(f"<!-- BEGIN:{region} -->") != 1:
                 issues.append(f"{rel}: missing or duplicated BEGIN:{region}")
             if text.count(f"<!-- END:{region} -->") != 1:
@@ -769,7 +867,10 @@ def check_sources() -> None:
             local = target.split("#", 1)[0].split("?", 1)[0]
             if not local:
                 continue
-            resolved = (path.parent / local).resolve()
+            if local.startswith("/"):
+                resolved = (PUBLIC / local.lstrip("/")).resolve()
+            else:
+                resolved = (path.parent / local).resolve()
             if not resolved.exists():
                 issues.append(f"{rel}: broken link {target}")
     if issues:
@@ -786,7 +887,9 @@ def check_catalogs() -> None:
         if locale["code"] == "en":
             continue
         catalogs[locale["code"]] = load_catalog(locale["code"])
-    issues += i18n.validate(stored, catalogs)
+    issues += i18n.validate(
+        stored, catalogs, ignore_routes=ENGLISH_ONLY_ROUTES
+    )
     if issues:
         raise SystemExit("Translation check failed:\n- " + "\n- ".join(issues))
     for warning in check_meta_lengths(catalogs):
@@ -803,13 +906,16 @@ def build() -> None:
         if locale["code"] == "en":
             continue
         catalogs[locale["code"]] = load_catalog(locale["code"])
-    issues += i18n.validate(english, catalogs)
+    issues += i18n.validate(
+        english, catalogs, ignore_routes=ENGLISH_ONLY_ROUTES
+    )
     if issues:
         raise SystemExit("Build stopped:\n- " + "\n- ".join(issues))
     for warning in check_meta_lengths(catalogs):
         print(f"warning: {warning}")
     check_locales()
     check_social_assets()
+    check_dates(routes)
 
     if OUT.exists():
         shutil.rmtree(OUT)
@@ -834,6 +940,8 @@ def build() -> None:
     for locale in LOCALES:
         catalog = catalogs[locale["code"]]
         for route, src_path in routes.items():
+            if locale["code"] != "en" and route in ENGLISH_ONLY_ROUTES:
+                continue
             html = render_site_page(src_path.read_text("utf-8"), route, locale, catalog)
             dest = OUT / ("" if locale["code"] == "en" else locale["code"]) / route
             dest.mkdir(parents=True, exist_ok=True)
@@ -849,6 +957,15 @@ def build() -> None:
 def write_sitemap(routes: dict[str, Path]) -> None:
     entries: list[str] = []
     for route in sorted(routes):
+        lastmod = CONTENT_DATES[route]
+        if route in ENGLISH_ONLY_ROUTES:
+            entries.append(
+                f"  <url>\n"
+                f"    <loc>{absolute_url(ENGLISH, route)}</loc>\n"
+                f"    <lastmod>{lastmod}</lastmod>\n"
+                f"  </url>"
+            )
+            continue
         alternates = "\n".join(
             f'    <xhtml:link rel="alternate" hreflang="{locale["htmlLang"]}" '
             f'href="{absolute_url(locale, route)}" />'
@@ -862,6 +979,7 @@ def write_sitemap(routes: dict[str, Path]) -> None:
             entries.append(
                 f"  <url>\n"
                 f"    <loc>{absolute_url(locale, route)}</loc>\n"
+                f"    <lastmod>{lastmod}</lastmod>\n"
                 f"{alternates}\n{default}\n"
                 f"  </url>"
             )
@@ -938,6 +1056,7 @@ def check() -> None:
     check_sources()
     check_catalogs()
     check_social_assets()
+    check_dates(source_routes())
     print("Checked source pages and translation catalogs: OK")
 
 

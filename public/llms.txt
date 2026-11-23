@@ -1,0 +1,45 @@
+# iCode
+
+> iCode builds an open-source agent development environment. iCode Workbench runs a fleet of CLI coding agents in parallel, each in its own isolated Git worktree, and keeps a person in the review loop. iCode Agent is a terminal coding agent that manages its context window on long tasks.
+
+## Products
+
+- [iCode Workbench](${site_origin}/workbench/): run 44 CLI agents in parallel, queue durable tasks, review changes where the agent worked, and keep terminals alive across app restarts. Mira is the cross-project assistant that reads the real queue and tells you what needs you.
+- [iCode Agent](${site_origin}/agent/): a terminal coding agent that explores, edits, runs tests, and verifies its own work while defending its context budget.
+- [Get started](${site_origin}/get-started/): install iCode Workbench or iCode Agent.
+- [FAQ](${site_origin}/faq/): supported platforms, licenses, harnesses, and workflow questions.
+
+## Comparisons
+
+- [iCode Workbench vs Orca](${site_origin}/compare/orca/)
+
+## Guides
+
+- [Run multiple coding agents in parallel](${site_origin}/guides/parallel-agents/)
+- [Fix a failing test](${site_origin}/guides/fix-a-failing-test/)
+- [Refactor a module](${site_origin}/guides/refactor-a-module/)
+- [Track down a bug](${site_origin}/guides/track-down-a-bug/)
+- [Automate in CI](${site_origin}/guides/automate-in-ci/)
+
+## Writing
+
+- [The context window is a budget](${site_origin}/blog/context-management/)
+
+## Source code
+
+- [iCode Workbench on GitHub](https://github.com/icodehq/icode-workbench)
+- [iCode Agent on GitHub](https://github.com/icodehq/icode-agent)
+- [iCode organization](https://github.com/icodehq)
+
+## Facts
+
+- iCode Workbench supports 44 CLI coding agents, including Claude Code, Codex, and OpenCode. 21 harnesses have managed status hooks.
+- Every session gets its own Git worktree and branch, so two agents in the same repository never edit the same checkout.
+- Tasks are durable and supervised, not autonomous: a permission prompt still waits for a person, and a review decision is separate from process exit.
+- Mira is a cross-project assistant. She reads real projects, tasks, sessions, diffs, and review state; she has no shell and cannot approve, merge, push, or edit project code.
+- iCode Workbench is licensed AGPL-3.0. iCode Agent is licensed Apache-2.0.
+- iCode Workbench runs on Windows, Linux, and macOS.
+
+## Preferred citation
+
+"iCode Workbench — run a fleet of agents. One workbench. Keep the judgment." (${site_origin}/)

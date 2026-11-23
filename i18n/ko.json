@@ -439,6 +439,8 @@
         "ee4e9d7d4bd1": "활성화된 야간 종속성 감사와 일시 중지된 6시간 주기 공급자 새로 고침이 있는 일정 탭"
       },
       "blocks": {
+        "016b251d63d0": "병렬 에이전트가 처음인가요? <a href=\"/guides/parallel-agents/\">병합 혼란 없이 플릿을 운영하는 방법</a>을 읽어 보세요.",
+        "a811d7fc11f6": "도구를 비교 중인가요? <a href=\"/compare/orca/\">iCode Workbench와 Orca 비교</a>를 확인하세요.",
         "044b63d83db5": "작업 워크트리의 소스 제어. 커밋된 diff를 나란히 보여 주며, 파일 목록은 토글 한 번이면 열립니다.",
         "090ec5f560fc": "작업",
         "0a046cdfef2f": "최신 릴리스 다운로드",
@@ -516,6 +518,7 @@
     }
   },
   "ui": {
+    "article.meta": "게시 {published} · 업데이트 {updated} · iCode 팀",
     "brand.caption": "에이전트 개발 환경",
     "copy.copied": "복사됨",
     "copy.failed": "복사 실패",

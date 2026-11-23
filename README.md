@@ -86,11 +86,14 @@ Open Graph URL, and the Open Graph image URL. `public/robots.txt` contains
 
 ## Translations
 
-Every page is rendered in all locales listed in `i18n/locales.json`. The English
-catalog is generated from the authored HTML, and block keys are content hashes so
-a changed English block cannot silently reuse an old translation. See
-[i18n/README.md](i18n/README.md) for the catalog format, translation rules, and
-the full workflow.
+Every page is rendered in all locales listed in `i18n/locales.json` unless its
+route is listed in `ENGLISH_ONLY_ROUTES` in `scripts/site.py`. English-only
+routes build once at the site root, get an English canonical with `en` and
+`x-default` hreflang, and are omitted from the localized builds, sitemap
+alternates, and `og:locale:alternate`. The English catalog is generated from
+the authored HTML, and block keys are content hashes so a changed English block
+cannot silently reuse an old translation. See [i18n/README.md](i18n/README.md)
+for the catalog format, translation rules, and the full workflow.
 
 ## Adding a page
 
@@ -103,10 +106,13 @@ the full workflow.
    ```
 
 2. Add a `<title>` and a `<meta name="description">` (both are checked).
-3. Use relative links for pages. Localized builds rewrite shared asset URLs to
-   `/assets/...` automatically.
-4. Run `python3 scripts/site.py extract`, add the new blocks to every catalog,
-   then run `python3 scripts/site.py deploy-check`.
+3. Use relative links, or root-absolute internal links such as
+   `/guides/parallel-agents/`; root-absolute links are resolved against
+   `public/` by `check_sources` and remain correct on localized pages.
+4. To publish English only, add the route to `ENGLISH_ONLY_ROUTES` in
+   `scripts/site.py`. Otherwise, run `python3 scripts/site.py extract`, add the
+   new blocks to every catalog, then run
+   `python3 scripts/site.py deploy-check`.
 
 ## Deploying to Vercel
 

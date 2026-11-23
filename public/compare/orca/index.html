@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>iCode Workbench vs Orca — agent workbench comparison</title>
+  <meta name="description" content="Compare iCode Workbench and Orca: agents, worktrees, task queues, review, remote access, mobile, license, and maturity. Updated November 2026." />
+  <meta name="theme-color" content="#ffffff" />
+  <link rel="icon" href="../../assets/favicon.svg" type="image/svg+xml" />
+  <link rel="stylesheet" href="../../assets/styles.css" />
+  <script src="../../assets/theme.js"></script>
+</head>
+<body>
+<!-- BEGIN:site-header -->
+<!-- END:site-header -->
+
+<main>
+  <section class="section">
+    <div class="container">
+      <p class="eyebrow">iCode Workbench · Comparison</p>
+      <h1>iCode Workbench vs Orca: which agent workbench fits your workflow?</h1>
+      <p class="lede">
+        Both tools run multiple CLI coding agents in isolated Git worktrees.
+        Orca is the broader agent IDE: chat and terminal, embedded browser,
+        Slack/Linear/GitHub bots, remote servers, and mobile companions. iCode
+        Workbench is narrower and more opinionated: a local, review-first task
+        queue for a fleet of agents, with a cross-project assistant that is
+        deliberately not allowed to merge.
+      </p>
+      <p class="muted">
+        Last verified 2026-11-23 against
+        <a href="https://orca.dev/" rel="noopener">orca.dev</a>,
+        <a href="https://github.com/stablyai/orca" rel="noopener">the Orca repository</a>,
+        and the iCode Workbench product page. Both products change quickly; verify
+        current details before deciding.
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2>The short version</h2>
+      <div class="grid">
+        <article class="card">
+          <span class="tag">Choose Orca</span>
+          <h3>You want the broader agent IDE.</h3>
+          <p>
+            Orca fits teams that want chat and terminal in one surface, an
+            embedded browser with Design Mode, bots in Slack, Linear, and GitHub,
+            remote servers or SSH worktrees, mobile companions, and an MIT
+            license. It is the closer drop-in for a multi-surface agent workflow.
+          </p>
+        </article>
+        <article class="card">
+          <span class="tag">Choose iCode Workbench</span>
+          <h3>You want a review-first task queue.</h3>
+          <p>
+            Workbench fits teams that want a local control room: a durable queue
+            with a 1–4 slot limit, explicit task states, review where the agent
+            worked, a separate review decision, and Mira watching the real queue
+            without the power to approve, merge, push, or edit code.
+          </p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container-wide">
+      <h2>At a glance</h2>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th></th><th>iCode Workbench</th><th>Orca</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th>Best for</th>
+              <td>A local, review-first queue for a fleet of CLI agents</td>
+              <td>A broad agent IDE with chat, terminal, bots, remote, and mobile</td>
+            </tr>
+            <tr>
+              <th>License</th>
+              <td>AGPL-3.0</td>
+              <td>MIT</td>
+            </tr>
+            <tr>
+              <th>Price</th>
+              <td>Free; bring your own agent subscriptions</td>
+              <td>Free; bring your own agent subscriptions; enterprise contact for org features</td>
+            </tr>
+            <tr>
+              <th>Desktop platforms</th>
+              <td>Windows, Linux, macOS</td>
+              <td>macOS, Windows, Linux</td>
+            </tr>
+            <tr>
+              <th>Mobile</th>
+              <td>Not listed in current product docs</td>
+              <td>iOS and Android companion apps (beta)</td>
+            </tr>
+            <tr>
+              <th>Agents</th>
+              <td>44 launchable CLI agents; 21 with managed status hooks</td>
+              <td>Any CLI agent; named integrations include Claude Code, Codex, Cursor CLI, Copilot, Gemini, and OpenCode</td>
+            </tr>
+            <tr>
+              <th>Isolation</th>
+              <td>One Git worktree per session; a queued task runs in a session</td>
+              <td>One Git worktree per task, with its own terminal and browser tab</td>
+            </tr>
+            <tr>
+              <th>Task model</th>
+              <td>Durable queue, 1–4 slots, explicit states, schedules, retries as new attempts</td>
+              <td>Agent orchestration, scheduled automations, and bot triggers</td>
+            </tr>
+            <tr>
+              <th>Review</th>
+              <td>Files, Search, and Source Control in the session checkout; line notes; stage, commit, amend, push, cherry-pick, revert, reset; review decision separate from process exit</td>
+              <td>Annotated diff review; draft commits and PRs; send review feedback or failed checks back to agents</td>
+            </tr>
+            <tr>
+              <th>Cross-project assistant</th>
+              <td>Mira reads projects, tasks, sessions, diffs, and review state; no shell; cannot approve, merge, push, or edit code</td>
+              <td>Bots and agent orchestration surfaces; a coordinator can split work across workers</td>
+            </tr>
+            <tr>
+              <th>Remote / SSH</th>
+              <td>Not listed in current product docs</td>
+              <td>Remote Orca Servers (beta), SSH worktrees, experimental cloud VMs</td>
+            </tr>
+            <tr>
+              <th>Browser / Design Mode</th>
+              <td>Not listed in current product docs</td>
+              <td>Embedded Chromium; click an element to send its HTML/CSS and screenshot to an agent</td>
+            </tr>
+            <tr>
+              <th>Slack / Linear / GitHub bots</th>
+              <td>Git operations in the session checkout; no Slack or Linear bot integration listed</td>
+              <td>Bots in Slack, Linear, and GitHub</td>
+            </tr>
+            <tr>
+              <th>Terminal durability</th>
+              <td>A detached host keeps PTYs alive across app restarts</td>
+              <td>Remote servers keep agents running when your laptop sleeps</td>
+            </tr>
+            <tr>
+              <th>Release maturity</th>
+              <td>Pre-1.0</td>
+              <td>1.4.x public releases</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2>Where Workbench is behind</h2>
+      <p>
+        If any of these decide your workflow, Orca is the stronger choice today:
+      </p>
+      <ul class="feature-list">
+        <li><strong>Mobile.</strong> Orca ships beta iOS and Android companions. Workbench is a desktop product; no mobile app is listed.</li>
+        <li><strong>Remote and SSH.</strong> Orca supports remote servers, SSH worktrees, and experimental cloud VMs. Workbench is local.</li>
+        <li><strong>Browser and Design Mode.</strong> Orca embeds Chromium and can send a clicked element's HTML/CSS and screenshot to an agent. Workbench does not list that surface.</li>
+        <li><strong>Slack and Linear bots.</strong> Orca can take work from Slack, Linear, and GitHub. Workbench has Git operations in the session checkout, but no Slack or Linear bot integration listed.</li>
+        <li><strong>Maturity.</strong> Orca is on a 1.4.x public release line. Workbench is pre-1.0 and changing quickly.</li>
+        <li><strong>License.</strong> Orca is MIT. Workbench is AGPL-3.0. If your organization cannot accept AGPL-3.0, that is a decisive difference.</li>
+      </ul>
+      <p>
+        None of that is hidden elsewhere on this page. A comparison that only
+        lists wins is a sales sheet, not a comparison.
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2>Where Workbench is different</h2>
+      <p>
+        Workbench is not trying to be a smaller Orca. It makes four different
+        bets about how a fleet should be run.
+      </p>
+      <ol class="feature-list">
+        <li><strong>A task queue, not just a session list.</strong> Workbench queues durable tasks with a global 1–4 slot limit and explicit states: queued, dispatching, running, waiting, completed, failed, cancelled. A retry is a new attempt, not an erased failure. Schedules create ordinary queued tasks on a cadence.</li>
+        <li><strong>Review is a gate, not a summary.</strong> The review happens in the checkout where the agent worked: Files, Search, and Source Control, with line notes and commit/amend/push/cherry-pick/revert/reset. A review decision is separate from process exit, so a completed task can still be rejected.</li>
+        <li><strong>Mira is deliberately bounded.</strong> Mira reads the real projects, tasks, sessions, diffs, and review state across repositories. She has no shell and cannot approve a proposal, decide a review, merge, push, or edit project code. She tells you what needs you; the judgment stays with you.</li>
+        <li><strong>Status hooks over guesses.</strong> 21 of the 44 agents have managed status hooks. Agents without a hook stay <code>unknown</code> rather than showing a false <code>running</code>. In a fleet, a false green is worse than an honest unknown.</li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2>The practical difference</h2>
+      <p>
+        Imagine five independent tasks: an auth fix, a billing refactor, a flaky
+        test, a migration, and a docs update. In Orca, you can fan out the work
+        across worktrees, use the embedded browser and Design Mode for UI tasks,
+        route Slack or Linear requests into the same workspace, and check in from
+        your phone.
+      </p>
+      <p>
+        In Workbench, you queue the same tasks into a bounded queue, watch the
+        states, review each diff in its own checkout, and decide what merges.
+        There is no phone app and no remote server. The bet is that the queue and
+        the review gate are the hard parts, and that a local, opinionated tool
+        should do those well before adding surfaces.
+      </p>
+      <p>
+        Neither bet is universally right. Pick the one that matches the failure
+        you are actually trying to prevent: lost work across surfaces, or
+        unreviewed agent output entering main.
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2>FAQ</h2>
+      <details>
+        <summary><strong>Is iCode Workbench a drop-in Orca replacement?</strong></summary>
+        <p>No. Orca is broader: mobile, remote servers, Design Mode, and Slack/Linear/GitHub bots. Workbench is a narrower, review-first desktop queue. If you need Orca's extra surfaces, use Orca.</p>
+      </details>
+      <details>
+        <summary><strong>Can I use both?</strong></summary>
+        <p>Yes. They are separate desktop tools and can coexist on the same machine. Some teams use Orca for broad agent work and Workbench for the tasks that need a review gate; others standardize on one.</p>
+      </details>
+      <details>
+        <summary><strong>Does Workbench support remote or SSH worktrees?</strong></summary>
+        <p>Not currently listed in the product documentation. Workbench runs locally on Windows, Linux, and macOS. If remote execution is a requirement, Orca is the better fit today.</p>
+      </details>
+      <details>
+        <summary><strong>Is Workbench free?</strong></summary>
+        <p>Yes. Workbench is free and open source under AGPL-3.0. You pay your model or agent provider for the subscriptions and tokens you use. Orca is free under MIT.</p>
+      </details>
+      <details>
+        <summary><strong>Which tool supports more agents?</strong></summary>
+        <p>Orca says any CLI agent can run in it and lists named integrations. Workbench lists 44 launchable CLI agents, with managed status hooks for 21. The counts are not directly comparable; check the specific agent you need in each tool.</p>
+      </details>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="actions">
+        <a class="button button-primary" href="/workbench/">Explore iCode Workbench</a>
+        <a class="button" href="/guides/parallel-agents/">Read the parallel-agents guide</a>
+        <a class="button" href="/get-started/">Get started</a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<!-- BEGIN:site-footer -->
+<!-- END:site-footer -->
+<script src="../../assets/main.js"></script>
+</body>
+</html>

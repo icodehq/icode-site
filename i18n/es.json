@@ -439,6 +439,8 @@
         "ee4e9d7d4bd1": "La pestaña Programaciones con una auditoría nocturna de dependencias activada y una actualización del proveedor cada seis horas en pausa"
       },
       "blocks": {
+        "016b251d63d0": "¿Nuevo con los agentes en paralelo? Lee <a href=\"/guides/parallel-agents/\">cómo ejecutar una flota sin caos de fusiones</a>.",
+        "a811d7fc11f6": "¿Comparas herramientas? Consulta <a href=\"/compare/orca/\">iCode Workbench vs. Orca</a>.",
         "044b63d83db5": "Control de código fuente en el worktree de la tarea: un diff confirmado en paralelo, con la lista de archivos a un clic.",
         "090ec5f560fc": "Tareas",
         "0a046cdfef2f": "Descarga la última versión",
@@ -516,6 +518,7 @@
     }
   },
   "ui": {
+    "article.meta": "Publicado {published} · Actualizado {updated} · Equipo de iCode",
     "brand.caption": "Entorno de desarrollo de agentes",
     "copy.copied": "Copiado",
     "copy.failed": "No se pudo copiar",

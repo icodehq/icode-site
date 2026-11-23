@@ -439,6 +439,8 @@
         "ee4e9d7d4bd1": "L’onglet Planifications avec un audit nocturne des dépendances activé et une actualisation du fournisseur toutes les six heures en pause"
       },
       "blocks": {
+        "016b251d63d0": "Nouveau avec les agents en parallèle ? Lisez <a href=\"/guides/parallel-agents/\">comment exécuter une flotte sans chaos de fusion</a>.",
+        "a811d7fc11f6": "Vous comparez des outils ? Consultez <a href=\"/compare/orca/\">iCode Workbench vs Orca</a>.",
         "044b63d83db5": "Le Contrôle de code source dans le worktree de la tâche : un diff commité côte à côte, avec la liste des fichiers à un clic.",
         "090ec5f560fc": "Tâches",
         "0a046cdfef2f": "Télécharger la dernière version",
@@ -516,6 +518,7 @@
     }
   },
   "ui": {
+    "article.meta": "Publié {published} · Mis à jour {updated} · Équipe iCode",
     "brand.caption": "Environnement de développement d’agents",
     "copy.copied": "Copié",
     "copy.failed": "Échec de la copie",

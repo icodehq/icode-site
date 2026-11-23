@@ -439,6 +439,8 @@
         "ee4e9d7d4bd1": "Der Zeitpläne-Tab mit einem aktivierten nächtlichen Abhängigkeitsaudit und einer pausierten sechsstündlichen Anbieteraktualisierung"
       },
       "blocks": {
+        "016b251d63d0": "Neu bei parallelen Agenten? Lies <a href=\"/guides/parallel-agents/\">wie du eine Flotte ohne Merge-Chaos betreibst</a>.",
+        "a811d7fc11f6": "Vergleichst du Tools? Sieh dir <a href=\"/compare/orca/\">iCode Workbench vs. Orca</a> an.",
         "044b63d83db5": "Quellcodeverwaltung im Aufgaben-Worktree: ein committeter Diff nebeneinander, mit der Dateiliste nur einen Umschalter entfernt.",
         "090ec5f560fc": "Aufgaben",
         "0a046cdfef2f": "Die neueste Version herunterladen",
@@ -516,6 +518,7 @@
     }
   },
   "ui": {
+    "article.meta": "Veröffentlicht {published} · Aktualisiert {updated} · iCode-Team",
     "brand.caption": "Agent Development Environment",
     "copy.copied": "Kopiert",
     "copy.failed": "Kopieren fehlgeschlagen",

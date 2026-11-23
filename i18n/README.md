@@ -28,6 +28,11 @@ is deliberate: a stale translation must never silently attach to new copy.
 `ui` holds the shared header, footer, language menu, copy-button strings, and
 the Open Graph image alt text (`social.imageAlt`).
 
+Routes listed in `ENGLISH_ONLY_ROUTES` in `scripts/site.py` are exempt from
+translation. They build once in English, carry only `en` and `x-default`
+hreflang, and have no `og:locale:alternate` tags. Remove the route from that set
+when you are ready to localize it, then add its blocks to every catalog.
+
 ## Translation rules
 
 - Translate the text, not the markup. Preserve every HTML tag, attribute,

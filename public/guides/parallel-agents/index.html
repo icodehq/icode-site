@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Run multiple coding agents in parallel — iCode Workbench</title>
+  <meta name="description" content="Run multiple coding agents in parallel without merge chaos. Set up worktrees, scope tasks, queue the fleet, and review every change. Read the guide." />
+  <meta name="theme-color" content="#ffffff" />
+  <link rel="icon" href="../../assets/favicon.svg" type="image/svg+xml" />
+  <link rel="stylesheet" href="../../assets/styles.css" />
+  <script src="../../assets/theme.js"></script>
+</head>
+<body>
+<!-- BEGIN:site-header -->
+<!-- END:site-header -->
+
+<main>
+  <section class="section">
+    <div class="container">
+      <p class="eyebrow">iCode Workbench · Guide · Parallel work</p>
+      <h1>How to run multiple coding agents in parallel without merge chaos</h1>
+      <p class="lede">
+        Two agents, one repository, one checkout. One edits
+        <code>src/api/auth.ts</code> while the other rewrites the same file from a
+        stale read. Both report success. The merge undoes half of each change.
+        The fix is operational: isolate the checkouts, scope the tasks, queue the
+        fleet, review the diff, and merge one branch at a time.
+      </p>
+      <!-- BEGIN:article-meta -->
+      <!-- END:article-meta -->
+      <p class="muted"><em>This guide is currently available in English only.</em></p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2>What worktrees isolate — and what they don't</h2>
+      <p>
+        A Git worktree is a separate working directory with its own branch,
+        sharing the repository's history and object store. It is the standard way
+        to run two agents in one repository without them overwriting each other's
+        files.
+      </p>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>Isolated</th><th>Still shared or missing</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Files and working tree</td><td>Ports</td></tr>
+            <tr><td>Branch and checkout</td><td>Local databases and caches</td></tr>
+            <tr><td>Uncommitted changes</td><td>Gitignored files (<code>.env</code>, <code>node_modules</code>)</td></tr>
+            <tr><td>Terminal working directory</td><td>Credentials and network access</td></tr>
+            <tr><td></td><td>Git hooks, stash, config</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>
+        The right column is where most “parallel agents” attempts fail.
+      </p>
+      <ul class="feature-list">
+        <li><strong>Ports.</strong> Two <code>npm run dev</code> processes both want 3000. Assign a fixed port per worktree, and make the dev server fail rather than silently pick another.</li>
+        <li><strong>Databases.</strong> Migrations and seeds from one agent can corrupt another's test data. Use a separate database or schema per worktree.</li>
+        <li><strong>Gitignored files.</strong> A fresh checkout does not contain <code>.env</code>. Copy it with a setup script, or use Claude Code's <code>.worktreeinclude</code> if you use <code>--worktree</code>.</li>
+        <li><strong>Credentials and network.</strong> A worktree is not a sandbox. Agents still share your machine, your SSH keys, and your network. Use containers when you need process isolation or you are running untrusted code.</li>
+        <li><strong>Git hooks, stash, and config.</strong> These are repository-level, not worktree-level. Do not stash in one worktree and expect another not to see it.</li>
+      </ul>
+      <p>
+        <a href="https://code.claude.com/docs/en/worktrees" rel="noopener">Anthropic's worktree documentation</a>
+        covers the mechanics in detail;
+        <a href="https://www.promptise.com/guides/view/parallel-coding-agents-git-worktrees" rel="noopener">Promptise's parallel-agents guide</a>
+        catalogs the shared-state failures with examples. Both are worth reading
+        before you run more than two agents.
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2>Is the work actually parallelizable?</h2>
+      <p>Parallelism multiplies review load. Before creating a worktree, run this checklist:</p>
+      <ol class="feature-list">
+        <li><strong>Do the tasks touch disjoint files?</strong> If two tasks edit the same file, they are one task until the shared change lands.</li>
+        <li><strong>Is there a shared contract that must land first?</strong> API schema, route table, shared types, migrations. Update the contract on main, then branch.</li>
+        <li><strong>Are the tests fast and trustworthy?</strong> If the suite is slow or flaky, a bad merge will not be caught, and every agent will look successful.</li>
+        <li><strong>Is there review capacity for every branch?</strong> A fleet of five agents can produce five diffs. If one person reviews them all, the bottleneck moved, it did not disappear.</li>
+        <li><strong>Can each task finish in a bounded session?</strong> A task that needs 40 files of context is not a good parallel unit.</li>
+      </ol>
+      <p>
+        If any answer is no, fix that before adding agents. The goal is not
+        maximum concurrency; it is reviewed, mergeable work.
+      </p>
+      <p>
+        Parallel agents are a poor fit for broad migrations, overlapping
+        interfaces, and work where one person must review every line. They are
+        also a poor fit when the test suite is flaky: a green run becomes noise,
+        and the review gate cannot rely on it. Start with two independent tasks,
+        not five intertwined ones.
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2>Set up one worktree per task</h2>
+      <p>
+        Start with Git directly if you are using any agent that works in a
+        directory:
+      </p>
+      <div class="code-block" data-copy><pre>git worktree add ../project-auth -b feature-auth
+git worktree add ../project-billing -b feature-billing
+git worktree list</pre></div>
+      <p>
+        Each task gets one branch and one directory. Name both after the task,
+        not the agent.
+      </p>
+      <p>Then initialize the worktree:</p>
+      <div class="code-block" data-copy><pre>cd ../project-auth
+pnpm install
+cp ../project/.env .env.local</pre></div>
+      <p>
+        For Claude Code, <code>claude --worktree feature-auth</code> creates the
+        worktree and starts the session in one step.
+        <code>.worktreeinclude</code> copies gitignored files into every new
+        worktree. Codex has worktree support as well;
+        <code>git worktree add</code> works with any directory-based agent.
+      </p>
+      <p>Three setup details matter more than the command:</p>
+      <ul class="feature-list">
+        <li><strong>Dependencies.</strong> Each worktree needs its own install. Do not symlink <code>node_modules</code> unless you know the toolchain tolerates it.</li>
+        <li><strong>Runtime resources.</strong> Assign a port and a database per worktree. Write them down.</li>
+        <li><strong>Ignore the worktree directory.</strong> Add <code>.claude/worktrees/</code> or your chosen parent directory to <code>.gitignore</code> so the main checkout does not see it as untracked.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2>Scope tasks so agents don't collide</h2>
+      <p>
+        A worktree prevents file overwrites. It does not prevent two agents from
+        editing the same shared file on different branches and creating a
+        semantic conflict. Give every task a scope:
+      </p>
+      <div class="code-block" data-copy><pre>## Task
+Extract the report formatter from src/report/builder.ts into its own module.
+
+## Owned paths
+- src/report/**
+- tests/report/**
+
+## Shared files
+- src/index.ts — coordinate; do not edit without announcing
+
+## Done when
+- pnpm test -- report passes
+- The new module is imported by builder.ts and no callers break
+
+## Out of scope
+- Renaming public types
+- Changing the report output format</pre></div>
+      <p>
+        The owned paths are a boundary, not a guarantee. Agents drift. Check the
+        diff after the task and look specifically at shared registration files:
+      </p>
+      <ul class="feature-list">
+        <li>dependency manifests and lockfiles;</li>
+        <li>route tables and export lists;</li>
+        <li>migration directories;</li>
+        <li>shared types and API schemas;</li>
+        <li>test fixtures used by more than one task.</li>
+      </ul>
+      <p>
+        If two tasks must change the same shared file, merge that change first,
+        then rebase both worktrees. Do not let two agents “coordinate” through
+        commit messages.
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2>Run the fleet</h2>
+      <p>
+        Once the worktrees exist, manage the work as a queue rather than a pile
+        of terminals. A useful task queue gives you:
+      </p>
+      <ul class="feature-list">
+        <li><strong>A bounded concurrency limit.</strong> Workbench uses a global 1–4 slot limit. Start at two; add slots only when review keeps up.</li>
+        <li><strong>Explicit states.</strong> Queued, dispatching, running, waiting, completed, failed, cancelled. “Running” is not the same as “reviewed.”</li>
+        <li><strong>Retries as new attempts.</strong> A retry does not erase the failed attempt, and it does not count as a review.</li>
+        <li><strong>Review as a separate decision.</strong> Process exit is not approval. A task can complete and still be rejected.</li>
+        <li><strong>Sessions that outlive the window.</strong> A detached host owns the terminal process, so closing the app does not kill a running agent. Sleep a session to stop the process and keep the checkout, then wake it to resume where the harness supports it.</li>
+      </ul>
+      <p>
+        <a href="/workbench/">iCode Workbench</a> is built around this model: 44
+        CLI agents, each session in its own worktree, a cross-project task queue,
+        and a sidebar that shows every session's state. 21 harnesses have managed
+        status hooks; the rest stay unknown rather than guessing. That distinction
+        matters when you are scanning a fleet — a false “running” is worse than
+        “unknown.”
+      </p>
+      <p>
+        The queue also changes how you think about context. Each task gets a
+        bounded session and its own checkout, so the agent does not carry
+        unrelated branch state or another task's tool output. For the per-session
+        view, see
+        <a href="/blog/context-management/">managing context in long coding-agent sessions</a>.
+      </p>
+      <p>
+        Recurring work belongs in the same queue. A schedule creates an ordinary
+        queued task on a cadence — once, daily, weekdays, weekly, or every few
+        hours — with queue-or-skip overlap handling. That keeps a nightly audit
+        from becoming a separate automation with its own failure modes. In
+        Workbench, Mira reads the real queue and surfaces review-ready work,
+        approvals, and failures; she has no shell and cannot approve, merge,
+        push, or edit code. The judgment stays with you.
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2>Review where the agent worked</h2>
+      <p>
+        Review is the gate that makes parallelism safe. Do it in the checkout the
+        agent used, against the baseline the task started from. A sequence that
+        works:
+      </p>
+      <ol class="feature-list">
+        <li><strong>Read the task and the diff first.</strong> Not the agent's summary. The summary tells you what it intended; the diff tells you what it did.</li>
+        <li><strong>Check the owned paths, then the files it touched anyway.</strong> Drift is the norm, not the exception.</li>
+        <li><strong>Run the verification command yourself.</strong> A passing test in the agent's shell is evidence; a passing test in yours is proof.</li>
+        <li><strong>Leave line notes for anything that needs another pass.</strong> A note attached to the line is easier to act on than a paragraph in chat.</li>
+        <li><strong>Stage, commit, amend, or reject.</strong> Keep the review decision separate from process exit, and do not let a green task auto-merge.</li>
+      </ol>
+      <p>
+        Workbench puts Files, Search, and Source Control in the same checkout,
+        with the diff against the session baseline, line notes, and
+        commit/amend/push actions. The point is not that the UI reviews for you.
+        The point is that the review happens where the work happened, before the
+        branch disappears into main.
+      </p>
+      <p>
+        If you run different harnesses, review them the same way. The harness
+        changes how the agent edits; it does not change what a mergeable diff
+        looks like.
+      </p>
+      <p>
+        A common failure is a diff that looks clean in isolation. The task passes,
+        the owned files are correct, and the agent has also changed a shared export
+        that another branch changes. Review the files outside the owned paths
+        before you approve, and test the combined result after each merge.
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2>Merge one branch at a time</h2>
+      <p>Parallel branches are not independent at merge time. Merge serially:</p>
+      <div class="code-block" data-copy><pre>git checkout main
+git pull
+git checkout feature-auth
+git rebase main
+pnpm test
+git checkout main
+git merge --ff-only feature-auth</pre></div>
+      <p>
+        Then repeat for the next branch. After each merge, run the tests on the
+        combined result. Two branches can each pass alone and fail together.
+      </p>
+      <p>
+        Lockfiles deserve their own rule: do not hand-merge
+        <code>pnpm-lock.yaml</code>, <code>package-lock.json</code>, or
+        <code>uv.lock</code>. Restore the target branch's lockfile, re-run the
+        package manager's add command, and commit the regenerated file.
+      </p>
+      <p>
+        Keep the branch until the change is verified in main. Then remove the
+        worktree:
+      </p>
+      <div class="code-block" data-copy><pre>git worktree remove ../project-auth
+git worktree prune</pre></div>
+      <p>
+        If the work is not merged, keep the checkout and the branch. Removing a
+        worktree deletes uncommitted changes.
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2>FAQ</h2>
+      <details>
+        <summary><strong>How many coding agents can run in parallel on one repository?</strong></summary>
+        <p>The practical limit is review capacity and machine resources, not Git. Start with two, measure how long review takes, and add slots only when the queue is consistently empty and the diffs are still being read.</p>
+      </details>
+      <details>
+        <summary><strong>Do Git worktrees prevent merge conflicts?</strong></summary>
+        <p>No. They prevent file overwrites while the agents work. Two branches can still change the same shared file, and the merge can still conflict. Scoping and merge order prevent most of it.</p>
+      </details>
+      <details>
+        <summary><strong>What should each agent own?</strong></summary>
+        <p>A disjoint set of paths, a task statement, a verification command, and an explicit out-of-scope list. Shared registration files should be owned by one task or landed on main before the parallel work starts.</p>
+      </details>
+      <details>
+        <summary><strong>Can I run different CLI agents in the same repository?</strong></summary>
+        <p>Yes. Worktrees are harness-agnostic. Workbench runs 44 CLI agents, including Claude Code, Codex, and OpenCode, each session in its own worktree, with one review surface. The harness still decides how it edits and compacts; the worktree and the review gate stay the same.</p>
+      </details>
+      <details>
+        <summary><strong>Should I use worktrees or containers?</strong></summary>
+        <p>Use worktrees when the agents are trusted, the main risk is file collisions, and you want fast local setup. Use containers when you need process, network, or database isolation, or when the agent runs untrusted commands. The two can be combined: a container per worktree is a common setup for unsupervised runs.</p>
+      </details>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="actions">
+        <a class="button button-primary" href="/workbench/">Explore iCode Workbench</a>
+        <a class="button" href="/compare/orca/">Compare with Orca</a>
+        <a class="button" href="/agent/">Meet iCode Agent</a>
+        <a class="button" href="/get-started/">Get started</a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<!-- BEGIN:site-footer -->
+<!-- END:site-footer -->
+<script src="../../assets/main.js"></script>
+</body>
+</html>

@@ -32,6 +32,7 @@ BLOCK = {
 SKIP_CLASSES = {"product-command", "code-block"}
 
 EN_UI = {
+    "article.meta": "Published {published} · Updated {updated} · iCode team",
     "brand.caption": "Agent development environment",
     "nav.main": "Main",
     "nav.workbench": "Workbench",
@@ -386,9 +387,14 @@ def signature(
     return parser.tags, parser.classes, parser.extras, parser.links, parser.code_text
 
 
-def validate(english: dict, catalogs: dict[str, dict]) -> list[str]:
+def validate(
+    english: dict,
+    catalogs: dict[str, dict],
+    ignore_routes: set[str] | None = None,
+) -> list[str]:
     issues: list[str] = []
-    routes = set(english["pages"])
+    ignored = ignore_routes or set()
+    routes = set(english["pages"]) - ignored
     for code, catalog in catalogs.items():
         if code == "en":
             continue

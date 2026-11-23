@@ -439,6 +439,8 @@
         "ee4e9d7d4bd1": "A aba Agendamentos com uma auditoria noturna de dependências habilitada e uma atualização de provedor pausada a cada seis horas"
       },
       "blocks": {
+        "016b251d63d0": "Novo em agentes paralelos? Leia <a href=\"/guides/parallel-agents/\">como executar uma frota sem caos de merge</a>.",
+        "a811d7fc11f6": "Comparando ferramentas? Veja <a href=\"/compare/orca/\">iCode Workbench vs Orca</a>.",
         "044b63d83db5": "Controle de código-fonte no worktree da tarefa: um diff confirmado lado a lado, com a lista de arquivos a um clique.",
         "090ec5f560fc": "Tarefas",
         "0a046cdfef2f": "Baixe a versão mais recente",
@@ -516,6 +518,7 @@
     }
   },
   "ui": {
+    "article.meta": "Publicado {published} · Atualizado {updated} · Equipe iCode",
     "brand.caption": "Ambiente de desenvolvimento de agentes",
     "copy.copied": "Copiado",
     "copy.failed": "Falha ao copiar",
