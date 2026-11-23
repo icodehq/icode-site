@@ -100,7 +100,8 @@
         "8010d1f4d069": "Asistente",
         "506cfc89cd02": "Qué debería hacer un asistente entre proyectos",
         "fe2dabe4d5f6": "Un asistente acotado lee la cola real, dirige la atención y no puede fusionar, hacer push ni aprobar.",
-        "b308efe1d4bb": "Ensayos sobre contexto, revisión, tareas duraderas y el asistente que observa la cola."
+        "b308efe1d4bb": "Ensayos sobre contexto, revisión, tareas duraderas y el asistente que observa la cola.",
+        "c0b7eb0c1b60": "Empieza con el ensayo de contexto para el comportamiento de tareas largas, luego la secuencia de Workbench: configuración paralela, revisión, cola y Mira. Cada ensayo enlaza a los demás y a las páginas de producto, así que puedes leer uno o seguir todo el arco."
       },
       "meta": {
         "description": "Ensayos y notas de iCode: cómo los agentes consumen tokens, por qué importa el contexto y cómo ejecutar una flota sin caos de fusiones.",
@@ -294,7 +295,8 @@
         "93ef7c636865": "Workbench",
         "bab80e773130": "Configura worktrees, delimita tareas, encola la flota y revisa sin caos de fusiones.",
         "e3eb1d688b08": "Cinco guías basadas en tareas.",
-        "070ad0140a16": "Cuatro recetas de iCode Agent y una guía de Workbench para ejecutar una flota."
+        "070ad0140a16": "Cuatro recetas de iCode Agent y una guía de Workbench para ejecutar una flota.",
+        "b235827940c7": "Cada guía de Agent sigue el mismo bucle: reproducir el fallo, leer el código real, cambiar lo mínimo y verificar. La guía de Workbench añade aislamiento, alcance de tareas y orden de fusión para trabajo en paralelo. Lee la guía antes de la tarea y mantenla abierta mientras trabajas; cada sección corresponde a algo que harás de verdad."
       },
       "meta": {
         "description": "Guías paso a paso de iCode Agent: corregir tests, refactorizar un módulo, rastrear un error y automatizar tareas en scripts y CI.",

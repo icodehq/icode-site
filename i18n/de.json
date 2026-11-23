@@ -100,7 +100,8 @@
         "8010d1f4d069": "Assistent",
         "506cfc89cd02": "Was ein projektübergreifender Assistent tun sollte",
         "fe2dabe4d5f6": "Ein begrenzter Assistent liest die echte Warteschlange, lenkt Aufmerksamkeit und kann nicht mergen, pushen oder genehmigen.",
-        "b308efe1d4bb": "Essays zu Kontext, Review, dauerhaften Aufgaben und dem Assistenten, der die Warteschlange beobachtet."
+        "b308efe1d4bb": "Essays zu Kontext, Review, dauerhaften Aufgaben und dem Assistenten, der die Warteschlange beobachtet.",
+        "c0b7eb0c1b60": "Beginne mit dem Kontext-Essay zum Verhalten langer Aufgaben, dann die Workbench-Reihe: paralleles Setup, Review, Warteschlange und Mira. Jeder Essay verlinkt die anderen und die Produktseiten, sodass du einen lesen oder dem ganzen Bogen folgen kannst."
       },
       "meta": {
         "description": "Essays und Notizen von iCode: Wie Coding-Agenten Token verbrauchen, warum Kontextmanagement zählt und wie eine Flotte ohne Merge-Chaos läuft.",
@@ -294,7 +295,8 @@
         "93ef7c636865": "Workbench",
         "bab80e773130": "Worktrees einrichten, Aufgaben abgrenzen, die Flotte einreihen und ohne Merge-Chaos prüfen.",
         "e3eb1d688b08": "Fünf aufgabenorientierte Anleitungen.",
-        "070ad0140a16": "Vier iCode-Agent-Rezepte und eine Workbench-Anleitung für den Betrieb einer Flotte."
+        "070ad0140a16": "Vier iCode-Agent-Rezepte und eine Workbench-Anleitung für den Betrieb einer Flotte.",
+        "b235827940c7": "Jede Agent-Anleitung folgt derselben Schleife: Fehler reproduzieren, echten Code lesen, die kleinste Änderung machen und verifizieren. Die Workbench-Anleitung ergänzt Isolierung, Aufgabenabgrenzung und Merge-Reihenfolge für parallele Arbeit. Lies die Anleitung vor der Aufgabe und halte sie während der Arbeit offen; jeder Abschnitt entspricht etwas, das du tatsächlich tust."
       },
       "meta": {
         "description": "Schritt-für-Schritt-Anleitungen für iCode Agent: Tests reparieren, Module refaktorieren, Bugs aufspüren und Aufgaben in Skripten und CI automatisieren.",

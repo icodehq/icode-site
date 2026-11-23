@@ -100,7 +100,8 @@
         "8010d1f4d069": "Assistant",
         "506cfc89cd02": "Ce qu’un assistant inter-projets devrait faire",
         "fe2dabe4d5f6": "Un assistant borné lit la vraie file d’attente, oriente l’attention et ne peut ni fusionner, ni pousser, ni approuver.",
-        "b308efe1d4bb": "Essais sur le contexte, la revue, les tâches durables et l’assistant qui surveille la file."
+        "b308efe1d4bb": "Essais sur le contexte, la revue, les tâches durables et l’assistant qui surveille la file.",
+        "c0b7eb0c1b60": "Commencez par l’essai sur le contexte pour le comportement des tâches longues, puis la séquence Workbench : configuration parallèle, revue, file et Mira. Chaque essai renvoie aux autres et aux pages produit, donc vous pouvez en lire un ou suivre tout l’arc."
       },
       "meta": {
         "description": "Essais et notes d’iCode : comment les agents consomment des tokens, pourquoi le contexte compte et comment exécuter une flotte sans chaos de fusion.",
@@ -294,7 +295,8 @@
         "93ef7c636865": "Workbench",
         "bab80e773130": "Configurez des worktrees, cadrez les tâches, mettez la flotte en file et révisez sans chaos de fusion.",
         "e3eb1d688b08": "Cinq guides orientés tâches.",
-        "070ad0140a16": "Quatre recettes iCode Agent et un guide Workbench pour exécuter une flotte."
+        "070ad0140a16": "Quatre recettes iCode Agent et un guide Workbench pour exécuter une flotte.",
+        "b235827940c7": "Chaque guide Agent suit la même boucle : reproduire l’échec, lire le vrai code, faire le plus petit changement et vérifier. Le guide Workbench ajoute l’isolation, le cadrage des tâches et l’ordre de fusion pour le travail en parallèle. Lisez le guide avant la tâche et gardez-le ouvert pendant que vous travaillez ; chaque section correspond à ce que vous ferez réellement."
       },
       "meta": {
         "description": "Guides iCode Agent pas à pas : corriger des tests, refactoriser un module, traquer un bug et automatiser des tâches dans des scripts et en CI.",

@@ -100,7 +100,8 @@
         "8010d1f4d069": "Assistente",
         "506cfc89cd02": "O que um assistente entre projetos deveria fazer",
         "fe2dabe4d5f6": "Um assistente delimitado lê a fila real, direciona a atenção e não pode fazer merge, push ou aprovar.",
-        "b308efe1d4bb": "Ensaios sobre contexto, revisão, tarefas duráveis e o assistente que observa a fila."
+        "b308efe1d4bb": "Ensaios sobre contexto, revisão, tarefas duráveis e o assistente que observa a fila.",
+        "c0b7eb0c1b60": "Comece pelo ensaio de contexto para o comportamento de tarefas longas, depois a sequência do Workbench: configuração paralela, revisão, fila e Mira. Cada ensaio remete aos outros e às páginas do produto, então você pode ler um ou seguir o arco inteiro."
       },
       "meta": {
         "description": "Ensaios e notas do iCode: como os agentes consomem tokens, por que o contexto importa e como executar uma frota sem caos de merge.",
@@ -294,7 +295,8 @@
         "93ef7c636865": "Workbench",
         "bab80e773130": "Configure worktrees, delimite tarefas, enfileire a frota e revise sem caos de merge.",
         "e3eb1d688b08": "Cinco guias baseados em tarefas.",
-        "070ad0140a16": "Quatro receitas do iCode Agent e um guia do Workbench para executar uma frota."
+        "070ad0140a16": "Quatro receitas do iCode Agent e um guia do Workbench para executar uma frota.",
+        "b235827940c7": "Cada guia do Agent segue o mesmo loop: reproduzir a falha, ler o código real, fazer a menor mudança e verificar. O guia do Workbench acrescenta isolamento, delimitação de tarefas e ordem de merge para trabalho em paralelo. Leia o guia antes da tarefa e mantenha-o aberto enquanto trabalha; cada seção corresponde a algo que você realmente fará."
       },
       "meta": {
         "description": "Guias passo a passo do iCode Agent para trabalho comum: corrigir testes com falha, refatorar um módulo, rastrear um bug e automatizar tarefas em scripts e CI.",
