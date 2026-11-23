@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Durable agent tasks, not terminal tabs — iCode Workbench</title>
+  <meta name="description" content="A terminal tab is a process, not a task. Durable queues, explicit states, retries, and schedules change how you run a fleet of coding agents." />
+  <meta name="theme-color" content="#ffffff" />
+  <link rel="icon" href="../../assets/favicon.svg" type="image/svg+xml" />
+  <link rel="stylesheet" href="../../assets/styles.css" />
+  <script src="../../assets/theme.js"></script>
+</head>
+<body>
+<!-- BEGIN:site-header -->
+<!-- END:site-header -->
+
+<main>
+  <section class="section">
+    <div class="container">
+      <p class="eyebrow">iCode Workbench · Blog · Queue</p>
+      <h1>Durable tasks, not terminal tabs: running a queue of agent work</h1>
+      <p class="lede">
+        A terminal tab is a process. A task is a unit of work. Most agent
+        workflows confuse the two: closing the window kills the process, closing
+        the conversation loses the state, and a green exit gets treated as a
+        finished job. The queue is the abstraction that separates them.
+      </p>
+      <!-- BEGIN:article-meta -->
+      <!-- END:article-meta -->
+      <p class="muted"><em>This essay is currently available in English only.</em></p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2>The tab is not the task</h2>
+      <p>
+        A tab is bound to a window. Close the window and the process dies; reopen
+        it and you get a new shell with no memory of what was running. If the
+        agent was halfway through a refactor, the work is not “paused.” It is
+        gone, unless something outside the terminal remembers it.
+      </p>
+      <p>
+        A task should outlive the window. It should survive a closed app, a
+        sleeping session, and a failed attempt. It should still be there tomorrow,
+        with its instruction, its checkout, its state, and its review decision
+        intact.
+      </p>
+      <p>That is the difference between a terminal tab and a task queue.</p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2>What a task contains</h2>
+      <p>A durable task carries five things:</p>
+      <h3>An instruction.</h3>
+      <p>
+        What to do, what must stay true, what “done” means, and what is out of
+        scope. Without this, the agent is guessing and the reviewer is guessing
+        about the guess.
+      </p>
+      <h3>A checkout.</h3>
+      <p>
+        Each task runs in its own Git worktree and branch, so two tasks in the
+        same repository do not edit the same files by accident.
+      </p>
+      <h3>A session.</h3>
+      <p>
+        The agent process that does the work. The session can sleep and wake; the
+        terminal can outlive the window; the checkout stays on disk.
+      </p>
+      <h3>A state.</h3>
+      <p>
+        Queued, dispatching, running, waiting, completed, failed, cancelled. The
+        state is what makes a fleet legible.
+      </p>
+      <h3>A review decision.</h3>
+      <p>
+        Separate from the process state. A task can complete and still be
+        rejected. A task is not done because it exited; it is done because someone
+        reviewed the result.
+      </p>
+      <p>A task without a review decision is just a process that stopped.</p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2>The state machine</h2>
+      <p>
+        The states are not decoration. Each one tells you what the system is
+        doing and what it needs from you.
+      </p>
+      <ul class="feature-list">
+        <li><strong>Queued.</strong> The task is waiting for a slot. Nothing has started.</li>
+        <li><strong>Dispatching.</strong> The worktree and session are being set up.</li>
+        <li><strong>Running.</strong> The agent is working.</li>
+        <li><strong>Waiting.</strong> The agent needs input — a permission prompt, a decision, a missing credential.</li>
+        <li><strong>Completed.</strong> The process exited successfully.</li>
+        <li><strong>Failed.</strong> The process exited with an error.</li>
+        <li><strong>Cancelled.</strong> A person stopped it.</li>
+      </ul>
+      <p>
+        The important distinction is between <strong>completed</strong> and
+        <strong>reviewed</strong>. “Completed” is a process fact. “Reviewed” is a
+        judgment. A queue that treats the first as the second has no gate.
+      </p>
+      <p>
+        The second important distinction is between <strong>waiting</strong> and
+        <strong>stuck</strong>. A waiting task is not a failure; it is a task that
+        needs a person. The state makes that visible instead of leaving you to
+        guess from a silent terminal.
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2>The slot limit</h2>
+      <p>
+        A queue with no limit is a pile. Workbench uses a global 1–4 slot limit
+        for queued tasks. Start at two.
+      </p>
+      <p>
+        The limit is not there to make the product feel safe. It is there because
+        parallel work contends for the same machine resources: ports, databases,
+        CPU, and your attention. A queue that dispatches everything at once will
+        produce a fleet of half-finished tasks and a reviewer who cannot keep up.
+      </p>
+      <p>
+        Bounded concurrency also makes the queue useful. When all slots are full,
+        a new task waits in a known place. It is not lost, it is not silently
+        dropped, and it is not competing for the same port as the task in front of
+        it.
+      </p>
+      <p>
+        A queue also gives you a place to put work that should not start yet. A
+        backlog is a list; a queue has a head, a state, and a reason. When a task
+        waits, you can see why: no slot, a dependency, or a person needed.
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2>Retries are new attempts</h2>
+      <p>
+        A retry is a new attempt, not an erasure of the failed one.
+      </p>
+      <p>
+        That distinction matters because the failed attempt is evidence. It has
+        logs, a diff, a partial state, and a reason it did not work. If a retry
+        overwrites the record, you lose the only material that tells you whether
+        the next attempt is different.
+      </p>
+      <p>
+        A retry should be a deliberate decision: this attempt failed for a reason,
+        and here is what changes. “Try again until green” is not a queue policy;
+        it is a loop that hides the defect.
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2>Schedules are ordinary tasks</h2>
+      <p>
+        Recurring work should not live in a separate automation system with its
+        own failures. A schedule creates an ordinary queued task on a cadence —
+        once, daily, weekdays, weekly, or every few hours.
+      </p>
+      <p>The useful details are mundane:</p>
+      <ul class="feature-list">
+        <li><strong>Queue-or-skip overlap handling.</strong> If the previous occurrence is still running, the next one can wait or be skipped.</li>
+        <li><strong>Run-now.</strong> You can trigger an occurrence without waiting for the cadence.</li>
+        <li><strong>Pausing is not deleting.</strong> Pausing a schedule leaves tasks already created untouched.</li>
+        <li><strong>Every occurrence lands in the same queue</strong> as work you queued by hand.</li>
+      </ul>
+      <p>
+        The honest limit: schedules are in-process timers. They need Workbench
+        running. They are not a cloud cron, and they should not be sold as one.
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2>Durability</h2>
+      <p>A queue is only durable if the process is.</p>
+      <p>
+        Workbench uses a detached host that owns the PTYs. Closing the window does
+        not kill a running agent; reopening reattaches to the same terminal with
+        its scrollback and alternate-screen state. Sleep a session to stop the
+        process while keeping the checkout and resume token; wake it to continue
+        where the harness supports it.
+      </p>
+      <p>
+        Projects, sessions, worktrees, tasks, and schedules live in local SQLite.
+        There is no hosted service behind the queue. That is a deliberate trade:
+        the state is yours, and it is on your machine.
+      </p>
+      <p>
+        It also means the queue is not a cloud service. If the machine is off, the
+        queue is off. No hosted control plane, no remote copy of your work, no
+        vendor holding the state.
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2>The queue and review capacity</h2>
+      <p>
+        The queue makes review load visible. Every completed task is a diff
+        waiting for a decision. If the queue is always full and the review is
+        always behind, the problem is not the agent count; it is the review
+        capacity.
+      </p>
+      <p>
+        A queue with four slots and one reviewer is a one-reviewer system. Cap
+        work in progress to the review capacity, not to the machine's capacity.
+        The queue helps because it shows you the number instead of hiding it in a
+        pile of tabs.
+      </p>
+      <p>
+        The queue is a mirror. If it is always full, it is showing you where the
+        constraint is, not creating it.
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2>How Workbench implements it</h2>
+      <p>
+        Workbench puts the queue in the sidebar, across projects. Tasks have
+        explicit states, a 1–4 slot limit, retries as new attempts, and schedules
+        that create ordinary queued tasks. Each task runs in a session with its
+        own worktree. Review happens in the checkout where the agent worked, and
+        the review decision is separate from process exit.
+      </p>
+      <p>
+        Mira reads the real queue and surfaces review-ready work, approvals,
+        failures, and waiting tasks. She has no shell and cannot approve, merge,
+        push, or edit code. The queue tells you what needs you; it does not decide
+        for you.
+      </p>
+      <p>
+        The limits stay visible: tasks are supervised, not autonomous; a
+        permission prompt still waits for a person; schedules need Workbench
+        running. A queue that hides its limits is not a control surface.
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2>Monday checklist</h2>
+      <ul class="feature-list">
+        <li>Move one recurring workflow from a terminal tab into a task.</li>
+        <li>Start with two slots, not four.</li>
+        <li>Write the instruction, the done condition, and the out-of-scope list before dispatching.</li>
+        <li>Treat a retry as a new attempt; inspect the failed one first.</li>
+        <li>Put recurring work in the same queue.</li>
+        <li>Cap work in progress to review capacity.</li>
+      </ul>
+      <p>The queue is not a faster terminal. It is a different unit of work.</p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="actions">
+        <a class="button button-primary" href="/workbench/">Explore iCode Workbench</a>
+        <a class="button" href="/guides/parallel-agents/">Run a fleet in parallel</a>
+        <a class="button" href="/blog/agent-review-workflow/">Read the review gate</a>
+        <a class="button" href="/compare/orca/">Compare with Orca</a>
+        <a class="button" href="/get-started/">Get started</a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<!-- BEGIN:site-footer -->
+<!-- END:site-footer -->
+<script src="../../assets/main.js"></script>
+</body>
+</html>

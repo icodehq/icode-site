@@ -93,7 +93,10 @@
         "c6f21307e57f": "Julgamento",
         "8613e0ed5355": "O portão de revisão",
         "e03493a4b684": "Uma tarefa verde não é uma tarefa revisada. O que verificar antes que o diff de um agente chegue à main.",
-        "599da9d5b253": "Ler o ensaio →"
+        "599da9d5b253": "Ler o ensaio →",
+        "d325fcd91938": "Fila",
+        "6c49f6e45b38": "Tarefas duráveis, não abas de terminal",
+        "6cf3e5c6df4f": "Uma tarefa não é um processo. Estados explícitos, novas tentativas e agendamentos para uma frota de agentes de programação."
       },
       "meta": {
         "description": "Ensaios e notas do iCode: como os agentes consomem tokens, por que o contexto importa e como executar uma frota sem caos de merge.",

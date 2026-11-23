@@ -93,7 +93,10 @@
         "c6f21307e57f": "Urteil",
         "8613e0ed5355": "Das Review-Gate",
         "e03493a4b684": "Ein grüner Task ist kein geprüfter Task. Was du prüfen solltest, bevor ein Agent-Diff main erreicht.",
-        "599da9d5b253": "Essay lesen →"
+        "599da9d5b253": "Essay lesen →",
+        "d325fcd91938": "Warteschlange",
+        "6c49f6e45b38": "Dauerhafte Aufgaben, keine Terminal-Tabs",
+        "6cf3e5c6df4f": "Eine Aufgabe ist kein Prozess. Explizite Zustände, Wiederholungen und Zeitpläne für eine Flotte von Coding-Agenten."
       },
       "meta": {
         "description": "Essays und Notizen von iCode: Wie Coding-Agenten Token verbrauchen, warum Kontextmanagement zählt und wie eine Flotte ohne Merge-Chaos läuft.",

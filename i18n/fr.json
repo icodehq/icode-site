@@ -93,7 +93,10 @@
         "c6f21307e57f": "Jugement",
         "8613e0ed5355": "La porte de revue",
         "e03493a4b684": "Une tâche au vert n’est pas une tâche relue. Ce qu’il faut vérifier avant que le diff d’un agent n’atteigne main.",
-        "599da9d5b253": "Lire l’essai →"
+        "599da9d5b253": "Lire l’essai →",
+        "d325fcd91938": "File d’attente",
+        "6c49f6e45b38": "Des tâches durables, pas des onglets de terminal",
+        "6cf3e5c6df4f": "Une tâche n’est pas un processus. Des états explicites, des reprises et des planifications pour une flotte d’agents de programmation."
       },
       "meta": {
         "description": "Essais et notes d’iCode : comment les agents consomment des tokens, pourquoi le contexte compte et comment exécuter une flotte sans chaos de fusion.",
