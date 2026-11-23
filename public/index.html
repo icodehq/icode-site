@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>iCode — run a fleet of agents. Keep the judgment.</title>
-  <meta name="description" content="iCode Workbench runs Claude Code, Codex, OpenCode, and 40+ more CLI agents in parallel, each in its own Git worktree. Review every change, queue durable tasks, and keep the judgment. iCode Agent is the terminal coding agent built for long sessions." />
+  <meta name="description" content="iCode Workbench runs Claude Code, Codex, OpenCode, and 40+ CLI agents in parallel, each in its own Git worktree. Review every change and keep the judgment." />
   <meta name="theme-color" content="#ffffff" />
   <link rel="icon" href="./assets/favicon.svg" type="image/svg+xml" />
   <link rel="stylesheet" href="./assets/styles.css" />
@@ -33,7 +33,11 @@
       <p class="hero-note">Local-first · Pre-1.0 · Workbench and Agent available today</p>
 
       <figure class="product-shot hero-shot">
-        <img src="./assets/workbench/shell.png" width="1600" height="1000" alt="The iCode Workbench with the project and task sidebar, session and app tabs, a live terminal, and a Source Control diff in the inspector" />
+        <picture>
+          <source type="image/avif" srcset="/assets/workbench/shell-640.avif 640w, /assets/workbench/shell-1280.avif 1280w, /assets/workbench/shell-1600.avif 1600w" sizes="(max-width: 808px) calc(100vw - 3rem), 712px" />
+          <source type="image/webp" srcset="/assets/workbench/shell-640.webp 640w, /assets/workbench/shell-1280.webp 1280w, /assets/workbench/shell-1600.webp 1600w" sizes="(max-width: 808px) calc(100vw - 3rem), 712px" />
+          <img src="./assets/workbench/shell.png" width="1600" height="1000" fetchpriority="high" decoding="async" alt="The iCode Workbench with the project and task sidebar, session and app tabs, a live terminal, and a Source Control diff in the inspector" />
+        </picture>
         <figcaption>One sidebar for every project, a live terminal, and a Source Control diff in the inspector.</figcaption>
       </figure>
     </div>
@@ -110,7 +114,7 @@
         </div>
       </div>
       <figure class="product-shot">
-        <img src="./assets/workbench/mira.png" width="1600" height="1000" loading="lazy" alt="Mira answering a cross-project question with a Needs a decision and In flight summary, beside the live project and task sidebar" />
+        <img src="./assets/workbench/mira.png" width="1600" height="1000" loading="lazy" decoding="async" alt="Mira answering a cross-project question with a Needs a decision and In flight summary, beside the live project and task sidebar" />
         <figcaption>Mira reads the real queue: review-ready work, running sessions, and uncommitted changes.</figcaption>
       </figure>
     </div>

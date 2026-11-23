@@ -72,7 +72,7 @@
         "c86d3ac5cc20": "Workbench(pre-1.0)는 CLI 에이전트 함대를 위한 오픈소스 데스크톱 환경입니다 — 44개가 실행 가능하며 Claude Code, Codex, OpenCode 및 40개 이상을 포함하고, 각각은 격리된 워크트리에서 작업, 검토, Mira를 갖습니다. Agent는 집중형 터미널 화면입니다: 하나의 저장소, 하나의 세션, 창 없음. 두 제품은 별개이며 같은 원칙을 따르고, 어느 쪽이든 단독으로 사용할 수 있습니다."
       },
       "meta": {
-        "description": "iCode Agent는 저장소에서 직접 작업하는 터미널 코딩 에이전트입니다. 탐색, 변경, 실행, 검증을 수행합니다. 컨텍스트를 제한, 축소, 요약해 긴 작업이 일관되고 경제성을 유지하도록 합니다.",
+        "description": "iCode Agent는 저장소에서 직접 작업하는 터미널 코딩 에이전트입니다. 컨텍스트를 관리해 긴 작업의 일관성과 비용을 지킵니다.",
         "title": "iCode Agent — 컨텍스트 윈도우를 낭비하지 않는 코딩 에이전트"
       }
     },
@@ -334,7 +334,7 @@
         "f34a4944d5dd": "전체를 다시 쓰지 않습니다. <code>edit</code>은 대상 범위를 바꾸고 <code>write</code>는 정말 새로운 파일에만 사용됩니다. 수락하기 전에 diff가 항상 표시됩니다."
       },
       "meta": {
-        "description": "단계별 iCode Agent 워크플로. 모듈의 호출자를 파악하고, diff를 검토하며 집중 리팩터링을 수행하고, 아무것도 깨지지 않았는지 검증합니다. 사용할 프롬프트도 그대로 담았습니다.",
+        "description": "iCode Agent 단계별 워크플로. 모듈 호출자를 파악하고, 검토된 diff로 리팩터링하고, 깨진 것이 없는지 검증합니다.",
         "title": "가이드: iCode Agent로 모듈 리팩터링하기"
       }
     },
@@ -422,7 +422,7 @@
         "f8f7124c9462": "에이전트 함대를 운영하세요. 하나의 워크벤치. 판단은 당신이."
       },
       "meta": {
-        "description": "iCode Workbench는 Claude Code, Codex, OpenCode 및 40개 이상의 CLI 에이전트를 병렬로 실행하며, 각각은 독립된 Git 워크트리에서 동작합니다. 모든 변경을 검토하고 영구 작업을 대기열에 넣으며 판단을 지키세요. iCode Agent는 긴 세션을 위해 만들어진 터미널 코딩 에이전트입니다.",
+        "description": "iCode Workbench는 Claude Code, Codex, OpenCode 등 40개 이상의 CLI 에이전트를 병렬 실행하며, 각각 독립된 Git 워크트리에서 동작합니다. 판단은 당신에게 남습니다.",
         "title": "iCode — 에이전트 함대를 운영하고 판단을 지키세요."
       }
     },
@@ -510,7 +510,7 @@
         "ec5f9d4b6940": "CLI 에이전트 함대를 위한 컨트롤 룸."
       },
       "meta": {
-        "description": "iCode Workbench는 44개의 CLI 에이전트를 위한 오픈소스 에이전트 개발 환경입니다 — Claude Code, Codex, OpenCode 및 40개 이상 — 각각은 격리된 Git 워크트리에서 동작합니다. 영구 작업을 대기열에 넣고 모든 변경을 검토하며 판단을 지키세요. Pre-1.0; 서명되지 않은 설치 프로그램은 GitHub Releases에 게시됩니다.",
+        "description": "iCode Workbench는 44개 CLI 에이전트를 위한 오픈소스 에이전트 개발 환경입니다. 각 에이전트는 격리된 Git 워크트리에서 실행됩니다.",
         "title": "iCode Workbench — 에이전트 함대를 운영하고 판단을 지키세요."
       }
     }
@@ -548,6 +548,7 @@
     "nav.guides": "가이드",
     "nav.main": "메인",
     "nav.workbench": "Workbench",
-    "theme.toggle": "색상 테마 전환"
+    "theme.toggle": "색상 테마 전환",
+    "social.imageAlt": "iCode Workbench: CLI 에이전트 함대를 위한 워크벤치"
   }
 }

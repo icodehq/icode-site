@@ -19,7 +19,9 @@ import json
 import os
 import re
 import shutil
+import struct
 import sys
+import unicodedata
 from html.parser import HTMLParser
 from pathlib import Path
 
@@ -52,6 +54,32 @@ SKIP_DIRS = {"__pycache__", ".venv", "node_modules", "_site"}
 
 LOCALES = json.loads((I18N / "locales.json").read_text("utf-8"))
 ENGLISH = next(locale for locale in LOCALES if locale["code"] == "en")
+
+OG_DEFAULT_PATH = "/assets/social/og-default-1200x630.png"
+OG_WIDTH = 1200
+OG_HEIGHT = 630
+OG_ALT_KEY = "social.imageAlt"
+ARTICLE_ROUTES = {
+    "blog/context-management",
+    "guides/fix-a-failing-test",
+    "guides/refactor-a-module",
+    "guides/track-down-a-bug",
+    "guides/automate-in-ci",
+}
+PRODUCTS = {
+    "workbench": {
+        "name": "iCode Workbench",
+        "operatingSystem": "Windows, Linux, macOS",
+        "license": "https://www.gnu.org/licenses/agpl-3.0.html",
+        "codeRepository": "https://github.com/icodehq/icode-workbench",
+    },
+    "agent": {
+        "name": "iCode Agent",
+        "operatingSystem": "Windows, macOS, Linux",
+        "license": "https://www.apache.org/licenses/LICENSE-2.0",
+        "codeRepository": "https://github.com/icodehq/icode-agent",
+    },
+}
 
 
 def route_key(route: str) -> str:
@@ -113,6 +141,328 @@ def head_links(locale: dict, route: str) -> str:
         f'<link rel="alternate" hreflang="x-default" href="{absolute_url(ENGLISH, route)}" />'
     )
     return "\n  ".join(links)
+
+
+def _attr(value: str) -> str:
+    return html_text.escape(str(value), quote=True)
+
+
+def _og_locale(locale: dict) -> str:
+    return locale["ogLocale"]
+
+
+def _og_image() -> str:
+    return SITE_ORIGIN + OG_DEFAULT_PATH
+
+
+def hero_preload(route: str) -> str:
+    if route not in ("", "workbench"):
+        return ""
+    srcset = (
+        "/assets/workbench/shell-640.avif 640w, "
+        "/assets/workbench/shell-1280.avif 1280w, "
+        "/assets/workbench/shell-1600.avif 1600w"
+    )
+    return (
+        '<link rel="preload" as="image" type="image/avif" fetchpriority="high" '
+        'href="/assets/workbench/shell-1280.avif" '
+        f'imagesrcset="{srcset}" '
+        'imagesizes="(max-width: 808px) calc(100vw - 3rem), 712px" />'
+    )
+
+
+def social_meta(locale: dict, route: str, meta: dict, ui: dict) -> str:
+    page_url = absolute_url(locale, route)
+    image = _og_image()
+    og_type = "article" if route in ARTICLE_ROUTES else "website"
+    alt = ui[OG_ALT_KEY]
+    lines = [
+        '<meta property="og:site_name" content="iCode" />',
+        f'<meta property="og:type" content="{og_type}" />',
+        f'<meta property="og:title" content="{_attr(meta["title"])}" />',
+        f'<meta property="og:description" content="{_attr(meta["description"])}" />',
+        f'<meta property="og:url" content="{_attr(page_url)}" />',
+        f'<meta property="og:locale" content="{_attr(_og_locale(locale))}" />',
+    ]
+    for entry in LOCALES:
+        if entry["code"] != locale["code"]:
+            lines.append(
+                f'<meta property="og:locale:alternate" '
+                f'content="{_attr(entry["ogLocale"])}" />'
+            )
+    lines += [
+        f'<meta property="og:image" content="{_attr(image)}" />',
+        f'<meta property="og:image:secure_url" content="{_attr(image)}" />',
+        '<meta property="og:image:type" content="image/png" />',
+        f'<meta property="og:image:width" content="{OG_WIDTH}" />',
+        f'<meta property="og:image:height" content="{OG_HEIGHT}" />',
+        f'<meta property="og:image:alt" content="{_attr(alt)}" />',
+        '<meta name="twitter:card" content="summary_large_image" />',
+        f'<meta name="twitter:title" content="{_attr(meta["title"])}" />',
+        f'<meta name="twitter:description" content="{_attr(meta["description"])}" />',
+        f'<meta name="twitter:image" content="{_attr(image)}" />',
+        f'<meta name="twitter:image:alt" content="{_attr(alt)}" />',
+    ]
+    return "\n  ".join(lines)
+
+
+def _json_ld(data: dict) -> str:
+    text = json.dumps(data, ensure_ascii=False, sort_keys=True, separators=(",", ":"))
+    text = (
+        text.replace("<", "\\u003c")
+        .replace(">", "\\u003e")
+        .replace("&", "\\u0026")
+        .replace(" ", "\\u2028")
+        .replace(" ", "\\u2029")
+    )
+    return f'<script type="application/ld+json">{text}</script>'
+
+
+def json_ld(locale: dict, route: str, meta: dict, ui: dict) -> str:
+    page_url = absolute_url(locale, route)
+    image_url = _og_image()
+    org_id = SITE_ORIGIN + "/#organization"
+    site_id = SITE_ORIGIN + "/#website"
+    page_id = page_url + "#webpage"
+    page_node = {
+        "@type": "WebPage",
+        "@id": page_id,
+        "url": page_url,
+        "name": meta["title"],
+        "description": meta["description"],
+        "inLanguage": locale["htmlLang"],
+        "isPartOf": {"@id": site_id},
+        "publisher": {"@id": org_id},
+        "primaryImageOfPage": {
+            "@type": "ImageObject",
+            "url": image_url,
+            "width": OG_WIDTH,
+            "height": OG_HEIGHT,
+        },
+    }
+    if route in PRODUCTS:
+        page_node["mainEntity"] = {"@id": page_url + "#software"}
+    elif route in ARTICLE_ROUTES:
+        page_node["mainEntity"] = {"@id": page_url + "#article"}
+
+    graph = [
+        {
+            "@type": "Organization",
+            "@id": org_id,
+            "name": "iCode",
+            "url": SITE_ORIGIN + "/",
+            "logo": SITE_ORIGIN + "/assets/logo.svg",
+            "sameAs": ["https://github.com/icodehq"],
+        },
+        {
+            "@type": "WebSite",
+            "@id": site_id,
+            "url": SITE_ORIGIN + "/",
+            "name": "iCode",
+            "publisher": {"@id": org_id},
+        },
+        page_node,
+    ]
+
+    if route != "":
+        items = [
+            {"@type": "ListItem", "position": 1, "name": "iCode", "item": SITE_ORIGIN + "/"}
+        ]
+        if "/" in route:
+            section = route.split("/", 1)[0]
+            if section == "guides":
+                label = ui["nav.guides"]
+            elif section == "blog":
+                label = ui["nav.blog"]
+            else:
+                label = section.replace("-", " ").title()
+            items.append(
+                {
+                    "@type": "ListItem",
+                    "position": len(items) + 1,
+                    "name": label,
+                    "item": absolute_url(locale, section),
+                }
+            )
+        items.append(
+            {
+                "@type": "ListItem",
+                "position": len(items) + 1,
+                "name": meta["title"],
+                "item": page_url,
+            }
+        )
+        graph.append(
+            {
+                "@type": "BreadcrumbList",
+                "@id": page_url + "#breadcrumb",
+                "itemListElement": items,
+            }
+        )
+
+    if route in PRODUCTS:
+        product = PRODUCTS[route]
+        graph.append(
+            {
+                "@type": "SoftwareApplication",
+                "@id": page_url + "#software",
+                "name": product["name"],
+                "description": meta["description"],
+                "url": page_url,
+                "applicationCategory": "DeveloperApplication",
+                "operatingSystem": product["operatingSystem"],
+                "isAccessibleForFree": True,
+                "license": product["license"],
+                "codeRepository": product["codeRepository"],
+                "publisher": {"@id": org_id},
+                "mainEntityOfPage": {"@id": page_id},
+                "screenshot": image_url,
+            }
+        )
+
+    if route in ARTICLE_ROUTES:
+        graph.append(
+            {
+                "@type": "TechArticle",
+                "@id": page_url + "#article",
+                "headline": meta["title"],
+                "description": meta["description"],
+                "inLanguage": locale["htmlLang"],
+                "url": page_url,
+                "image": image_url,
+                "author": {"@id": org_id},
+                "publisher": {"@id": org_id},
+                "mainEntityOfPage": {"@id": page_id},
+                "isPartOf": {"@id": site_id},
+            }
+        )
+
+    return _json_ld({"@context": "https://schema.org", "@graph": graph})
+
+
+def head_extra(locale: dict, route: str, meta: dict, ui: dict) -> str:
+    parts = [
+        hero_preload(route),
+        head_links(locale, route),
+        social_meta(locale, route, meta, ui),
+        json_ld(locale, route, meta, ui),
+    ]
+    return "\n  ".join(part for part in parts if part)
+
+
+def split_srcset(value: str) -> list[str]:
+    return [part.strip().split()[0] for part in value.split(",") if part.strip()]
+
+
+def display_width(value: str) -> int:
+    return sum(
+        2 if unicodedata.east_asian_width(ch) in ("W", "F") else 1 for ch in value
+    )
+
+
+def check_meta_lengths(catalogs: dict) -> list[str]:
+    warnings: list[str] = []
+    for code, catalog in catalogs.items():
+        for route, page in catalog.get("pages", {}).items():
+            meta = page.get("meta", {})
+            for field, limit in (("title", 60), ("description", 160)):
+                value = str(meta.get(field, ""))
+                width = display_width(value)
+                if width > limit:
+                    warnings.append(
+                        f"i18n/{code}: {route} meta.{field} is {width} "
+                        f"display columns (limit {limit})"
+                    )
+    return warnings
+
+
+def check_locales() -> None:
+    issues: list[str] = []
+    seen: set[str] = set()
+    for locale in LOCALES:
+        value = locale.get("ogLocale", "")
+        if not re.match(r"^[a-z]{2,3}_[A-Z]{2}$", value):
+            issues.append(
+                f"i18n/locales.json: {locale.get('code', '?')} has invalid "
+                f"ogLocale {value!r}"
+            )
+        if value in seen:
+            issues.append(f"i18n/locales.json: duplicate ogLocale {value!r}")
+        seen.add(value)
+    if issues:
+        raise SystemExit("Locale check failed:\n- " + "\n- ".join(issues))
+
+
+def png_dimensions(path: Path) -> tuple[int, int]:
+    data = path.read_bytes()
+    if len(data) < 24 or data[:8] != b"\x89PNG\r\n\x1a\n" or data[12:16] != b"IHDR":
+        raise ValueError("not a PNG")
+    return struct.unpack(">II", data[16:24])
+
+
+def webp_ok(path: Path) -> bool:
+    data = path.read_bytes()
+    return len(data) >= 12 and data[:4] == b"RIFF" and data[8:12] == b"WEBP"
+
+
+def avif_ok(path: Path) -> bool:
+    data = path.read_bytes()
+    return (
+        len(data) >= 12
+        and data[4:8] == b"ftyp"
+        and (b"avif" in data[:64] or b"avis" in data[:64])
+    )
+
+
+def check_social_assets() -> None:
+    issues: list[str] = []
+    og_path = PUBLIC / OG_DEFAULT_PATH.lstrip("/")
+    shell_path = PUBLIC / "assets" / "workbench" / "shell.png"
+
+    if not og_path.exists():
+        issues.append(f"missing {og_path.relative_to(ROOT)}")
+    else:
+        try:
+            dimensions = png_dimensions(og_path)
+        except ValueError as exc:
+            issues.append(f"{og_path.relative_to(ROOT)}: {exc}")
+        else:
+            if dimensions != (OG_WIDTH, OG_HEIGHT):
+                issues.append(
+                    f"{og_path.relative_to(ROOT)}: {dimensions[0]}x{dimensions[1]}, "
+                    f"expected {OG_WIDTH}x{OG_HEIGHT}"
+                )
+            if og_path.stat().st_size > 300_000:
+                issues.append(f"{og_path.relative_to(ROOT)} is larger than 300 KB")
+
+    if not shell_path.exists():
+        issues.append(f"missing {shell_path.relative_to(ROOT)}")
+    else:
+        try:
+            dimensions = png_dimensions(shell_path)
+        except ValueError as exc:
+            issues.append(f"{shell_path.relative_to(ROOT)}: {exc}")
+        else:
+            if dimensions != (1600, 1000):
+                issues.append(
+                    f"{shell_path.relative_to(ROOT)}: {dimensions[0]}x{dimensions[1]}, "
+                    "expected 1600x1000"
+                )
+        shell_size = shell_path.stat().st_size
+        for width in (640, 1280, 1600):
+            for ext, checker in (("webp", webp_ok), ("avif", avif_ok)):
+                path = PUBLIC / "assets" / "workbench" / f"shell-{width}.{ext}"
+                if not path.exists():
+                    issues.append(f"missing {path.relative_to(ROOT)}")
+                elif not checker(path):
+                    issues.append(f"{path.relative_to(ROOT)} is not a valid {ext.upper()}")
+                elif path.stat().st_size >= shell_size:
+                    issues.append(
+                        f"{path.relative_to(ROOT)} is not smaller than shell.png"
+                    )
+
+    if issues:
+        raise SystemExit("Social asset check failed:\n- " + "\n- ".join(issues))
 
 
 def render_template(name: str, values: dict[str, str]) -> str:
@@ -182,6 +532,7 @@ def inject_regions(html: str, locale: dict, route: str, ui: dict, href, language
 
 
 def render_site_page(source: str, route: str, locale: dict, catalog: dict) -> str:
+    page_meta = catalog["pages"][route_key(route)]["meta"]
     return i18n.render_page(
         source,
         route_key(route),
@@ -190,7 +541,7 @@ def render_site_page(source: str, route: str, locale: dict, catalog: dict) -> st
         catalog["ui"],
         href=lambda target: href_for(locale, target),
         language_menu=language_menu(locale, route, catalog["ui"]),
-        head_links=head_links(locale, route),
+        head_extra=head_extra(locale, route, page_meta, catalog["ui"]),
         year=BUILD_YEAR,
         inject_regions=inject_regions,
     )
@@ -231,8 +582,17 @@ def output_links_ok() -> list[str]:
         rel = path.relative_to(OUT)
         meta = MetaReader()
         meta.feed(path.read_text("utf-8"))
-        for target in meta.links:
-            if re.match(r"^(https?:|mailto:|#|data:|tel:)", target):
+        targets = list(meta.links)
+        for value in meta.srcsets:
+            targets.extend(split_srcset(value))
+        for key in ("og:image", "og:image:secure_url", "twitter:image"):
+            targets.extend(meta.meta_props.get(key, []))
+        for target in targets:
+            if target == SITE_ORIGIN:
+                target = "/"
+            elif target.startswith(SITE_ORIGIN + "/"):
+                target = target[len(SITE_ORIGIN) :]
+            elif re.match(r"^(https?:|mailto:|#|data:|tel:)", target):
                 continue
             local = target.split("#", 1)[0].split("?", 1)[0]
             if not local:
@@ -245,6 +605,145 @@ def output_links_ok() -> list[str]:
                 resolved = resolved / "index.html"
             if not resolved.exists():
                 issues.append(f"{rel}: broken link {target}")
+    return issues
+
+
+def social_meta_ok() -> list[str]:
+    issues: list[str] = []
+    locale_by_code = {locale["code"]: locale for locale in LOCALES}
+    required = (
+        "og:site_name",
+        "og:type",
+        "og:title",
+        "og:description",
+        "og:url",
+        "og:locale",
+        "og:image",
+        "og:image:secure_url",
+        "og:image:type",
+        "og:image:width",
+        "og:image:height",
+        "og:image:alt",
+        "twitter:card",
+        "twitter:title",
+        "twitter:description",
+        "twitter:image",
+        "twitter:image:alt",
+    )
+
+    for path in sorted(OUT.rglob("index.html")):
+        rel = path.relative_to(OUT)
+        parts = rel.as_posix().split("/")[:-1]
+        code = parts[0] if parts and parts[0] in locale_by_code else "en"
+        route = "/".join(parts[1:]) if code != "en" else "/".join(parts)
+        locale = locale_by_code[code]
+        page = rel.as_posix()
+        meta = MetaReader()
+        meta.feed(path.read_text("utf-8"))
+
+        expected_url = absolute_url(locale, route)
+        if len(meta.canonicals) != 1 or meta.canonicals[0] != expected_url:
+            issues.append(f"{page}: canonical mismatch")
+
+        for key in required:
+            values = meta.meta_props.get(key, [])
+            if len(values) != 1:
+                issues.append(f"{page}: expected one {key}, found {len(values)}")
+
+        def prop(key: str) -> str | None:
+            values = meta.meta_props.get(key, [])
+            return values[0] if len(values) == 1 else None
+
+        if prop("og:url") != expected_url:
+            issues.append(f"{page}: og:url mismatch")
+        if prop("og:locale") != locale["ogLocale"]:
+            issues.append(f"{page}: og:locale mismatch")
+        expected_alternates = {
+            entry["ogLocale"] for entry in LOCALES if entry["code"] != locale["code"]
+        }
+        alternates = meta.meta_props.get("og:locale:alternate", [])
+        if set(alternates) != expected_alternates or len(alternates) != len(
+            expected_alternates
+        ):
+            issues.append(f"{page}: og:locale:alternate mismatch")
+
+        expected_image = _og_image()
+        if prop("og:image") != expected_image:
+            issues.append(f"{page}: og:image mismatch")
+        if prop("og:image:secure_url") != expected_image:
+            issues.append(f"{page}: og:image:secure_url mismatch")
+        if prop("og:image:type") != "image/png":
+            issues.append(f"{page}: og:image:type mismatch")
+        if prop("og:image:width") != str(OG_WIDTH):
+            issues.append(f"{page}: og:image:width mismatch")
+        if prop("og:image:height") != str(OG_HEIGHT):
+            issues.append(f"{page}: og:image:height mismatch")
+        if prop("twitter:card") != "summary_large_image":
+            issues.append(f"{page}: twitter:card mismatch")
+        for og_key, tw_key in (
+            ("og:title", "twitter:title"),
+            ("og:description", "twitter:description"),
+            ("og:image", "twitter:image"),
+            ("og:image:alt", "twitter:image:alt"),
+        ):
+            if prop(og_key) != prop(tw_key):
+                issues.append(f"{page}: {tw_key} does not match {og_key}")
+
+        if len(meta.jsonld_chunks) != 1:
+            issues.append(
+                f"{page}: expected one JSON-LD block, found {len(meta.jsonld_chunks)}"
+            )
+        else:
+            try:
+                data = json.loads(meta.jsonld_chunks[0])
+            except json.JSONDecodeError as exc:
+                issues.append(f"{page}: invalid JSON-LD: {exc}")
+            else:
+                graph = data.get("@graph")
+                if data.get("@context") != "https://schema.org" or not isinstance(
+                    graph, list
+                ):
+                    issues.append(f"{page}: JSON-LD is not a schema.org @graph")
+                else:
+                    types = {
+                        node.get("@type")
+                        for node in graph
+                        if isinstance(node, dict) and node.get("@type")
+                    }
+                    for expected_type in ("Organization", "WebSite", "WebPage"):
+                        if expected_type not in types:
+                            issues.append(f"{page}: JSON-LD missing {expected_type}")
+                    if route != "" and "BreadcrumbList" not in types:
+                        issues.append(f"{page}: JSON-LD missing BreadcrumbList")
+                    if route in PRODUCTS and "SoftwareApplication" not in types:
+                        issues.append(
+                            f"{page}: JSON-LD missing SoftwareApplication"
+                        )
+                    if route in ARTICLE_ROUTES and "TechArticle" not in types:
+                        issues.append(f"{page}: JSON-LD missing TechArticle")
+                    if "FAQPage" in types or "HowTo" in types:
+                        issues.append(f"{page}: forbidden JSON-LD type")
+                    page_node = next(
+                        (
+                            node
+                            for node in graph
+                            if isinstance(node, dict) and node.get("@type") == "WebPage"
+                        ),
+                        None,
+                    )
+                    if (
+                        not page_node
+                        or page_node.get("url") != expected_url
+                        or page_node.get("inLanguage") != locale["htmlLang"]
+                    ):
+                        issues.append(f"{page}: WebPage URL/language mismatch")
+
+        if route in ("", "workbench"):
+            if not any("shell-1600.avif" in value for value in meta.srcsets):
+                issues.append(f"{page}: missing AVIF hero srcset")
+            if not any("shell-1280.avif" in value for value in meta.links):
+                issues.append(f"{page}: missing AVIF hero preload")
+
     return issues
 
 
@@ -290,6 +789,8 @@ def check_catalogs() -> None:
     issues += i18n.validate(stored, catalogs)
     if issues:
         raise SystemExit("Translation check failed:\n- " + "\n- ".join(issues))
+    for warning in check_meta_lengths(catalogs):
+        print(f"warning: {warning}")
 
 
 def build() -> None:
@@ -305,6 +806,10 @@ def build() -> None:
     issues += i18n.validate(english, catalogs)
     if issues:
         raise SystemExit("Build stopped:\n- " + "\n- ".join(issues))
+    for warning in check_meta_lengths(catalogs):
+        print(f"warning: {warning}")
+    check_locales()
+    check_social_assets()
 
     if OUT.exists():
         shutil.rmtree(OUT)
@@ -335,7 +840,7 @@ def build() -> None:
             (dest / "index.html").write_text(html, "utf-8")
 
     write_sitemap(routes)
-    issues = output_links_ok()
+    issues = output_links_ok() + social_meta_ok()
     if issues:
         raise SystemExit("Built-site link check failed:\n- " + "\n- ".join(issues))
     print(f"Built {OUT.relative_to(ROOT)} ({len(LOCALES)} locales, {len(routes)} routes)")
@@ -370,21 +875,45 @@ def write_sitemap(routes: dict[str, Path]) -> None:
 
 
 class MetaReader(HTMLParser):
-    """Read title and description, and collect local link targets."""
+    """Read metadata, canonical/srcset targets and JSON-LD."""
 
     def __init__(self) -> None:
         super().__init__()
         self.in_title = False
+        self.in_jsonld = False
         self.title = ""
         self.description = ""
         self.links: list[str] = []
+        self.meta_props: dict[str, list[str]] = {}
+        self.canonicals: list[str] = []
+        self.srcsets: list[str] = []
+        self.jsonld_chunks: list[str] = []
+        self._jsonld = ""
 
     def handle_starttag(self, tag, attrs):
         a = dict(attrs)
         if tag == "title":
             self.in_title = True
-        if tag == "meta" and (a.get("name") or "").lower() == "description":
-            self.description = a.get("content") or ""
+        if tag == "meta":
+            key = (a.get("property") or a.get("name") or "").lower()
+            if key:
+                self.meta_props.setdefault(key, []).append(a.get("content") or "")
+            if key == "description":
+                self.description = a.get("content") or ""
+        if tag == "link":
+            rel = (a.get("rel") or "").lower()
+            if "canonical" in rel and a.get("href"):
+                self.canonicals.append(a["href"])
+            if "preload" in rel and a.get("imagesrcset"):
+                self.srcsets.append(a["imagesrcset"])
+        if tag in ("img", "source"):
+            for attr in ("srcset", "imagesrcset"):
+                value = a.get(attr)
+                if value:
+                    self.srcsets.append(value)
+        if tag == "script" and (a.get("type") or "").lower() == "application/ld+json":
+            self.in_jsonld = True
+            self._jsonld = ""
         for attr in ("href", "src"):
             value = a.get(attr)
             if value:
@@ -393,15 +922,22 @@ class MetaReader(HTMLParser):
     def handle_endtag(self, tag):
         if tag == "title":
             self.in_title = False
+        if tag == "script" and self.in_jsonld:
+            self.jsonld_chunks.append(self._jsonld)
+            self.in_jsonld = False
 
     def handle_data(self, data):
-        if self.in_title:
+        if self.in_jsonld:
+            self._jsonld += data
+        elif self.in_title:
             self.title += data
 
 
 def check() -> None:
+    check_locales()
     check_sources()
     check_catalogs()
+    check_social_assets()
     print("Checked source pages and translation catalogs: OK")
 
 

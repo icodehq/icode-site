@@ -31,7 +31,7 @@
         "fe0a091fdbfb": "Products"
       },
       "meta": {
-        "description": "iCode builds the open-source agent development environment: iCode Workbench for running a fleet of CLI agents in parallel, and iCode Agent for focused work in the terminal.",
+        "description": "iCode builds open-source tools for working with CLI agents: iCode Workbench for a parallel fleet, iCode Agent for focused terminal work.",
         "title": "About iCode"
       }
     },
@@ -72,7 +72,7 @@
         "fdbab5708908": "Running a long task is where coding agents fall apart: the window fills with old file reads and command output, the agent starts forgetting what it did, and every request costs more. iCode Agent treats context as a budget to defend, not a bucket to fill."
       },
       "meta": {
-        "description": "iCode Agent is a terminal coding agent that works directly in your repository: explore, change, run, verify. Context is capped, reduced, and summarized so long tasks stay coherent and affordable.",
+        "description": "iCode Agent is a terminal coding agent that works in your repository: explore, change, run, verify. Context stays capped and coherent on long tasks.",
         "title": "iCode Agent — the coding agent that won't burn your context window"
       }
     },
@@ -334,7 +334,7 @@
         "f34a4944d5dd": "Nothing is rewritten wholesale: <code>edit</code> changes a target span and <code>write</code> is used only for genuinely new files. The diff is always visible before you accept it."
       },
       "meta": {
-        "description": "A step-by-step iCode Agent workflow: map a module's callers, make a focused refactor with reviewed diffs, and verify nothing broke — with the exact prompts to use.",
+        "description": "A step-by-step iCode Agent workflow: map a module's callers, refactor with reviewed diffs, and verify nothing broke. Includes example prompts.",
         "title": "Guide: refactor a module with iCode Agent"
       }
     },
@@ -361,7 +361,7 @@
         "fb312f33c373": "The hard part of a bug is usually not the fix — it is finding the cause. iCode Agent follows the evidence through the code and tells you what it found, rather than guessing at a patch."
       },
       "meta": {
-        "description": "A step-by-step iCode Agent workflow: reproduce a bug, follow the evidence through the code, prove the cause, and verify the fix — with the exact prompts to use.",
+        "description": "A step-by-step iCode Agent workflow: reproduce a bug, follow the evidence to its cause, fix it, and verify. Includes example prompts.",
         "title": "Guide: track down a bug with iCode Agent"
       }
     },
@@ -422,7 +422,7 @@
         "f8f7124c9462": "Run a fleet of agents. One workbench. Keep the judgment."
       },
       "meta": {
-        "description": "iCode Workbench runs Claude Code, Codex, OpenCode, and 40+ more CLI agents in parallel, each in its own Git worktree. Review every change, queue durable tasks, and keep the judgment. iCode Agent is the terminal coding agent built for long sessions.",
+        "description": "iCode Workbench runs Claude Code, Codex, OpenCode, and 40+ CLI agents in parallel, each in its own Git worktree. Review every change and keep the judgment.",
         "title": "iCode — run a fleet of agents. Keep the judgment."
       }
     },
@@ -510,7 +510,7 @@
         "fff8462087ea": "Edit in the same checkout."
       },
       "meta": {
-        "description": "iCode Workbench is the open-source agent development environment for 44 CLI agents — Claude Code, Codex, OpenCode, and 40+ more — each in an isolated Git worktree. Queue durable tasks, review every change, and keep the judgment. Pre-1.0; unsigned installers are published on GitHub Releases.",
+        "description": "iCode Workbench is the open-source environment for 44 CLI agents, each in an isolated Git worktree. Queue tasks, review changes, keep the judgment.",
         "title": "iCode Workbench — run a fleet of agents. Keep the judgment."
       }
     }
@@ -548,6 +548,7 @@
     "nav.guides": "Guides",
     "nav.main": "Main",
     "nav.workbench": "Workbench",
+    "social.imageAlt": "iCode Workbench: one workbench for a fleet of CLI agents",
     "theme.toggle": "Toggle color theme"
   }
 }

@@ -6,7 +6,8 @@ emitted under their language code (`/zh-CN/`, `/ja/`, …).
 
 ## Files
 
-- `i18n/locales.json` — language codes, native labels, and `<html lang>` values.
+- `i18n/locales.json` — language codes, native labels, `<html lang>` values,
+  and Open Graph locales (`language_REGION`, e.g. `de_DE`).
 - `i18n/en.json` — English source catalog, generated from `public/`:
   `python3 scripts/site.py extract`.
 - `i18n/<code>.json` — translated catalog with the same shape.
@@ -24,7 +25,8 @@ Each page object has:
 Block keys are content hashes of the English source. If an English block
 changes, its key changes and the build fails until the catalog is updated. This
 is deliberate: a stale translation must never silently attach to new copy.
-`ui` holds the shared header, footer, language menu, and copy-button strings.
+`ui` holds the shared header, footer, language menu, copy-button strings, and
+the Open Graph image alt text (`social.imageAlt`).
 
 ## Translation rules
 
@@ -59,7 +61,8 @@ locale. Re-translate that block and keep the rest of the catalog.
 
 ## Adding a language
 
-1. Add the code, native label, and `htmlLang` to `i18n/locales.json`.
+1. Add the code, native label, `htmlLang`, and Open Graph locale (`ogLocale`,
+   `language_REGION`, e.g. `de_DE`) to `i18n/locales.json`.
 2. Create `i18n/<code>.json` from `i18n/en.json` with translated values.
 3. Run `deploy-check`. The header language menu, hreflang links, and sitemap
    pick the new locale up automatically.

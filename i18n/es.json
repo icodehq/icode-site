@@ -31,7 +31,7 @@
         "ca4463e24970": "iCode crea el entorno de desarrollo de agentes de código abierto: herramientas que ponen a trabajar una flota de agentes CLI sin quitar el criterio a las personas que hacen el trabajo."
       },
       "meta": {
-        "description": "iCode crea el entorno de desarrollo de agentes de código abierto: iCode Workbench para ejecutar una flota de agentes CLI en paralelo, e iCode Agent para trabajar enfocado en la terminal.",
+        "description": "iCode crea herramientas open source para agentes CLI: iCode Workbench para una flota en paralelo e iCode Agent para trabajo enfocado en la terminal.",
         "title": "Acerca de iCode"
       }
     },
@@ -72,7 +72,7 @@
         "c86d3ac5cc20": "Workbench (pre-1.0) es el entorno de escritorio de código abierto para una flota de agentes CLI: 44 son ejecutables, incluidos Claude Code, Codex, OpenCode y más de 40, cada uno en worktrees aislados, con tareas, revisión y Mira. Agent es la superficie de terminal enfocada: un repositorio, una sesión, sin ventana. Son productos separados con la misma disciplina, y cualquiera de los dos puede usarse por su cuenta."
       },
       "meta": {
-        "description": "iCode Agent es un agente de programación de terminal que trabaja directamente en tu repositorio: explora, cambia, ejecuta y verifica. El contexto se limita, se reduce y se resume para que las tareas largas sigan siendo coherentes y asequibles.",
+        "description": "iCode Agent es un agente de código de terminal que trabaja en tu repositorio: explora, cambia, ejecuta y verifica. El contexto sigue acotado en tareas largas.",
         "title": "iCode Agent — el agente de programación que no quema tu ventana de contexto"
       }
     },
@@ -87,7 +87,7 @@
         "f7e468773592": "Las tareas largas son donde fallan los agentes de programación: la ventana se llena, el agente olvida y cada petición cuesta más. Cómo gestiona iCode Agent el contexto en cada límite y por qué la reducción debe ser reversible."
       },
       "meta": {
-        "description": "Ensayos y notas sobre cómo se construyó iCode Agent: cómo gastan tokens los agentes de programación, por qué importa la gestión del contexto y qué se rompe en las tareas largas.",
+        "description": "Ensayos y notas sobre iCode Agent: cómo gastan tokens los agentes, por qué importa la gestión del contexto y qué falla en las tareas largas.",
         "title": "Blog de iCode Agent: notas sobre agentes de programación y contexto"
       }
     },
@@ -118,7 +118,7 @@
         "e4d852f2146b": "<strong>Limita en el origen.</strong> La salida desmesurada de una herramienta se limita mientras se produce (se vuelca a un archivo con una vista previa breve), de modo que un único resultado enorme no pueda inundar la ventana desde el principio."
       },
       "meta": {
-        "description": "Por qué las tareas largas son donde fallan los agentes de programación y cómo gestiona iCode Agent el contexto en cada límite para que las sesiones sigan siendo coherentes y asequibles.",
+        "description": "Por qué fallan los agentes en tareas largas y cómo iCode Agent gestiona el contexto en cada límite para mantener sesiones coherentes y asequibles.",
         "title": "La ventana de contexto es un presupuesto — iCode Agent"
       }
     },
@@ -240,7 +240,7 @@
         "d7a484140f5f": "Flujo de trabajo"
       },
       "meta": {
-        "description": "Guías paso a paso de iCode Agent para el trabajo habitual: corregir tests que fallan, refactorizar un módulo, rastrear un error y automatizar tareas en scripts y CI.",
+        "description": "Guías paso a paso de iCode Agent: corregir tests, refactorizar un módulo, rastrear un error y automatizar tareas en scripts y CI.",
         "title": "Guías de iCode Agent: flujos de trabajo para tareas reales"
       }
     },
@@ -277,7 +277,7 @@
         "f8a08ca7d662": "<code>tool_call</code> y <code>tool_result</code>: cada herramienta que usó el agente y lo que devolvió."
       },
       "meta": {
-        "description": "Ejecuta iCode Agent de forma no interactiva: imprime una respuesta final con -p, transmite cada evento de ejecución como líneas JSON con --mode json y continúa sesiones en CI.",
+        "description": "Ejecuta iCode Agent sin interacción: imprime la respuesta con -p, transmite eventos como líneas JSON con --mode json y continúa sesiones en CI.",
         "title": "Guía: automatiza con iCode Agent en scripts y CI"
       }
     },
@@ -306,7 +306,7 @@
         "f911ed31f99b": "<strong>Reproduce.</strong> Ejecuta tu comando de test y lee el fallo real."
       },
       "meta": {
-        "description": "Un flujo de trabajo paso a paso con iCode Agent: reproduce un fallo de test, lee el código, repáralo y verifica la corrección, con los prompts exactos que debes usar.",
+        "description": "Un flujo paso a paso con iCode Agent: reproduce un fallo de test, lee el código, corrígelo y verifica la solución con los prompts exactos.",
         "title": "Guía: corrige un test que falla con iCode Agent"
       }
     },
@@ -334,7 +334,7 @@
         "f34a4944d5dd": "Nada se reescribe por completo: <code>edit</code> cambia un tramo concreto y <code>write</code> solo se usa para archivos realmente nuevos. El diff siempre está visible antes de que lo aceptes."
       },
       "meta": {
-        "description": "Un flujo de trabajo paso a paso con iCode Agent: mapea quién llama a un módulo, haz una refactorización enfocada con diffs revisados y verifica que nada se rompió, con los prompts exactos que debes usar.",
+        "description": "Un flujo paso a paso con iCode Agent: mapea los llamadores de un módulo, refactoriza con diffs revisados y verifica que nada se rompió.",
         "title": "Guía: refactoriza un módulo con iCode Agent"
       }
     },
@@ -361,7 +361,7 @@
         "fb312f33c373": "La parte difícil de un error suele no ser la corrección, sino encontrar la causa. iCode Agent sigue la evidencia por el código y te dice qué encontró, en lugar de adivinar un parche."
       },
       "meta": {
-        "description": "Un flujo de trabajo paso a paso con iCode Agent: reproduce un error, sigue la evidencia por el código, demuestra la causa y verifica la corrección, con los prompts exactos que debes usar.",
+        "description": "Un flujo paso a paso con iCode Agent: reproduce un bug, sigue la evidencia hasta la causa, corrígelo y verifica la solución.",
         "title": "Guía: rastrea un error con iCode Agent"
       }
     },
@@ -422,7 +422,7 @@
         "f8f7124c9462": "Ejecuta una flota de agentes. Un solo banco de trabajo. Conserva el criterio."
       },
       "meta": {
-        "description": "iCode Workbench ejecuta Claude Code, Codex, OpenCode y más de 40 agentes CLI en paralelo, cada uno en su propio worktree de Git. Revisa cada cambio, pon tareas duraderas en cola y conserva el criterio. iCode Agent es el agente de terminal creado para sesiones largas.",
+        "description": "iCode Workbench ejecuta Claude Code, Codex, OpenCode y 40+ agentes CLI en paralelo, cada uno en su worktree de Git. Revisa cada cambio y conserva el criterio.",
         "title": "iCode — ejecuta una flota de agentes. Conserva el criterio."
       }
     },
@@ -510,7 +510,7 @@
         "ec5f9d4b6940": "Una sala de control para una flota de agentes CLI."
       },
       "meta": {
-        "description": "iCode Workbench es el entorno de desarrollo de agentes de código abierto para 44 agentes CLI — Claude Code, Codex, OpenCode y más de 40 — cada uno en un worktree de Git aislado. Pon tareas duraderas en cola, revisa cada cambio y conserva el criterio. Pre-1.0; los instaladores sin firmar se publican en GitHub Releases.",
+        "description": "iCode Workbench es el entorno open source para 44 agentes CLI, cada uno en un worktree de Git aislado. Encola tareas, revisa cambios y conserva el criterio.",
         "title": "iCode Workbench — ejecuta una flota de agentes. Conserva el criterio."
       }
     }
@@ -548,6 +548,7 @@
     "nav.guides": "Guías",
     "nav.main": "Principal",
     "nav.workbench": "Workbench",
-    "theme.toggle": "Cambiar el tema de color"
+    "theme.toggle": "Cambiar el tema de color",
+    "social.imageAlt": "iCode Workbench: un banco de trabajo para una flota de agentes CLI"
   }
 }

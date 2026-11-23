@@ -71,16 +71,18 @@ python3 scripts/site.py deploy-check  # check + build, then ready to deploy
 
 Only the Python standard library is required.
 
-The sitemap and `robots.txt` use `https://icodehq.com` by default. On Vercel,
-the build uses `VERCEL_PROJECT_PRODUCTION_URL` when it is available. Override the
-origin explicitly for another deployment:
+The sitemap and `robots.txt` use `https://icodehq.com` as the fallback. On
+Vercel, the build uses `VERCEL_PROJECT_PRODUCTION_URL` when it is available.
+The current canonical deployment is `https://icodehq.vercel.app`; verify
+locally with:
 
 ```sh
-SITE_ORIGIN=https://example.com python3 scripts/site.py build
+SITE_ORIGIN=https://icodehq.vercel.app python3 scripts/site.py deploy-check
 ```
 
-`public/robots.txt` contains `${site_origin}`; the build replaces it with the
-configured origin.
+`SITE_ORIGIN` drives canonical links, hreflang, the sitemap, `robots.txt`, the
+Open Graph URL, and the Open Graph image URL. `public/robots.txt` contains
+`${site_origin}`; the build replaces it with the configured origin.
 
 ## Translations
 

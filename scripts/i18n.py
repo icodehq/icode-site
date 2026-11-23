@@ -42,6 +42,7 @@ EN_UI = {
     "nav.github": "GitHub",
     "theme.toggle": "Toggle color theme",
     "language.label": "Language",
+    "social.imageAlt": "iCode Workbench: one workbench for a fleet of CLI agents",
     "copy.label": "Copy",
     "copy.copied": "Copied",
     "copy.failed": "Copy failed",
@@ -246,7 +247,7 @@ def render_page(
     *,
     href,
     language_menu: str,
-    head_links: str,
+    head_extra: str,
     year: str,
     inject_regions,
 ) -> str:
@@ -329,7 +330,7 @@ def render_page(
         + json.dumps(demo, ensure_ascii=False, separators=(",", ":"))
         + "</script>"
     )
-    out = out.replace("</head>", head_links + "\n" + demo_script + "\n</head>", 1)
+    out = out.replace("</head>", head_extra + "\n" + demo_script + "\n</head>", 1)
     out = out.replace("{{year}}", year)
     return out
 
