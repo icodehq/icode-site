@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>iCode Workbench vs Orca — agent workbench comparison</title>
-  <meta name="description" content="Compare iCode Workbench and Orca: agents, worktrees, task queues, review, remote access, mobile, license, and maturity. Updated November 2026." />
+  <title>Orca IDE Alternative: iCode Workbench vs Orca (2026)</title>
+  <meta name="description" content="Looking for an Orca IDE alternative? Compare iCode Workbench and Orca on task queues, worktrees, review, remote access, mobile, licensing, and maturity." />
   <meta name="theme-color" content="#ffffff" />
   <link rel="icon" href="../../assets/favicon.svg" type="image/svg+xml" />
   <link rel="stylesheet" href="../../assets/styles.css" />
@@ -18,21 +18,29 @@
   <section class="section">
     <div class="container">
       <p class="eyebrow">iCode Workbench · Comparison</p>
-      <h1>iCode Workbench vs Orca: which agent workbench fits your workflow?</h1>
+      <h1>Orca IDE alternative: iCode Workbench vs Orca</h1>
       <p class="lede">
-        Both tools run multiple CLI coding agents in isolated Git worktrees.
-        Orca is the broader agent IDE: chat and terminal, embedded browser,
-        Slack/Linear/GitHub bots, remote servers, and mobile companions. iCode
-        Workbench is narrower and more opinionated: a local, review-first task
-        queue for a fleet of agents, with a cross-project assistant that is
-        deliberately not allowed to merge.
+        iCode Workbench is an Orca IDE alternative for teams that want a local,
+        review-first task queue rather than a broad, multi-surface agent IDE.
+        Both run CLI coding agents in isolated Git worktrees. The difference is
+        what happens after the agent finishes.
       </p>
+      <p>
+        Orca is the broader agent IDE: chat and terminal, an embedded browser,
+        Slack, Linear, and GitHub bots, remote servers, and mobile companions.
+        Workbench is narrower: a durable queue, a review gate, and a bounded
+        assistant that cannot merge or push.
+      </p>
+      <div class="actions">
+        <a class="button button-primary" href="/workbench/">Explore iCode Workbench</a>
+        <a class="button" href="/guides/parallel-agents/">Read the parallel-agents guide</a>
+      </div>
       <p class="muted">
         Last verified 2026-11-23 against
         <a href="https://orca.dev/" rel="noopener">orca.dev</a>,
         <a href="https://github.com/stablyai/orca" rel="noopener">the Orca repository</a>,
-        and the iCode Workbench product page. Both products change quickly; verify
-        current details before deciding.
+        and the iCode Workbench product page. iCode Workbench is our product.
+        Both products change quickly; verify current details before deciding.
       </p>
       <p class="muted"><em>This comparison is currently available in English only.</em></p>
     </div>
@@ -67,8 +75,115 @@
   </section>
 
   <section class="section">
+    <div class="container">
+      <h2>What is an Orca IDE alternative?</h2>
+      <p>
+        An Orca IDE alternative is a desktop agent development environment (ADE)
+        that runs multiple CLI coding agents in parallel, usually one Git
+        worktree per task. People look for one when they want a different task
+        model, a stricter review gate, a local-only workflow, or a narrower tool
+        that does less but does it deliberately.
+      </p>
+      <p class="muted">
+        “Orca” is also the name of unrelated products. This page is about the
+        Orca ADE from Stably AI at orca.dev.
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2>Why people look for an Orca alternative</h2>
+      <p>
+        People rarely switch because something is broken. They switch because
+        the workflow they need is different. The common reasons:
+      </p>
+      <ol class="feature-list">
+        <li>
+          <strong>They want a task queue, not a session list.</strong> Orca
+          orchestrates agents and automations. Workbench makes the queue itself
+          the primary object: durable tasks, explicit states, retries as new
+          attempts, and schedules that create ordinary queued tasks.
+        </li>
+        <li>
+          <strong>They want review to be a gate.</strong> In Workbench, a
+          completed process is not an accepted task. The review decision is
+          separate from process exit, so a task can finish and still be
+          rejected.
+        </li>
+        <li>
+          <strong>They want local-only.</strong> No remote server, no cloud
+          workspace, no mobile companion. Projects, sessions, worktrees, tasks,
+          and schedules live on the machine.
+        </li>
+        <li>
+          <strong>They want a bounded assistant.</strong> Mira reads the real
+          queue and routes attention, but has no shell and cannot approve,
+          merge, push, or edit project code.
+        </li>
+      </ol>
+      <p>
+        None of these makes Orca worse. They describe a different bet about
+        where the hard part of running a fleet is.
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
     <div class="container-wide">
-      <h2>At a glance</h2>
+      <h2>Orca IDE alternatives at a glance</h2>
+      <p>
+        The category has more than one shape. This table is orientation, not a
+        ranking; iCode Workbench is our product, and the detailed comparison
+        below is between Workbench and Orca.
+      </p>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>Tool</th><th>Best for</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th><a href="/workbench/">iCode Workbench</a></th>
+              <td>Local, review-first task queue for a fleet of CLI agents</td>
+            </tr>
+            <tr>
+              <th><a href="https://orca.dev/" rel="noopener">Orca</a></th>
+              <td>Broad agent IDE: chat, embedded browser, bots, remote servers, mobile</td>
+            </tr>
+            <tr>
+              <th><a href="https://conductor.build/" rel="noopener">Conductor</a></th>
+              <td>Polished, Mac-only agent workflow</td>
+            </tr>
+            <tr>
+              <th><a href="https://paradev.com/" rel="noopener">Paradev (formerly Superset)</a></th>
+              <td>Team agent workspace with worktree-per-task</td>
+            </tr>
+            <tr>
+              <th><a href="https://emdash.com/" rel="noopener">Emdash</a></th>
+              <td>Cloud coding agents for teams, with issue-tracker intake</td>
+            </tr>
+            <tr>
+              <th><a href="https://paseo.sh/" rel="noopener">Paseo</a></th>
+              <td>Run agents remotely from a desktop app or CLI</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="muted">
+        Licenses and platform support differ and change; verify on each
+        project's site. Workbench is AGPL-3.0 and pre-1.0. Orca is MIT and on a
+        1.4.x release line.
+      </p>
+      <div class="actions">
+        <a class="button button-primary" href="/workbench/#install">Get iCode Workbench</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container-wide">
+      <h2>iCode Workbench vs Orca at a glance</h2>
       <div class="table-wrap">
         <table>
           <thead>
@@ -153,12 +268,16 @@
           </tbody>
         </table>
       </div>
+      <p class="muted">
+        As of 2026-11-23. Orca details come from orca.dev and its public
+        repository; Workbench details come from the product documentation.
+      </p>
     </div>
   </section>
 
   <section class="section">
     <div class="container">
-      <h2>Where Workbench is behind</h2>
+      <h2>When Orca is still the better choice</h2>
       <p>
         If any of these decide your workflow, Orca is the stronger choice today:
       </p>
@@ -220,7 +339,36 @@
 
   <section class="section">
     <div class="container">
+      <h2>How to switch from Orca to iCode Workbench</h2>
+      <p>
+        You do not need to migrate a queue. Start with one task and keep Orca
+        installed while you evaluate.
+      </p>
+      <ol class="feature-list">
+        <li><strong>Install Workbench.</strong> Keep Orca installed; the two tools can coexist on the same machine.</li>
+        <li><strong>Open the same repository.</strong> Workbench creates a worktree per session. Existing Orca worktrees are untouched.</li>
+        <li><strong>Move one task, not the whole queue.</strong> Queue a single task and set the slot limit to 1. Pick a task that needs review, not a trivial one.</li>
+        <li><strong>Review in the checkout where the agent worked.</strong> Use Files, Search, and Source Control; make the review decision separately from process exit.</li>
+        <li><strong>Decide after a week.</strong> If you need mobile, remote servers, Design Mode, or Slack/Linear bots, keep Orca for those and use Workbench for review-gated work.</li>
+      </ol>
+      <p class="muted">
+        Tasks are not imported from Orca. There is no migration wizard; the unit
+        of migration is one task at a time.
+      </p>
+      <div class="actions">
+        <a class="button button-primary" href="/workbench/#install">Install iCode Workbench</a>
+        <a class="button" href="/blog/agent-review-workflow/">Read the review-gate essay</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
       <h2>FAQ</h2>
+      <details>
+        <summary><strong>What is the best Orca IDE alternative?</strong></summary>
+        <p>It depends on the workflow. iCode Workbench is the closest fit for a local, review-first task queue. Conductor fits a polished Mac-only workflow, Paradev (formerly Superset) fits teams, Emdash fits cloud ticket-intake work, and Paseo fits remote or CLI control. If review is the bottleneck, start with Workbench.</p>
+      </details>
       <details>
         <summary><strong>Is iCode Workbench a drop-in Orca replacement?</strong></summary>
         <p>No. Orca is broader: mobile, remote servers, Design Mode, and Slack/Linear/GitHub bots. Workbench is a narrower, review-first desktop queue. If you need Orca's extra surfaces, use Orca.</p>
@@ -241,6 +389,19 @@
         <summary><strong>Which tool supports more agents?</strong></summary>
         <p>Orca says any CLI agent can run in it and lists named integrations. Workbench lists 44 launchable CLI agents, with managed status hooks for 21. The counts are not directly comparable; check the specific agent you need in each tool.</p>
       </details>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2>How we compared</h2>
+      <p>
+        iCode Workbench is our product. We compared public documentation and the
+        products' documented behavior. Orca claims link to orca.dev and its
+        public repository; Workbench claims come from the product documentation.
+        Last verified 2026-11-23. We update this page when either product ships a
+        major change.
+      </p>
     </div>
   </section>
 

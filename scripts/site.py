@@ -102,7 +102,7 @@ CONTENT_DATES = {
     "guides/refactor-a-module": "2026-11-23",
     "guides/track-down-a-bug": "2026-11-23",
     "guides/automate-in-ci": "2026-11-23",
-    "compare/orca": "2026-11-23",
+    "compare/orca": "2026-11-24",
 }
 ARTICLE_PUBLISHED = {
     "blog/context-management": "2026-10-14",
