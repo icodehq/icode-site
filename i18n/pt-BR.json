@@ -80,19 +80,19 @@
       "alts": {},
       "blocks": {
         "00710ba08e43": "A janela de contexto é um orçamento",
-        "13aadf550791": "Notas sobre a construção de um agente de programação.",
-        "2f407c8c9461": "iCode Agent · Blog",
         "3d2a82d2252c": "Ler o artigo →",
         "4143d0480150": "Engenharia",
         "f7e468773592": "Tarefas longas são onde os agentes de programação falham: a janela enche, o agente esquece, e cada requisição custa mais. Como o iCode Agent gerencia o contexto em cada fronteira — e por que a redução precisa ser reversível.",
         "bd94a13293d4": "Guia · Workbench",
         "3385edb81505": "Execute vários agentes de programação em paralelo",
         "3c31673025e5": "Worktrees, delimitação de tarefas, o portão de revisão e a ordem de merge para uma frota de agentes CLI.",
-        "693368c6dd3f": "Ler o guia →"
+        "693368c6dd3f": "Ler o guia →",
+        "2573e45ba1d1": "Notas sobre construir com agentes de programação.",
+        "6919c86411b2": "iCode · Blog"
       },
       "meta": {
-        "description": "Ensaios e notas sobre o iCode Agent: como agentes gastam tokens, por que a gestão de contexto importa e o que falha em tarefas longas.",
-        "title": "Blog do iCode Agent: notas sobre agentes de programação e contexto"
+        "description": "Ensaios e notas do iCode: como os agentes consomem tokens, por que o contexto importa e como executar uma frota sem caos de merge.",
+        "title": "Blog do iCode: notas sobre agentes e fluxos de trabalho"
       }
     },
     "blog/context-management": {
