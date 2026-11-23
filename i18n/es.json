@@ -96,7 +96,10 @@
         "599da9d5b253": "Leer el ensayo →",
         "d325fcd91938": "Cola",
         "6c49f6e45b38": "Tareas duraderas, no pestañas de terminal",
-        "6cf3e5c6df4f": "Una tarea no es un proceso. Estados explícitos, reintentos y programaciones para una flota de agentes de programación."
+        "6cf3e5c6df4f": "Una tarea no es un proceso. Estados explícitos, reintentos y programaciones para una flota de agentes de programación.",
+        "8010d1f4d069": "Asistente",
+        "506cfc89cd02": "Qué debería hacer un asistente entre proyectos",
+        "fe2dabe4d5f6": "Un asistente acotado lee la cola real, dirige la atención y no puede fusionar, hacer push ni aprobar."
       },
       "meta": {
         "description": "Ensayos y notas de iCode: cómo los agentes consumen tokens, por qué importa el contexto y cómo ejecutar una flota sin caos de fusiones.",

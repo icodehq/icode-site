@@ -96,7 +96,10 @@
         "599da9d5b253": "Lire l’essai →",
         "d325fcd91938": "File d’attente",
         "6c49f6e45b38": "Des tâches durables, pas des onglets de terminal",
-        "6cf3e5c6df4f": "Une tâche n’est pas un processus. Des états explicites, des reprises et des planifications pour une flotte d’agents de programmation."
+        "6cf3e5c6df4f": "Une tâche n’est pas un processus. Des états explicites, des reprises et des planifications pour une flotte d’agents de programmation.",
+        "8010d1f4d069": "Assistant",
+        "506cfc89cd02": "Ce qu’un assistant inter-projets devrait faire",
+        "fe2dabe4d5f6": "Un assistant borné lit la vraie file d’attente, oriente l’attention et ne peut ni fusionner, ni pousser, ni approuver."
       },
       "meta": {
         "description": "Essais et notes d’iCode : comment les agents consomment des tokens, pourquoi le contexte compte et comment exécuter une flotte sans chaos de fusion.",

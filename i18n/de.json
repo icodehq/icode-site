@@ -96,7 +96,10 @@
         "599da9d5b253": "Essay lesen →",
         "d325fcd91938": "Warteschlange",
         "6c49f6e45b38": "Dauerhafte Aufgaben, keine Terminal-Tabs",
-        "6cf3e5c6df4f": "Eine Aufgabe ist kein Prozess. Explizite Zustände, Wiederholungen und Zeitpläne für eine Flotte von Coding-Agenten."
+        "6cf3e5c6df4f": "Eine Aufgabe ist kein Prozess. Explizite Zustände, Wiederholungen und Zeitpläne für eine Flotte von Coding-Agenten.",
+        "8010d1f4d069": "Assistent",
+        "506cfc89cd02": "Was ein projektübergreifender Assistent tun sollte",
+        "fe2dabe4d5f6": "Ein begrenzter Assistent liest die echte Warteschlange, lenkt Aufmerksamkeit und kann nicht mergen, pushen oder genehmigen."
       },
       "meta": {
         "description": "Essays und Notizen von iCode: Wie Coding-Agenten Token verbrauchen, warum Kontextmanagement zählt und wie eine Flotte ohne Merge-Chaos läuft.",

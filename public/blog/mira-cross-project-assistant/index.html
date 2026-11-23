@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Mira, the bounded cross-project assistant — iCode Workbench</title>
+  <meta name="description" content="Another chat pane is not an assistant. Mira reads the real queue across projects, acts within limits, and cannot merge, push, or approve." />
+  <meta name="theme-color" content="#ffffff" />
+  <link rel="icon" href="../../assets/favicon.svg" type="image/svg+xml" />
+  <link rel="stylesheet" href="../../assets/styles.css" />
+  <script src="../../assets/theme.js"></script>
+</head>
+<body>
+<!-- BEGIN:site-header -->
+<!-- END:site-header -->
+
+<main>
+  <section class="section">
+    <div class="container">
+      <p class="eyebrow">iCode Workbench · Blog · Mira</p>
+      <h1>What a cross-project agent assistant should actually do</h1>
+      <p class="lede">
+        Another chat pane is not an assistant. A blank box that waits for you to
+        paste the context, summarize the task, and explain what changed is a text
+        field with a model behind it. The hard part of working with a fleet is not
+        generating another answer. It is knowing what needs you across projects.
+      </p>
+      <!-- BEGIN:article-meta -->
+      <!-- END:article-meta -->
+      <p class="muted"><em>This essay is currently available in English only.</em></p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2>The chat-pane trap</h2>
+      <p>
+        Most “AI assistants” for coding start from the same shape: a chat box, a
+        model, and a context window. You paste a stack trace, a diff, or a task
+        description, and the model answers. It can be useful. It is also a blank
+        slate every time.
+      </p>
+      <p>
+        The assistant does not know which tasks are running, which diffs are
+        waiting for review, which session is blocked on a permission prompt, or
+        what changed since yesterday. You are the integration layer. You copy state
+        from the queue into the chat, and copy the answer back.
+      </p>
+      <p>
+        That is not an assistant. It is a second interface to the same work, with
+        you as the API.
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2>What Mira reads</h2>
+      <p>
+        Mira reads the real queue. Her answers come from projects, tasks,
+        sessions, diffs, and review state — the same state you see in the sidebar,
+        not a pasted summary of it.
+      </p>
+      <p>That changes the questions you can ask:</p>
+      <ul class="feature-list">
+        <li>What needs me right now?</li>
+        <li>What is blocked, and on what?</li>
+        <li>What changed since yesterday?</li>
+        <li>Which tasks are ready for review?</li>
+        <li>Draft a review note for the auth task.</li>
+      </ul>
+      <p>
+        The answer to “what needs me?” is not a generic list of best practices. It
+        is the actual review-ready work, the failed task, the waiting permission
+        prompt, and the uncommitted change in the project you forgot was open.
+      </p>
+      <p>
+        One conversation spans every repository. That matters because the work
+        does: a blocked task in one project can depend on a contract change in
+        another, and a review queue does not stop at a repository boundary.
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2>A Tuesday morning</h2>
+      <p>
+        You open the workbench. Three tasks completed overnight. One is waiting on
+        a permission prompt. One failed on a missing credential. The review queue
+        has two diffs.
+      </p>
+      <p>
+        Mira's first message is not a summary of the repository. It is: “Two
+        review-ready: auth and billing. The docs task failed on a missing token.
+        The migration is waiting for your approval.” You handle the approval, then
+        read the auth diff. The assistant did not do the work; it told you where
+        to look.
+      </p>
+      <p>
+        The billing task is in one repository. The permission change it depends on
+        is in another. A per-project assistant would miss the dependency. A
+        cross-project assistant can point at it without opening every tab.
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2>What she can do</h2>
+      <p>Mira is not read-only. Through validated actions, she can:</p>
+      <ul class="feature-list">
+        <li>create, cancel, retry, and archive tasks;</li>
+        <li>message task sessions and project supervisors;</li>
+        <li>record non-binding review recommendations.</li>
+      </ul>
+      <p>
+        Those actions are typed and bounded. She is not inventing shell commands
+        or editing files through a side door. She is operating the same queue and
+        session model you are.
+      </p>
+      <p>
+        That is the useful middle ground: enough agency to move work along, not
+        enough to become another uncontrolled agent.
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2>What she cannot do</h2>
+      <p>
+        Mira has no shell and no project working directory. She cannot approve a
+        proposal, decide a review, merge, push, or edit project code.
+      </p>
+      <p>The list is short, and it is the point.</p>
+      <p>
+        An assistant that can merge is another agent with a larger blast radius.
+        You would have to audit its reads, its writes, and its judgment. The value
+        of a bounded assistant is that you do not have to treat every answer as a
+        potential commit.
+      </p>
+      <p>
+        She can tell you what needs a decision. She cannot make the decision. She
+        can draft a review note. She cannot approve the diff. She can retry a
+        failed task. She cannot rewrite the code herself.
+      </p>
+      <p>
+        The judgment stays with the person. That is not a limitation to apologize
+        for; it is the product.
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2>Why bounded is better</h2>
+      <p>
+        There is a temptation to measure an assistant by how much it can do
+        autonomously. More actions, fewer confirmations, less human involvement.
+        That is the wrong axis for a tool that sits on top of a fleet.
+      </p>
+      <p>
+        The useful axis is trust. Can you leave the assistant running while you
+        work? Can you trust its answer about what needs you without re-checking
+        every tab? Can you let it retry a task without wondering what else it
+        touched?
+      </p>
+      <p>
+        A bounded assistant is easier to trust because the failure mode is small.
+        The worst case is a wrong recommendation or an extra task, not an
+        unauthorized merge. That makes it reasonable to let Mira watch the queue
+        continuously, and to treat her messages as a triage layer rather than
+        another inbox to audit.
+      </p>
+      <p>Attention, not autonomy, is the useful part.</p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2>Proactive, not noisy</h2>
+      <p>An assistant that only answers when asked is still a chat pane. Mira comes to you.</p>
+      <p>
+        Approvals, failures, waiting tasks, and review-ready work become proactive
+        messages with a sidebar badge and an OS notification when no window is
+        focused. You do not have to poll tabs to find out that a task is waiting
+        for a permission prompt.
+      </p>
+      <p>
+        The hard part of proactive is not sending more messages. It is sending
+        fewer, better ones. Workbench uses deduplication, an hourly budget, and
+        quiet hours to keep the assistant from becoming noise.
+      </p>
+      <p>
+        The result is a queue that taps you on the shoulder when something needs a
+        decision, and stays quiet when nothing does.
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2>How to use her well</h2>
+      <p>Use Mira for triage, not execution.</p>
+      <p>Good requests:</p>
+      <ul class="feature-list">
+        <li>“What needs me?”</li>
+        <li>“What is blocked?”</li>
+        <li>“What changed since yesterday?”</li>
+        <li>“Which tasks are ready for review?”</li>
+        <li>“Draft a review note for the billing task.”</li>
+      </ul>
+      <p>Requests that belong in a task, not in the assistant:</p>
+      <ul class="feature-list">
+        <li>“Fix this and merge it.”</li>
+        <li>“Rewrite the module.”</li>
+        <li>“Push the branch.”</li>
+      </ul>
+      <p>
+        Mira cannot edit or merge. Sending execution to her is a category error.
+        Create a task, let a session do the work, and use Mira to tell you what
+        came back.
+      </p>
+      <p>
+        The division is clean: the queue executes, the reviewer decides, Mira
+        watches and routes attention.
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2>Honest limits</h2>
+      <p>
+        Mira's streamed Markdown reply is Claude Code only. Codex and OpenCode
+        show run stages and the final reply. The assistant is not a uniform chat
+        layer over every harness.
+      </p>
+      <p>
+        She is also not an autonomous orchestrator. A permission prompt still
+        waits for a person. A review recommendation is non-binding. The task model
+        is supervised by design.
+      </p>
+      <p>
+        Those limits are worth stating because the alternative — an assistant that
+        implies more autonomy than it has — is how trust gets lost.
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2>Monday checklist</h2>
+      <ul class="feature-list">
+        <li>Ask Mira what needs you before opening a row of tabs.</li>
+        <li>Use her to triage review-ready work, not to approve it.</li>
+        <li>Send execution to tasks, not to the assistant.</li>
+        <li>Keep review recommendations non-binding.</li>
+        <li>Set quiet hours so proactive messages stay useful.</li>
+        <li>Check the queue, not the chat, for the final state.</li>
+      </ul>
+      <p>
+        The assistant should make the fleet legible. It should not become another
+        place where work disappears.
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="actions">
+        <a class="button button-primary" href="/workbench/">Explore iCode Workbench</a>
+        <a class="button" href="/blog/agent-task-queue/">Read the queue essay</a>
+        <a class="button" href="/blog/agent-review-workflow/">Read the review gate</a>
+        <a class="button" href="/compare/orca/">Compare with Orca</a>
+        <a class="button" href="/get-started/">Get started</a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<!-- BEGIN:site-footer -->
+<!-- END:site-footer -->
+<script src="../../assets/main.js"></script>
+</body>
+</html>

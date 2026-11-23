@@ -96,7 +96,10 @@
         "599da9d5b253": "Ler o ensaio →",
         "d325fcd91938": "Fila",
         "6c49f6e45b38": "Tarefas duráveis, não abas de terminal",
-        "6cf3e5c6df4f": "Uma tarefa não é um processo. Estados explícitos, novas tentativas e agendamentos para uma frota de agentes de programação."
+        "6cf3e5c6df4f": "Uma tarefa não é um processo. Estados explícitos, novas tentativas e agendamentos para uma frota de agentes de programação.",
+        "8010d1f4d069": "Assistente",
+        "506cfc89cd02": "O que um assistente entre projetos deveria fazer",
+        "fe2dabe4d5f6": "Um assistente delimitado lê a fila real, direciona a atenção e não pode fazer merge, push ou aprovar."
       },
       "meta": {
         "description": "Ensaios e notas do iCode: como os agentes consomem tokens, por que o contexto importa e como executar uma frota sem caos de merge.",

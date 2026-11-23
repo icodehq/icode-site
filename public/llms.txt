@@ -26,6 +26,7 @@
 - [The context window is a budget](${site_origin}/blog/context-management/)
 - [The review gate](${site_origin}/blog/agent-review-workflow/)
 - [Durable tasks, not terminal tabs](${site_origin}/blog/agent-task-queue/)
+- [What a cross-project agent assistant should do](${site_origin}/blog/mira-cross-project-assistant/)
 
 ## Source code
 

@@ -63,6 +63,7 @@ ARTICLE_ROUTES = {
     "blog/context-management",
     "blog/agent-review-workflow",
     "blog/agent-task-queue",
+    "blog/mira-cross-project-assistant",
     "guides/parallel-agents",
     "guides/fix-a-failing-test",
     "guides/refactor-a-module",
@@ -77,6 +78,7 @@ ENGLISH_ONLY_ROUTES = {
     "compare/orca",
     "blog/agent-review-workflow",
     "blog/agent-task-queue",
+    "blog/mira-cross-project-assistant",
 }
 
 # Update a route only when its page content actually changes. These dates drive
@@ -93,6 +95,7 @@ CONTENT_DATES = {
     "blog/context-management": "2026-11-23",
     "blog/agent-review-workflow": "2026-11-23",
     "blog/agent-task-queue": "2026-11-23",
+    "blog/mira-cross-project-assistant": "2026-11-23",
     "guides": "2026-11-09",
     "guides/parallel-agents": "2026-11-23",
     "guides/fix-a-failing-test": "2026-11-23",
@@ -105,6 +108,7 @@ ARTICLE_PUBLISHED = {
     "blog/context-management": "2026-10-14",
     "blog/agent-review-workflow": "2026-11-23",
     "blog/agent-task-queue": "2026-11-23",
+    "blog/mira-cross-project-assistant": "2026-11-23",
     "guides/parallel-agents": "2026-11-23",
     "guides/fix-a-failing-test": "2026-10-14",
     "guides/refactor-a-module": "2026-10-14",
