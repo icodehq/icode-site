@@ -82,8 +82,12 @@
         "00710ba08e43": "The context window is a budget",
         "13aadf550791": "Notes from building a coding agent.",
         "2f407c8c9461": "iCode Agent · Blog",
+        "3385edb81505": "Run multiple coding agents in parallel",
+        "3c31673025e5": "Worktrees, task scoping, the review gate, and merge order for a fleet of CLI agents.",
         "3d2a82d2252c": "Read the article →",
         "4143d0480150": "Engineering",
+        "693368c6dd3f": "Read the guide →",
+        "bd94a13293d4": "Guide · Workbench",
         "f7e468773592": "Long tasks are where coding agents fail: the window fills, the agent forgets, and every request costs more. How iCode Agent manages context at every boundary — and why reduction must be reversible."
       },
       "meta": {

@@ -84,7 +84,11 @@
         "2f407c8c9461": "iCode Agent · Blog",
         "3d2a82d2252c": "Leer el artículo →",
         "4143d0480150": "Ingeniería",
-        "f7e468773592": "Las tareas largas son donde fallan los agentes de programación: la ventana se llena, el agente olvida y cada petición cuesta más. Cómo gestiona iCode Agent el contexto en cada límite y por qué la reducción debe ser reversible."
+        "f7e468773592": "Las tareas largas son donde fallan los agentes de programación: la ventana se llena, el agente olvida y cada petición cuesta más. Cómo gestiona iCode Agent el contexto en cada límite y por qué la reducción debe ser reversible.",
+        "bd94a13293d4": "Guía · Workbench",
+        "3385edb81505": "Ejecuta varios agentes de programación en paralelo",
+        "3c31673025e5": "Worktrees, delimitación de tareas, la puerta de revisión y el orden de fusión para una flota de agentes CLI.",
+        "693368c6dd3f": "Leer la guía →"
       },
       "meta": {
         "description": "Ensayos y notas sobre iCode Agent: cómo gastan tokens los agentes, por qué importa la gestión del contexto y qué falla en las tareas largas.",

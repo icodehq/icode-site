@@ -84,7 +84,11 @@
         "2f407c8c9461": "iCode Agent · Blog",
         "3d2a82d2252c": "Artikel lesen →",
         "4143d0480150": "Entwicklung",
-        "f7e468773592": "Bei langen Aufgaben scheitern Coding-Agenten: Das Fenster füllt sich, der Agent vergisst, und jede Anfrage kostet mehr. Wie iCode Agent den Kontext an jeder Grenze verwaltet — und warum Reduktion umkehrbar sein muss."
+        "f7e468773592": "Bei langen Aufgaben scheitern Coding-Agenten: Das Fenster füllt sich, der Agent vergisst, und jede Anfrage kostet mehr. Wie iCode Agent den Kontext an jeder Grenze verwaltet — und warum Reduktion umkehrbar sein muss.",
+        "bd94a13293d4": "Anleitung · Workbench",
+        "3385edb81505": "Mehrere Coding-Agenten parallel ausführen",
+        "3c31673025e5": "Worktrees, Aufgabenabgrenzung, das Review-Gate und die Merge-Reihenfolge für eine Flotte von CLI-Agenten.",
+        "693368c6dd3f": "Anleitung lesen →"
       },
       "meta": {
         "description": "Essays und Notizen aus der Entwicklung von iCode Agent: Wie Coding-Agenten Token verbrauchen, warum Kontextmanagement zählt und was bei langen Aufgaben bricht.",

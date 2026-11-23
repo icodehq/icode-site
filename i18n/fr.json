@@ -84,7 +84,11 @@
         "2f407c8c9461": "iCode Agent · Blog",
         "3d2a82d2252c": "Lire l’article →",
         "4143d0480150": "Ingénierie",
-        "f7e468773592": "Les tâches longues sont là où les agents de programmation échouent : la fenêtre se remplit, l’agent oublie et chaque requête coûte plus cher. Comment iCode Agent gère le contexte à chaque étape — et pourquoi la réduction doit être réversible."
+        "f7e468773592": "Les tâches longues sont là où les agents de programmation échouent : la fenêtre se remplit, l’agent oublie et chaque requête coûte plus cher. Comment iCode Agent gère le contexte à chaque étape — et pourquoi la réduction doit être réversible.",
+        "bd94a13293d4": "Guide · Workbench",
+        "3385edb81505": "Exécuter plusieurs agents de programmation en parallèle",
+        "3c31673025e5": "Worktrees, cadrage des tâches, la porte de revue et l’ordre de fusion pour une flotte d’agents CLI.",
+        "693368c6dd3f": "Lire le guide →"
       },
       "meta": {
         "description": "Essais et notes sur iCode Agent : consommation de tokens, importance de la gestion du contexte et points de rupture des tâches longues.",
