@@ -53,6 +53,16 @@
 
   <section class="section">
     <div class="container">
+      <h2>0.27.0 — 2026-11-24</h2>
+      <ul class="feature-list">
+        <li><strong>Sessions repair their own workspaces.</strong> Opening or retrying a session probes its checkout with filesystem evidence, rebuilds a lost Git registration or index when safe, and recreates a missing checkout from its branch; a background sweep repairs the rest without blocking the window.</li>
+        <li><strong>A plain recovery panel.</strong> A session that cannot be repaired shows <strong>Try again</strong>, <strong>Remove session</strong>, and <strong>Start fresh (keep old files)</strong>; the old directory is moved beside the new one, never deleted.</li>
+        <li><strong>Four session states.</strong> The sidebar, header, and details now say <strong>Starting</strong>, <strong>Running</strong>, <strong>Stopped</strong>, and <strong>Needs attention</strong>; worktree, host, branch, and path vocabulary moved behind <strong>Technical details</strong>.</li>
+        <li><strong>Copy diagnostics.</strong> Paths, branches, baselines, host authority, and raw errors sit behind a collapsed <strong>Technical details</strong> section with a <strong>Copy diagnostics</strong> button.</li>
+        <li><strong>Fewer false failures.</strong> A host or PTY startup failure no longer marks the checkout failed, and the redundant <strong>Check host</strong> action is gone.</li>
+        <li><strong>Long Windows paths.</strong> Worktree Git commands pass <code>core.longpaths</code>, so deep checkouts under <code>%APPDATA%</code> are less likely to fail.</li>
+      </ul>
+
       <h2>0.26.1 — 2026-11-24</h2>
       <ul class="feature-list">
         <li><strong>Worktree row actions.</strong> Right-clicking anywhere on a worktree row opens <strong>Worktree actions</strong>; before, only the branch label answered the right-click.</li>
