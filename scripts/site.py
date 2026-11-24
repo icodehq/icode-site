@@ -84,6 +84,9 @@ ARTICLE_ROUTES = {
     "workbench/agents/claude-code",
     "workbench/agents/codex",
     "workbench/agents/opencode",
+    "workbench/agents/cursor-cli",
+    "workbench/agents/gemini-cli",
+    "workbench/agents/copilot",
 }
 
 # Routes that exist only in English. They are built once, canonicalized to the
@@ -105,6 +108,9 @@ ENGLISH_ONLY_ROUTES = {
     "workbench/agents/claude-code",
     "workbench/agents/codex",
     "workbench/agents/opencode",
+    "workbench/agents/cursor-cli",
+    "workbench/agents/gemini-cli",
+    "workbench/agents/copilot",
     "changelog",
     "compare/orca",
     "blog/agent-review-workflow",
@@ -148,6 +154,9 @@ CONTENT_DATES = {
     "workbench/agents/claude-code": "2026-11-24",
     "workbench/agents/codex": "2026-11-24",
     "workbench/agents/opencode": "2026-11-24",
+    "workbench/agents/cursor-cli": "2026-11-24",
+    "workbench/agents/gemini-cli": "2026-11-24",
+    "workbench/agents/copilot": "2026-11-24",
     "changelog": "2026-11-24",
     "compare/orca": "2026-11-24",
 }
@@ -176,6 +185,9 @@ ARTICLE_PUBLISHED = {
     "workbench/agents/claude-code": "2026-11-24",
     "workbench/agents/codex": "2026-11-24",
     "workbench/agents/opencode": "2026-11-24",
+    "workbench/agents/cursor-cli": "2026-11-24",
+    "workbench/agents/gemini-cli": "2026-11-24",
+    "workbench/agents/copilot": "2026-11-24",
 }
 PRODUCTS = {
     "workbench": {

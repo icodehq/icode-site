@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>GitHub Copilot in iCode Workbench — parallel sessions</title>
+  <meta name="description" content="Run the GitHub Copilot CLI in iCode Workbench: one worktree per session, a durable queue, a managed status hook, and a review gate. Setup, resume, and limits." />
+  <meta name="theme-color" content="#ffffff" />
+  <link rel="icon" href="../../../assets/favicon.svg" type="image/svg+xml" />
+  <link rel="stylesheet" href="../../../assets/styles.css" />
+  <script src="../../../assets/theme.js"></script>
+</head>
+<body>
+<!-- BEGIN:site-header -->
+<!-- END:site-header -->
+
+<main>
+  <section class="section">
+    <div class="container">
+      <p class="eyebrow">iCode Workbench · Harness · GitHub Copilot</p>
+      <h1>GitHub Copilot in iCode Workbench</h1>
+      <p class="lede">
+        GitHub Copilot's CLI is a terminal coding agent from GitHub. In Workbench
+        it runs as a primary harness: each session gets its own Git worktree, the
+        task sits in a durable queue, and the diff is reviewed in the checkout
+        where it was made.
+      </p>
+      <!-- BEGIN:article-meta -->
+      <!-- END:article-meta -->
+      <p class="muted"><em>This page is currently available in English only.</em></p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2>What GitHub Copilot is good at</h2>
+      <ul class="feature-list">
+        <li><strong>GitHub-native work.</strong> Copilot's CLI fits teams already working in GitHub issues, pull requests, and repositories.</li>
+        <li><strong>Your Copilot subscription.</strong> Use your existing GitHub Copilot account and model access; Workbench does not replace the agent or its provider.</li>
+        <li><strong>Resumable sessions.</strong> Workbench can resume a Copilot session by id when the harness reports one.</li>
+      </ul>
+      <p>
+        Workbench changes where the session runs and how the result is tracked;
+        it does not change Copilot's model behavior or permissions.
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2>Why run it in Workbench</h2>
+      <ul class="feature-list">
+        <li><strong>One worktree per session.</strong> Two agents in one checkout can overwrite each other; Workbench gives each its own branch and working directory.</li>
+        <li><strong>A durable queue.</strong> A session is a process; a task has states. Workbench tracks queued, running, waiting, completed, and failed work.</li>
+        <li><strong>A managed status hook.</strong> Workbench installs Copilot's status hook at <code>~/.copilot/hooks/icode.json</code>, so the session row can report what the agent is doing. Without the hook, the session stays <code>unknown</code> rather than guessing.</li>
+        <li><strong>Review in place.</strong> Files, Search, and Source Control live beside the terminal, scoped to the session checkout, with line notes and a separate review decision.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2>Setup</h2>
+      <ol class="feature-list">
+        <li><strong>Install the Copilot CLI</strong> using GitHub's official instructions, then confirm <code>copilot --version</code> works in your shell.</li>
+        <li><strong>Run it once</strong> outside Workbench so GitHub authentication and Copilot settings are in place.</li>
+        <li><strong>Install the status hook</strong> from Workbench's harness settings, and confirm the hook file exists at <code>~/.copilot/hooks/icode.json</code>.</li>
+        <li><strong>Add the repository to Workbench</strong> and open it. The harness keeps its own credentials.</li>
+      </ol>
+      <p>
+        If Copilot is installed but Workbench does not see it, check that
+        <code>copilot</code> is on the <code>PATH</code> of the shell Workbench
+        launches. On Windows, a WSL target needs it installed inside the distro.
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2>Launch and resume</h2>
+      <p>
+        Create a new session from <strong>New worktree</strong>, choose GitHub
+        Copilot, and give the task a scope. Workbench launches
+        <code>copilot</code> in the session checkout. Each session is
+        independent: its own branch, its own terminal, its own context.
+      </p>
+      <p>
+        Workbench uses the resume recipe <code>--resume=$TOKEN</code> when a
+        session id was captured. If the app restarts, the detached host keeps the
+        PTY alive; sleep a session to stop the process and keep the checkout,
+        then wake it to resume where the harness supports it.
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2>Status at a glance</h2>
+      <p>
+        The session row shows the project, branch, target, and state. GitHub
+        Copilot reports through the managed status hook; a session without the
+        hook stays <code>unknown</code> rather than showing a false
+        <code>running</code>. Sleep a session to stop the process and keep the
+        checkout; wake it to resume where the harness supports it.
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2>A concrete task</h2>
+      <p>
+        Task: “Add a retry to the pull-request review comment fetch.”
+      </p>
+      <ol class="feature-list">
+        <li><strong>Create a worktree</strong> from main and name the branch after the task.</li>
+        <li><strong>Scope the session:</strong> owned paths <code>src/github/reviews/**</code> and its tests; the GitHub client schema and route table are out of scope.</li>
+        <li><strong>Launch GitHub Copilot</strong> in the session checkout with the task statement and the done-when command.</li>
+        <li><strong>Queue the task</strong> if another session is running; one worktree per task.</li>
+        <li><strong>Review the diff</strong> in the checkout: run the GitHub client tests, check that the retry is bounded, and confirm the error path is covered.</li>
+        <li><strong>Decide</strong> accept, revise, or reject; merge after the combined result passes.</li>
+      </ol>
+      <p>
+        A GitHub integration can pass unit tests with a mocked client and still
+        fail against the real API. The review should say which path was tested
+        and which one needs a live check. The goal is a reviewed diff, not a
+        faster terminal.
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2>What the managed hook changes</h2>
+      <p>
+        The hook is what turns a terminal into a row with a state. Without it,
+        Workbench can see the process but cannot distinguish running from
+        waiting; the row stays <code>unknown</code>. The hook writes a small
+        config file at <code>~/.copilot/hooks/icode.json</code> and does not
+        proxy model traffic or capture prompts. If you remove it, sessions still
+        run; they just lose the status detail.
+      </p>
+      <p>
+        If you use Copilot's editor integration at the same time, keep the CLI
+        session in its worktree; the two should not share a checkout.
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2>Limits</h2>
+      <ul class="feature-list">
+        <li><strong>Workbench does not embed GitHub Copilot's editor features.</strong> It runs the CLI agent in a worktree; GitHub's own IDE integrations stay in GitHub's tools.</li>
+        <li><strong>Desktop only.</strong> Workbench is a desktop app; there is no mobile or remote server. If you need those, Orca is the broader tool.</li>
+        <li><strong>Pre-1.0.</strong> Workbench is still changing; verify current behavior before standardizing a team on it.</li>
+      </ul>
+      <div class="actions">
+        <a class="button button-primary" href="/workbench/">Explore iCode Workbench</a>
+        <a class="button" href="/workbench/agents/cursor-cli/">Cursor CLI in Workbench</a>
+        <a class="button" href="/workbench/agents/gemini-cli/">Gemini CLI in Workbench</a>
+        <a class="button" href="/guides/parallel-agents/">Parallel-agents guide</a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<!-- BEGIN:site-footer -->
+<!-- END:site-footer -->
+<script src="../../../assets/main.js"></script>
+</body>
+</html>

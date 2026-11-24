@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Gemini CLI in iCode Workbench — parallel sessions</title>
+  <meta name="description" content="Run Gemini CLI in iCode Workbench: one worktree per session, a durable queue, a managed status hook, and a review gate. Setup, resume, and limits." />
+  <meta name="theme-color" content="#ffffff" />
+  <link rel="icon" href="../../../assets/favicon.svg" type="image/svg+xml" />
+  <link rel="stylesheet" href="../../../assets/styles.css" />
+  <script src="../../../assets/theme.js"></script>
+</head>
+<body>
+<!-- BEGIN:site-header -->
+<!-- END:site-header -->
+
+<main>
+  <section class="section">
+    <div class="container">
+      <p class="eyebrow">iCode Workbench · Harness · Gemini CLI</p>
+      <h1>Gemini CLI in iCode Workbench</h1>
+      <p class="lede">
+        Gemini CLI is Google's terminal coding agent. In Workbench it runs as a
+        primary harness: each session gets its own Git worktree, the task sits in
+        a durable queue, and the diff is reviewed in the checkout where it was
+        made.
+      </p>
+      <!-- BEGIN:article-meta -->
+      <!-- END:article-meta -->
+      <p class="muted"><em>This page is currently available in English only.</em></p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2>What Gemini CLI is good at</h2>
+      <ul class="feature-list">
+        <li><strong>Gemini models.</strong> Use your Google account and Gemini model selection; Workbench does not replace the agent or its provider.</li>
+        <li><strong>Terminal-native tasks.</strong> It reads the repository, edits files, and runs commands from the shell.</li>
+        <li><strong>Resumable sessions.</strong> Workbench can resume a Gemini CLI session by id when the harness reports one.</li>
+      </ul>
+      <p>
+        Workbench changes where the session runs and how the result is tracked;
+        it does not change Gemini's model behavior or permissions.
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2>Why run it in Workbench</h2>
+      <ul class="feature-list">
+        <li><strong>One worktree per session.</strong> Two agents in one checkout can overwrite each other; Workbench gives each its own branch and working directory.</li>
+        <li><strong>A durable queue.</strong> A session is a process; a task has states. Workbench tracks queued, running, waiting, completed, and failed work.</li>
+        <li><strong>A managed status hook.</strong> Workbench installs Gemini's status hook at <code>~/.gemini/settings.json</code>, so the session row can report what the agent is doing. Without the hook, the session stays <code>unknown</code> rather than guessing.</li>
+        <li><strong>Review in place.</strong> Files, Search, and Source Control live beside the terminal, scoped to the session checkout, with line notes and a separate review decision.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2>Setup</h2>
+      <ol class="feature-list">
+        <li><strong>Install Gemini CLI</strong> using Google's official instructions, then confirm <code>gemini --version</code> works in your shell.</li>
+        <li><strong>Run it once</strong> outside Workbench so the CLI's authentication and settings are in place.</li>
+        <li><strong>Install the status hook</strong> from Workbench's harness settings, and confirm the hook exists in <code>~/.gemini/settings.json</code>.</li>
+        <li><strong>Add the repository to Workbench</strong> and open it. The harness keeps its own credentials.</li>
+      </ol>
+      <p>
+        If Gemini CLI is installed but Workbench does not see it, check that
+        <code>gemini</code> is on the <code>PATH</code> of the shell Workbench
+        launches. On Windows, a WSL target needs it installed inside the distro.
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2>Launch and resume</h2>
+      <p>
+        Create a new session from <strong>New worktree</strong>, choose Gemini
+        CLI, and give the task a scope. Workbench launches <code>gemini</code> in
+        the session checkout. Each session is independent: its own branch, its
+        own terminal, its own context.
+      </p>
+      <p>
+        Workbench uses the resume recipe <code>--resume $TOKEN</code> when a
+        session id was captured. If the app restarts, the detached host keeps the
+        PTY alive; sleep a session to stop the process and keep the checkout,
+        then wake it to resume where the harness supports it.
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2>Status at a glance</h2>
+      <p>
+        The session row shows the project, branch, target, and state. Gemini CLI
+        reports through the managed status hook; a session without the hook stays
+        <code>unknown</code> rather than showing a false <code>running</code>.
+        Sleep a session to stop the process and keep the checkout; wake it to
+        resume where the harness supports it.
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2>A concrete task</h2>
+      <p>
+        Task: “Add cursor-based pagination to the search endpoint.”
+      </p>
+      <ol class="feature-list">
+        <li><strong>Create a worktree</strong> from main and name the branch after the task.</li>
+        <li><strong>Scope the session:</strong> owned paths <code>src/search/**</code> and its tests; the public API schema and route table are out of scope.</li>
+        <li><strong>Launch Gemini CLI</strong> in the session checkout with the task statement and the done-when command.</li>
+        <li><strong>Queue the task</strong> if another session is running; one worktree per task.</li>
+        <li><strong>Review the diff</strong> in the checkout: run the search tests, check the empty and last-page cases, and look for a changed response shape.</li>
+        <li><strong>Decide</strong> accept, revise, or reject; merge after the combined result passes.</li>
+      </ol>
+      <p>
+        Pagination is a contract change hidden inside a feature. The review
+        should confirm that existing clients still see the old fields and that
+        the new cursor is optional. The goal is a reviewed diff, not a faster
+        terminal; keep the task small enough to read.
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2>What the managed hook changes</h2>
+      <p>
+        The hook is what turns a terminal into a row with a state. Without it,
+        Workbench can see the process but cannot distinguish running from
+        waiting; the row stays <code>unknown</code>. The hook writes a small
+        config file at <code>~/.gemini/settings.json</code> and does not proxy
+        model traffic or capture prompts. If you remove it, sessions still run;
+        they just lose the status detail.
+      </p>
+      <p>
+        If you use Gemini in another IDE at the same time, keep the CLI session
+        in its worktree; the two should not share a checkout.
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2>Limits</h2>
+      <ul class="feature-list">
+        <li><strong>Workbench does not change the agent.</strong> Gemini's model behavior, context management, and permissions are its own.</li>
+        <li><strong>Desktop only.</strong> Workbench is a desktop app; there is no mobile or remote server. If you need those, Orca is the broader tool.</li>
+        <li><strong>Pre-1.0.</strong> Workbench is still changing; verify current behavior before standardizing a team on it.</li>
+      </ul>
+      <div class="actions">
+        <a class="button button-primary" href="/workbench/">Explore iCode Workbench</a>
+        <a class="button" href="/workbench/agents/cursor-cli/">Cursor CLI in Workbench</a>
+        <a class="button" href="/workbench/agents/copilot/">Copilot in Workbench</a>
+        <a class="button" href="/guides/parallel-agents/">Parallel-agents guide</a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<!-- BEGIN:site-footer -->
+<!-- END:site-footer -->
+<script src="../../../assets/main.js"></script>
+</body>
+</html>
