@@ -73,6 +73,7 @@ ARTICLE_ROUTES = {
     "guides/from-one-agent-to-a-fleet",
     "guides/agent-worktrees-explained",
     "guides/queue-coding-agent-tasks",
+    "guides/review-ai-generated-code",
 }
 
 # Routes that exist only in English. They are built once, canonicalized to the
@@ -83,6 +84,7 @@ ENGLISH_ONLY_ROUTES = {
     "guides/from-one-agent-to-a-fleet",
     "guides/agent-worktrees-explained",
     "guides/queue-coding-agent-tasks",
+    "guides/review-ai-generated-code",
     "compare/orca",
     "blog/agent-review-workflow",
     "blog/agent-task-queue",
@@ -114,6 +116,7 @@ CONTENT_DATES = {
     "guides/from-one-agent-to-a-fleet": "2026-11-24",
     "guides/agent-worktrees-explained": "2026-11-24",
     "guides/queue-coding-agent-tasks": "2026-11-24",
+    "guides/review-ai-generated-code": "2026-11-24",
     "compare/orca": "2026-11-24",
 }
 ARTICLE_PUBLISHED = {
@@ -130,6 +133,7 @@ ARTICLE_PUBLISHED = {
     "guides/from-one-agent-to-a-fleet": "2026-11-24",
     "guides/agent-worktrees-explained": "2026-11-24",
     "guides/queue-coding-agent-tasks": "2026-11-24",
+    "guides/review-ai-generated-code": "2026-11-24",
 }
 PRODUCTS = {
     "workbench": {

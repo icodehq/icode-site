@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>How to review AI-generated code — iCode Workbench</title>
+  <meta name="description" content="A review workflow for AI-generated code: reproduce the change, inspect the diff, run the tests, and make the review decision separate from process exit." />
+  <meta name="theme-color" content="#ffffff" />
+  <link rel="icon" href="../../assets/favicon.svg" type="image/svg+xml" />
+  <link rel="stylesheet" href="../../assets/styles.css" />
+  <script src="../../assets/theme.js"></script>
+</head>
+<body>
+<!-- BEGIN:site-header -->
+<!-- END:site-header -->
+
+<main>
+  <section class="section">
+    <div class="container">
+      <p class="eyebrow">iCode Workbench · Guide · Review</p>
+      <h1>How to review AI-generated code</h1>
+      <p class="lede">
+        A green run is not an approval. The agent exited zero, the task is
+        marked complete, and the diff looks plausible. None of that proves the
+        change is correct. Review is the step that turns generated code into
+        accepted work — and it needs a different rhythm from reviewing code a
+        person wrote.
+      </p>
+      <p>
+        This guide is a practical review workflow: what to read before the diff,
+        how to inspect it in the checkout, what to test, where the risk hides,
+        and how to make a decision that is separate from process exit.
+      </p>
+      <!-- BEGIN:article-meta -->
+      <!-- END:article-meta -->
+      <p class="muted"><em>This guide is currently available in English only.</em></p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2>Why AI-generated code needs a different review</h2>
+      <p>
+        Human code review assumes the author had a model of the system. Agent
+        output is different: it can be locally plausible and globally wrong. It
+        can hallucinate an import, weaken a test to make it pass, change a file
+        outside the task, or copy a pattern from the wrong part of the
+        codebase.
+      </p>
+      <p>
+        The volume is different too. An agent can produce a reviewable diff in
+        minutes, and a fleet can produce several at once. If you review every
+        line at the same depth, the queue wins. The review has to be
+        risk-first: find the changes that can hurt, then spend your attention
+        there.
+      </p>
+      <p>
+        The goal is not to distrust the agent. It is to make the review a real
+        decision, not a ceremony after a green run.
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2>Before you read the diff</h2>
+      <p>
+        Read the task first. You cannot judge the diff without knowing what it
+        was supposed to do. Check:
+      </p>
+      <ul class="feature-list">
+        <li><strong>The goal.</strong> One sentence. If it is vague, the diff will be too.</li>
+        <li><strong>The owned paths.</strong> The files the agent was allowed to change. Drift outside them is a finding, not a detail.</li>
+        <li><strong>The done-when command.</strong> The verification the agent was supposed to run. You will run it again.</li>
+        <li><strong>The baseline.</strong> The commit or worktree state the task started from. Review against that, not against your memory of main.</li>
+        <li><strong>The agent's summary — with suspicion.</strong> The summary says what the agent intended. The diff says what it did. When they disagree, the diff wins.</li>
+      </ul>
+      <p>
+        If the task did not have these fields, the review starts with a
+        question: what was the agent asked to do? That is cheaper to fix before
+        you read a 40-file diff.
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2>Read the diff in the checkout</h2>
+      <p>
+        Review where the agent worked. Open the checkout, not a chat transcript
+        and not a summary. You want the real diff, the surrounding code, and the
+        ability to run the tests in the same tree.
+      </p>
+      <p>
+        A sequence that works:
+      </p>
+      <ol class="feature-list">
+        <li><strong>Start with the file list.</strong> Look for files outside the owned paths, deleted tests, dependency changes, and generated files. These are the highest-signal lines in the diff.</li>
+        <li><strong>Read the diff by risk, not by file order.</strong> Auth, data, shared interfaces, and migrations first. Formatting and docs last.</li>
+        <li><strong>Open the surrounding code.</strong> A diff can be correct in isolation and wrong in context. Read the callers of the changed function and the tests that cover it.</li>
+        <li><strong>Check what was removed.</strong> Deleted assertions, skipped tests, removed error handling, and narrowed types are common ways a diff looks smaller than the behavior change.</li>
+        <li><strong>Leave line notes.</strong> A note attached to the line is easier to act on than a paragraph in chat.</li>
+      </ol>
+      <p>
+        If the diff is too large to review, that is a finding: the task was too
+        broad. Split it and re-run, rather than skimming.
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2>Run the tests yourself</h2>
+      <p>
+        A passing test in the agent's shell is evidence. A passing test in your
+        shell is proof. Run the done-when command in the checkout, then run the
+        broader suite if the change touches shared code.
+      </p>
+      <ul class="feature-list">
+        <li><strong>For a bug fix, confirm the test fails before the fix and passes after.</strong> If it passes both ways, the test is not covering the bug.</li>
+        <li><strong>Look for skipped or weakened tests.</strong> A test that was deleted, skipped, or changed to assert less is a change to the safety net, not just the code.</li>
+        <li><strong>Run the combined result after each merge.</strong> Two branches can pass alone and fail together.</li>
+      </ul>
+      <p>
+        If the suite is flaky, say so in the review. A green run you do not
+        trust is worse than a red run you do.
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2>Where the risk hides</h2>
+      <ul class="feature-list">
+        <li><strong>Auth and permissions.</strong> A missing check, a widened role, a token that lives too long. Read these diffs line by line.</li>
+        <li><strong>Data and migrations.</strong> Forward-only changes, missing rollback, locks on large tables, backfills that assume an empty database.</li>
+        <li><strong>Shared interfaces.</strong> Route tables, exported types, API schemas, dependency manifests. A small change here can break every caller.</li>
+        <li><strong>Error handling.</strong> A new catch that swallows the error, a retry without a bound, a fallback that hides a failure.</li>
+        <li><strong>Concurrency.</strong> Shared state, locks, queues, idempotency. These bugs pass tests and fail in production.</li>
+        <li><strong>Dependencies.</strong> A new package, a version bump, a lockfile change. Check why it was added, not just that it installs.</li>
+        <li><strong>Generated files.</strong> Lockfiles, snapshots, and build output should be regenerated, not hand-edited.</li>
+        <li><strong>Style drift.</strong> A different pattern from the surrounding code is not always wrong, but it is a question. Ask why.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2>Write feedback the agent can act on</h2>
+      <p>
+        A review comment should be specific enough to produce a change without
+        another round of questions. “This looks wrong” is not actionable.
+        “This catch swallows the timeout; rethrow it so the retry sees it” is.
+      </p>
+      <p>
+        A useful comment includes:
+      </p>
+      <ol class="feature-list">
+        <li><strong>The location.</strong> A file and line, or a line note attached to the diff.</li>
+        <li><strong>The problem.</strong> What will go wrong, not just what you dislike.</li>
+        <li><strong>The expected change.</strong> A direction, not a full rewrite.</li>
+        <li><strong>The evidence.</strong> The failing test, the command output, or the caller that breaks.</li>
+      </ol>
+      <p>
+        Batch the comments and send them in one pass. A stream of small
+        corrections across five messages is harder for the agent to apply and
+        harder for you to track.
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2>Make the review decision</h2>
+      <p>
+        The decision is separate from process exit. There are three outcomes:
+      </p>
+      <ul class="feature-list">
+        <li><strong>Accept.</strong> The diff matches the task, the tests pass, and the risk areas are covered. Record the decision and merge.</li>
+        <li><strong>Reject.</strong> The change is wrong, out of scope, or not worth fixing. Keep the branch and the history; a rejection is information.</li>
+        <li><strong>Revise.</strong> The direction is right but the diff needs another pass. Send the line notes back to the agent, then review the new diff.</li>
+      </ul>
+      <p>
+        Do not auto-merge a green task. The review decision is the human
+        judgment the workbench exists to protect. If you accept everything, the
+        gate is decorative.
+      </p>
+      <p>
+        For the “why” behind this model, read
+        <a href="/blog/agent-review-workflow/">the review gate</a>. For the queue
+        side, read <a href="/guides/queue-coding-agent-tasks/">how to queue coding agent tasks</a>.
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2>A diff that looks fine</h2>
+      <p>
+        The task: “Fix token refresh when the API returns 401.” The agent
+        changes <code>src/auth/refresh.ts</code>, adds a retry, edits
+        <code>src/routes.ts</code>, and changes
+        <code>tests/auth/refresh.test.ts</code>. The suite is green.
+      </p>
+      <p>
+        A line-by-line read of the main file might miss the problems. A
+        risk-first read finds them in the file list:
+      </p>
+      <ul class="feature-list">
+        <li><strong>Out-of-scope change.</strong> <code>src/routes.ts</code> was not in the owned paths. The agent may have “fixed” a route while it was there. That is a separate task and a separate review.</li>
+        <li><strong>Weakened test.</strong> The test file was edited. If an assertion was removed or a case was skipped, the green run is not evidence that the bug is fixed.</li>
+        <li><strong>Unbounded retry.</strong> A retry on 401 can loop forever if the refresh token is also expired. The diff needs a bound and a failure path.</li>
+        <li><strong>Missing case.</strong> There is no test for an expired refresh token, which is the case that matters most.</li>
+      </ul>
+      <p>
+        The decision is “revise,” not “accept.” The line notes should name the
+        out-of-scope file, the skipped test, the retry bound, and the missing
+        case. The next diff is smaller and the review is faster.
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2>When the diff is too large</h2>
+      <p>
+        A large diff is a process finding, not a review challenge. If the change
+        touches dozens of files or hundreds of lines, the task was too broad.
+        Skimming it produces a review that looks thorough and catches nothing.
+      </p>
+      <p>
+        Split the task by behavior or by owned path, re-run the agent, and
+        review the smaller diffs. If the change is genuinely one atomic
+        migration, review it in stages: schema, backfill, callers, rollback.
+      </p>
+      <p>
+        The same rule applies to a diff you do not understand. “I will read it
+        later” is how unreviewed code reaches main. Ask the agent to explain the
+        change, then verify the explanation against the diff.
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2>Checklist</h2>
+      <ol class="feature-list">
+        <li>Does the diff match the task, or did the agent drift?</li>
+        <li>Are there files outside the owned paths? Why?</li>
+        <li>Were any tests deleted, skipped, or weakened?</li>
+        <li>Did the verification command fail before the fix and pass after?</li>
+        <li>Are auth, data, shared interfaces, and dependencies covered?</li>
+        <li>Does the combined result pass after the merge?</li>
+        <li>Is the review decision recorded separately from process exit?</li>
+      </ol>
+      <div class="actions">
+        <a class="button button-primary" href="/workbench/">Explore iCode Workbench</a>
+        <a class="button" href="/guides/queue-coding-agent-tasks/">Queue coding agent tasks</a>
+        <a class="button" href="/guides/parallel-agents/">Read the parallel-agents guide</a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<!-- BEGIN:site-footer -->
+<!-- END:site-footer -->
+<script src="../../assets/main.js"></script>
+</body>
+</html>
