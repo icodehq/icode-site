@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Migrate from Orca to iCode Workbench — five steps</title>
+  <meta name="description" content="A five-step migration from Orca: install Workbench, open the same repository, move one task, review the diff, and decide after a week." />
+  <meta name="theme-color" content="#ffffff" />
+  <link rel="icon" href="../../assets/favicon.svg" type="image/svg+xml" />
+  <link rel="stylesheet" href="../../assets/styles.css" />
+  <script src="../../assets/theme.js"></script>
+</head>
+<body>
+<!-- BEGIN:site-header -->
+<!-- END:site-header -->
+
+<main>
+  <section class="section">
+    <div class="container">
+      <p class="eyebrow">iCode Workbench · Migration</p>
+      <h1>Migrate from Orca to iCode Workbench</h1>
+      <p class="lede">
+        Orca and Workbench can coexist. This is a five-step migration for teams
+        that want a local, review-first task queue without giving up Orca's
+        broader surfaces. You do not need to move everything at once; start with
+        one task and decide after a week.
+      </p>
+      <p class="muted">
+        iCode Workbench is our product. This page is written to be useful even if
+        you decide to stay with Orca; the “When to stay” section is not an
+        afterthought.
+      </p>
+      <!-- BEGIN:article-meta -->
+      <!-- END:article-meta -->
+      <p class="muted"><em>This guide is currently available in English only.</em></p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2>What migration means</h2>
+      <p>
+        Migration is not a data import. Workbench does not import Orca tasks,
+        sessions, bots, schedules, or settings. What transfers is your
+        repository, your agents, and your subscriptions; the workflow is
+        recreated task by task.
+      </p>
+      <p>
+        That is intentional. A queue that imports stale tasks and half-finished
+        sessions creates a second source of truth. Start with one task that
+        needs review, run it in both tools if you want, and compare the review
+        experience. The unit of migration is a task, not a workspace.
+      </p>
+      <p>
+        Keep Orca installed during the evaluation. The two tools can coexist on
+        the same machine, and Orca's worktrees are ordinary Git worktrees — they
+        are not touched by Workbench.
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2>Before you start</h2>
+      <ul class="feature-list">
+        <li><strong>Install Workbench</strong> on Windows, Linux, or macOS. Keep Orca installed.</li>
+        <li><strong>Open the same repository.</strong> Workbench creates a worktree per session; your existing Orca worktrees remain.</li>
+        <li><strong>Know the review model.</strong> Review happens in the session checkout, and the review decision is separate from process exit.</li>
+        <li><strong>Pick one task that needs review.</strong> A task with a real diff and a clear done-when command is a better test than a trivial one.</li>
+      </ul>
+      <p>
+        If you are new to the workflow, read
+        <a href="/guides/parallel-agents/">how to run multiple coding agents in parallel</a>
+        and <a href="/guides/review-ai-generated-code/">how to review AI-generated code</a>.
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2>Step 1: Install Workbench, keep Orca</h2>
+      <p>
+        Install Workbench and leave Orca in place. You are not committing to a
+        switch; you are adding a review-first queue beside the tool you already
+        use. Both can run at the same time.
+      </p>
+      <p>
+        Workbench is free and open source under AGPL-3.0. It is pre-1.0, so
+        features and storage schemas may change between releases. If AGPL-3.0
+        is a blocker for your organization, Orca's MIT license may be the
+        decisive difference; that is covered below.
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2>Step 2: Open the same repository</h2>
+      <p>
+        Add the repository to Workbench. New sessions get their own Git
+        worktree and branch, starting from the current HEAD. Your existing Orca
+        worktrees are untouched; they are just directories with branches.
+      </p>
+      <p>
+        If you want to reuse an Orca worktree's branch, create a new session
+        from that branch in Workbench. Do not point two tools at the same
+        working directory at the same time; the isolation is per checkout, and
+        sharing one defeats it.
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2>Step 3: Move one task, not the queue</h2>
+      <p>
+        Pick one task that needs review and queue it in Workbench. Set the slot
+        limit to 1 for the first run: one task, one checkout, one review.
+      </p>
+      <p>
+        Give the task a goal, owned paths, a done-when command, and an
+        out-of-scope list. The task statement is the part that makes the review
+        possible; without it, you are comparing two tools on a vague diff.
+      </p>
+      <p>
+        For the queue model, read
+        <a href="/guides/queue-coding-agent-tasks/">how to queue coding agent tasks</a>.
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2>Step 4: Review in the session checkout</h2>
+      <p>
+        When the agent finishes, review the diff in the checkout where it
+        worked. Use Files, Search, and Source Control; leave line notes; run the
+        done-when command yourself. Then make the review decision: accept,
+        revise, or reject.
+      </p>
+      <p>
+        The decision is separate from process exit. A completed task can still
+        be rejected, and a rejected task can be revised and re-reviewed. This is
+        the part of the workflow to compare with Orca: not which tool has more
+        features, but whether the review is a real gate or a summary.
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2>Step 5: Decide after a week</h2>
+      <p>
+        Run one or two tasks a day for a week. At the end, ask:
+      </p>
+      <ul class="feature-list">
+        <li>Did the review happen in the checkout, or did you fall back to reading a summary?</li>
+        <li>Did the queue tell you what needed you, or did you track sessions in your head?</li>
+        <li>Did the work stay on your machine?</li>
+        <li>Did you miss Orca's mobile, remote, browser, or bots?</li>
+      </ul>
+      <p>
+        If the answers favor Workbench for the review-gated work, keep it for
+        that work. If you need Orca's broader surfaces, keep Orca for those and
+        use Workbench for the tasks that need a review gate. A split setup is a
+        valid outcome.
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container-wide">
+      <h2>What to compare in the first week</h2>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>Dimension</th><th>Orca</th><th>Workbench</th><th>What to watch</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Review</td>
+              <td>Annotated diff, draft commits and PRs</td>
+              <td>Diff in the session checkout, line notes, separate decision</td>
+              <td>Did you read the diff, or the summary?</td>
+            </tr>
+            <tr>
+              <td>Task model</td>
+              <td>Orchestration, automations, bot triggers</td>
+              <td>Durable queue with explicit states, retries, schedules</td>
+              <td>Does the queue tell you what needs you?</td>
+            </tr>
+            <tr>
+              <td>Data</td>
+              <td>Local plus hosted features</td>
+              <td>Local SQLite, no telemetry, no hosted service</td>
+              <td>Where does the state live, and who can read it?</td>
+            </tr>
+            <tr>
+              <td>Surfaces</td>
+              <td>Desktop, mobile, remote, browser, bots</td>
+              <td>Desktop, local</td>
+              <td>Which of Orca's surfaces do you actually use?</td>
+            </tr>
+            <tr>
+              <td>License</td>
+              <td>MIT</td>
+              <td>AGPL-3.0</td>
+              <td>Can your organization accept AGPL-3.0?</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p>
+        Compare the workflow you actually run, not the feature list. A tool with
+        fewer surfaces can still be the better fit if the review is the part you
+        need to fix.
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2>A week-one plan</h2>
+      <ol class="feature-list">
+        <li><strong>Days 1–2:</strong> install, open the repository, run one review-needing task, and review the diff in the checkout.</li>
+        <li><strong>Days 3–5:</strong> run one or two tasks a day. Note review time, queue wait time, and any merge or setup problem.</li>
+        <li><strong>Days 6–7:</strong> compare the notes with your Orca week. Decide whether Workbench owns the review-gated work, whether Orca keeps the broader surfaces, or whether you stay with Orca.</li>
+      </ol>
+      <p>
+        A split setup is a valid result. The goal is not a winner-takes-all
+        migration; it is a review loop that actually happens.
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2>What doesn't transfer</h2>
+      <ul class="feature-list">
+        <li><strong>Tasks and history.</strong> Recreate the task in Workbench; there is no import.</li>
+        <li><strong>Orca sessions and bots.</strong> They stay in Orca. Workbench has no Slack, Linear, or GitHub bot integration.</li>
+        <li><strong>Schedules.</strong> Recreate the ones you still need as ordinary queued tasks.</li>
+        <li><strong>Orca settings and presets.</strong> Set up Workbench's defaults separately.</li>
+        <li><strong>Git history and worktrees.</strong> These are in the repository, not in either app; they remain.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2>When to stay with Orca</h2>
+      <p>
+        If any of these is a requirement, Orca is the better fit today:
+      </p>
+      <ul class="feature-list">
+        <li><strong>Mobile.</strong> Orca has iOS and Android companions; Workbench is desktop-only.</li>
+        <li><strong>Remote and SSH.</strong> Orca supports remote servers, SSH worktrees, and experimental cloud VMs; Workbench is local.</li>
+        <li><strong>Browser and Design Mode.</strong> Orca embeds Chromium and can send a clicked element to an agent; Workbench does not list that surface.</li>
+        <li><strong>Slack, Linear, and GitHub bots.</strong> Orca takes work from those surfaces; Workbench does not.</li>
+        <li><strong>Maturity.</strong> Orca is on a 1.4.x release line; Workbench is pre-1.0.</li>
+        <li><strong>License.</strong> Orca is MIT; Workbench is AGPL-3.0. If your organization cannot accept AGPL-3.0, that is decisive.</li>
+      </ul>
+      <p>
+        A migration page that hides this is a sales sheet. If you need those
+        surfaces, keep Orca and use Workbench only for review-gated work — or
+        stay with Orca entirely.
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2>Migration checklist</h2>
+      <ol class="feature-list">
+        <li>Install Workbench; keep Orca installed.</li>
+        <li>Open the same repository; confirm existing Orca worktrees are untouched.</li>
+        <li>Pick one task that needs review; write the goal, owned paths, done-when, and out-of-scope.</li>
+        <li>Set the slot limit to 1; queue the task.</li>
+        <li>Review the diff in the session checkout; run the verification yourself.</li>
+        <li>Record the review decision separately from process exit.</li>
+        <li>Run one or two tasks a day for a week.</li>
+        <li>Decide: Workbench for review-gated work, Orca for the broader surfaces, or both.</li>
+      </ol>
+      <div class="actions">
+        <a class="button button-primary" href="/workbench/">Explore iCode Workbench</a>
+        <a class="button" href="/compare/orca/">Compare with Orca</a>
+        <a class="button" href="/guides/queue-coding-agent-tasks/">Queue coding agent tasks</a>
+        <a class="button" href="/guides/review-ai-generated-code/">Review AI-generated code</a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<!-- BEGIN:site-footer -->
+<!-- END:site-footer -->
+<script src="../../assets/main.js"></script>
+</body>
+</html>
