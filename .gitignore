@@ -9,3 +9,11 @@ __pycache__/
 .DS_Store
 .idea/
 .vscode/
+
+# Local research and content drafts (not versioned)
+content-drafts/
+icodehq.vercel.app-audit/
+
+# Documentation (not versioned)
+evidence/
+i18n/README.md
