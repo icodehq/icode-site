@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>OpenCode in iCode Workbench — parallel CLI sessions</title>
+  <meta name="description" content="Run OpenCode in iCode Workbench: one worktree per session, a durable queue, native provider injection, and a review gate. Setup, resume, and limits." />
+  <meta name="theme-color" content="#ffffff" />
+  <link rel="icon" href="../../../assets/favicon.svg" type="image/svg+xml" />
+  <link rel="stylesheet" href="../../../assets/styles.css" />
+  <script src="../../../assets/theme.js"></script>
+</head>
+<body>
+<!-- BEGIN:site-header -->
+<!-- END:site-header -->
+
+<main>
+  <section class="section">
+    <div class="container">
+      <p class="eyebrow">iCode Workbench · Harness · OpenCode</p>
+      <h1>OpenCode in iCode Workbench</h1>
+      <p class="lede">
+        OpenCode is an open-source CLI coding agent built to work with many
+        model providers. In Workbench it runs as a primary harness: each session
+        gets its own Git worktree, the task sits in a durable queue, and the
+        result is reviewed in the checkout where it was made.
+      </p>
+      <!-- BEGIN:article-meta -->
+      <!-- END:article-meta -->
+      <p class="muted"><em>This page is currently available in English only.</em></p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2>What OpenCode is good at</h2>
+      <ul class="feature-list">
+        <li><strong>Provider choice.</strong> OpenCode is designed to work with many providers, including OpenAI, DeepSeek, Kimi, Zhipu, Qwen, OpenRouter, and local or OpenAI-compatible endpoints.</li>
+        <li><strong>Open-source workflow.</strong> It is a terminal-native agent; you keep your provider account, your keys, and your model choice.</li>
+        <li><strong>Resumable sessions.</strong> OpenCode keeps its own conversation state; Workbench can resume a session by id.</li>
+      </ul>
+      <p>
+        Workbench changes where the session runs and how the result is tracked;
+        it does not change OpenCode's model behavior or permissions.
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2>Why run it in Workbench</h2>
+      <ul class="feature-list">
+        <li><strong>One worktree per session.</strong> Two OpenCode sessions in one checkout can overwrite each other; Workbench gives each its own branch and working directory.</li>
+        <li><strong>A durable queue.</strong> A session is a process; a task has states. Workbench tracks queued, running, waiting, completed, and failed work.</li>
+        <li><strong>Native provider injection.</strong> OpenCode is one of the three harnesses (with Claude Code and Codex) that support provider endpoint injection and Mira's native assistant.</li>
+        <li><strong>Review in place.</strong> Files, Search, and Source Control live beside the terminal, scoped to the session checkout, with line notes and a separate review decision.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2>Setup</h2>
+      <ol class="feature-list">
+        <li><strong>Install OpenCode</strong> using its official instructions, then confirm <code>opencode --version</code> works in your shell.</li>
+        <li><strong>Configure a provider</strong> in OpenCode outside Workbench and run one session, so the CLI's authentication and model selection are in place.</li>
+        <li><strong>Add the repository to Workbench</strong> and open it. The harness keeps its own credentials; Workbench does not store your provider keys.</li>
+      </ol>
+      <p>
+        If OpenCode is installed but Workbench does not see it, check that the
+        <code>opencode</code> executable is on the <code>PATH</code> of the shell
+        Workbench launches. On Windows, a WSL target needs OpenCode installed
+        inside the distro, not only on Windows.
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2>Launch and resume</h2>
+      <p>
+        Create a new session from <strong>New worktree</strong>, choose OpenCode,
+        and give the task a scope. Workbench launches <code>opencode</code> in the
+        session checkout. Each session is independent: its own branch, its own
+        terminal, its own context.
+      </p>
+      <p>
+        Workbench uses OpenCode's resume recipe: <code>--session $TOKEN</code>
+        when a session id was captured, and <code>--continue</code> as the
+        fallback. If the app restarts, the detached host keeps the PTY alive;
+        sleep a session to stop the process and keep the checkout, then wake it
+        to resume where the harness supports it.
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2>Task and review</h2>
+      <p>
+        Give the session a task statement with a goal, owned paths, a done-when
+        command, and an out-of-scope list. When the session finishes, review the
+        diff in its checkout: run the done-when command yourself, check files
+        outside the owned paths, and decide accept, revise, or reject.
+      </p>
+      <p>
+        A completed process is not an accepted task. For the workflow, read
+        <a href="/guides/review-ai-generated-code/">how to review AI-generated code</a>
+        and <a href="/guides/queue-coding-agent-tasks/">how to queue coding agent tasks</a>.
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2>Status at a glance</h2>
+      <p>
+        The session row shows the project, branch, target, and state. OpenCode
+        reports its running and waiting state through Workbench's native adapter;
+        a session that cannot report stays <code>unknown</code> rather than
+        guessing. Sleep a session to stop the process and keep the checkout;
+        wake it to resume where the harness supports it.
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2>A concrete task</h2>
+      <p>
+        Task: “Move the provider configuration into a shared module.”
+      </p>
+      <ol class="feature-list">
+        <li><strong>Create a worktree</strong> from main and name the branch after the task.</li>
+        <li><strong>Scope the session:</strong> owned paths <code>src/config/providers.ts</code> and its tests; model defaults and route tables are out of scope.</li>
+        <li><strong>Launch OpenCode</strong> in the session checkout with the task statement; its provider selection stays in the harness.</li>
+        <li><strong>Queue the task</strong> if you are running another session; one worktree per task.</li>
+        <li><strong>Review the diff</strong> in the checkout: run the config tests, check that every caller still resolves the provider, and look for a changed default.</li>
+        <li><strong>Decide</strong> accept, revise, or reject; merge after the combined result passes.</li>
+      </ol>
+      <p>
+        Provider settings are easy to change by accident. The review should
+        confirm that the refactor moved the configuration without changing which
+        model or endpoint a caller uses. If you use a local or self-hosted
+        endpoint, keep it configured in OpenCode; Workbench does not proxy model
+        traffic. The worktree and review gate are the same regardless of
+        provider; only the agent and its model change.
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2>Limits</h2>
+      <ul class="feature-list">
+        <li><strong>Workbench does not change the agent.</strong> OpenCode's model behavior, provider configuration, and permissions are its own.</li>
+        <li><strong>Desktop only.</strong> Workbench is a desktop app; there is no mobile or remote server. If you need those, Orca is the broader tool.</li>
+        <li><strong>Pre-1.0.</strong> Workbench is still changing; verify current behavior before standardizing a team on it.</li>
+      </ul>
+      <div class="actions">
+        <a class="button button-primary" href="/workbench/">Explore iCode Workbench</a>
+        <a class="button" href="/workbench/agents/claude-code/">Claude Code in Workbench</a>
+        <a class="button" href="/workbench/agents/codex/">Codex in Workbench</a>
+        <a class="button" href="/guides/parallel-agents/">Parallel-agents guide</a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<!-- BEGIN:site-footer -->
+<!-- END:site-footer -->
+<script src="../../../assets/main.js"></script>
+</body>
+</html>

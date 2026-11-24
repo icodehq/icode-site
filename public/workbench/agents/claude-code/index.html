@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Claude Code in iCode Workbench — parallel sessions</title>
+  <meta name="description" content="Run Claude Code in iCode Workbench: one worktree per session, a durable queue, native provider injection, and a review gate. Setup, status, and limits." />
+  <meta name="theme-color" content="#ffffff" />
+  <link rel="icon" href="../../../assets/favicon.svg" type="image/svg+xml" />
+  <link rel="stylesheet" href="../../../assets/styles.css" />
+  <script src="../../../assets/theme.js"></script>
+</head>
+<body>
+<!-- BEGIN:site-header -->
+<!-- END:site-header -->
+
+<main>
+  <section class="section">
+    <div class="container">
+      <p class="eyebrow">iCode Workbench · Harness · Claude Code</p>
+      <h1>Claude Code in iCode Workbench</h1>
+      <p class="lede">
+        Claude Code is the CLI coding agent from Anthropic. In Workbench it runs
+        as one of the primary harnesses: each session gets its own Git worktree,
+        the task sits in a durable queue, and the diff is reviewed in the
+        checkout where it was made.
+      </p>
+      <!-- BEGIN:article-meta -->
+      <!-- END:article-meta -->
+      <p class="muted"><em>This page is currently available in English only.</em></p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2>What Claude Code is good at</h2>
+      <ul class="feature-list">
+        <li><strong>Long, tool-heavy tasks.</strong> Claude Code is designed for multi-step work: reading the repository, editing files, running commands, and iterating on failures.</li>
+        <li><strong>Terminal-native workflow.</strong> It runs where your code runs, with your shell, your tools, and your credentials.</li>
+        <li><strong>Anthropic models.</strong> Use your own Claude subscription or provider endpoint; Workbench does not replace the model or the agent loop.</li>
+      </ul>
+      <p>
+        Workbench does not change how Claude Code edits or compacts. It changes
+        where the session runs, how the task is tracked, and how the result is
+        reviewed.
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2>Why run it in Workbench</h2>
+      <ul class="feature-list">
+        <li><strong>One worktree per session.</strong> Two Claude Code sessions in one checkout can overwrite each other; Workbench gives each its own branch and working directory.</li>
+        <li><strong>A durable queue.</strong> A session is a process; a task has states. Workbench tracks queued, running, waiting, completed, and failed work.</li>
+        <li><strong>Native provider injection.</strong> Claude Code is one of the three harnesses (with Codex and OpenCode) that support provider endpoint injection and Mira's native assistant.</li>
+        <li><strong>Review in place.</strong> Files, Search, and Source Control live beside the terminal, scoped to the session checkout, with line notes and a separate review decision.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2>Setup</h2>
+      <ol class="feature-list">
+        <li><strong>Install Claude Code</strong> using its official instructions, then confirm <code>claude --version</code> works in your shell.</li>
+        <li><strong>Run it once</strong> in a repository outside Workbench, so the CLI's own authentication and settings are in place.</li>
+        <li><strong>Add the repository to Workbench</strong> and open it. No model configuration is required to start; the harness keeps its own credentials.</li>
+      </ol>
+      <p>
+        If Claude Code is installed but Workbench does not see it, check that the
+        <code>claude</code> executable is on the <code>PATH</code> of the shell
+        Workbench launches. On Windows, a WSL target needs Claude Code installed
+        inside the distro, not only on Windows.
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2>Launch and resume</h2>
+      <p>
+        Create a new session from <strong>New worktree</strong>, choose Claude
+        Code, and give the task a scope. Workbench launches
+        <code>claude</code> in the session checkout. Each session is independent:
+        its own branch, its own terminal, its own context.
+      </p>
+      <p>
+        Workbench uses Claude Code's resume recipe: <code>--resume $TOKEN</code>
+        when a session id was captured, and <code>--continue</code> as the
+        fallback. If the app restarts, the detached host keeps the PTY alive;
+        sleep a session to stop the process and keep the checkout, then wake it
+        to resume where the harness supports it.
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2>Task and review</h2>
+      <p>
+        Give the session a task statement with a goal, owned paths, a done-when
+        command, and an out-of-scope list. The statement is what makes the
+        review possible; without it, you are judging a diff against nothing.
+      </p>
+      <p>
+        When the session finishes, review the diff in its checkout. Run the
+        done-when command yourself, check files outside the owned paths, and
+        decide: accept, revise, or reject. A completed process is not an
+        accepted task.
+      </p>
+      <p>
+        For the workflow, read
+        <a href="/guides/run-claude-code-in-parallel/">how to run Claude Code in parallel</a>
+        and <a href="/guides/review-ai-generated-code/">how to review AI-generated code</a>.
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2>Status at a glance</h2>
+      <p>
+        The session row shows the project, branch, target, and state. Claude Code
+        reports its running and waiting state through Workbench's native adapter;
+        a session that cannot report stays <code>unknown</code> rather than
+        guessing. Sleep a session to stop the process and keep the checkout;
+        wake it to resume where the harness supports it.
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2>A concrete task</h2>
+      <p>
+        Task: “Fix token refresh when the API returns 401.”
+      </p>
+      <ol class="feature-list">
+        <li><strong>Create a worktree</strong> from main and name the branch after the task, not the agent.</li>
+        <li><strong>Scope the session:</strong> owned paths <code>src/auth/**</code> and <code>tests/auth/**</code>; route tables and public types are out of scope.</li>
+        <li><strong>Launch Claude Code</strong> in the session checkout and give it the task statement, including the done-when command.</li>
+        <li><strong>Queue the task</strong> if you have other work waiting; a slot limit of 1 is enough for the first run.</li>
+        <li><strong>Review the diff</strong> in the checkout: run the auth tests, check for a skipped test, and look for changes outside the owned paths.</li>
+        <li><strong>Decide</strong> accept, revise, or reject; merge only after the combined result passes.</li>
+      </ol>
+      <p>
+        The agent's summary is not the review. The diff, the tests, and the
+        caller context are. If you want a second opinion, run the same task with
+        another harness in its own worktree and compare the diffs; do not share a
+        checkout.
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2>Limits</h2>
+      <ul class="feature-list">
+        <li><strong>Workbench does not change the agent.</strong> Claude Code's model behavior, context management, and tool permissions are its own.</li>
+        <li><strong>Desktop only.</strong> Workbench is a desktop app; there is no mobile or remote server. If you need those, Orca is the broader tool.</li>
+        <li><strong>Pre-1.0.</strong> Workbench is still changing; verify current behavior before standardizing a team on it.</li>
+      </ul>
+      <div class="actions">
+        <a class="button button-primary" href="/workbench/">Explore iCode Workbench</a>
+        <a class="button" href="/workbench/agents/codex/">Codex in Workbench</a>
+        <a class="button" href="/workbench/agents/opencode/">OpenCode in Workbench</a>
+        <a class="button" href="/guides/parallel-agents/">Parallel-agents guide</a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<!-- BEGIN:site-footer -->
+<!-- END:site-footer -->
+<script src="../../../assets/main.js"></script>
+</body>
+</html>

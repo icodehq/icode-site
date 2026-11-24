@@ -81,6 +81,9 @@ ARTICLE_ROUTES = {
     "guides/agent-task-states",
     "guides/agent-review-checklist",
     "workbench/migrate-from-orca",
+    "workbench/agents/claude-code",
+    "workbench/agents/codex",
+    "workbench/agents/opencode",
 }
 
 # Routes that exist only in English. They are built once, canonicalized to the
@@ -99,6 +102,9 @@ ENGLISH_ONLY_ROUTES = {
     "guides/agent-task-states",
     "guides/agent-review-checklist",
     "workbench/migrate-from-orca",
+    "workbench/agents/claude-code",
+    "workbench/agents/codex",
+    "workbench/agents/opencode",
     "changelog",
     "compare/orca",
     "blog/agent-review-workflow",
@@ -139,6 +145,9 @@ CONTENT_DATES = {
     "guides/agent-task-states": "2026-11-24",
     "guides/agent-review-checklist": "2026-11-24",
     "workbench/migrate-from-orca": "2026-11-24",
+    "workbench/agents/claude-code": "2026-11-24",
+    "workbench/agents/codex": "2026-11-24",
+    "workbench/agents/opencode": "2026-11-24",
     "changelog": "2026-11-24",
     "compare/orca": "2026-11-24",
 }
@@ -164,6 +173,9 @@ ARTICLE_PUBLISHED = {
     "guides/agent-task-states": "2026-11-24",
     "guides/agent-review-checklist": "2026-11-24",
     "workbench/migrate-from-orca": "2026-11-24",
+    "workbench/agents/claude-code": "2026-11-24",
+    "workbench/agents/codex": "2026-11-24",
+    "workbench/agents/opencode": "2026-11-24",
 }
 PRODUCTS = {
     "workbench": {
