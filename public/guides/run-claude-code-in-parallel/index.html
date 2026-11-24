@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>How to run Claude Code in parallel — iCode Workbench</title>
+  <meta name="description" content="A step-by-step guide to running multiple Claude Code sessions in parallel without file collisions: worktrees, task scoping, queueing, and review." />
+  <meta name="theme-color" content="#ffffff" />
+  <link rel="icon" href="../../assets/favicon.svg" type="image/svg+xml" />
+  <link rel="stylesheet" href="../../assets/styles.css" />
+  <script src="../../assets/theme.js"></script>
+</head>
+<body>
+<!-- BEGIN:site-header -->
+<!-- END:site-header -->
+
+<main>
+  <section class="section">
+    <div class="container">
+      <p class="eyebrow">iCode Workbench · Guide · Claude Code</p>
+      <h1>How to run Claude Code in parallel</h1>
+      <p class="lede">
+        Two Claude Code sessions in one checkout will overwrite each other.
+        The fix is not a bigger context window; it is one worktree per task,
+        a scoped task statement, and a review decision before anything merges.
+      </p>
+      <p>
+        This guide is the worktree model: separate Claude Code sessions, each in
+        its own checkout, working on independent tasks. For Claude Code's
+        in-session agent teams, see the distinction below.
+      </p>
+      <!-- BEGIN:article-meta -->
+      <!-- END:article-meta -->
+      <p class="muted"><em>This guide is currently available in English only.</em></p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2>Prerequisites</h2>
+      <ul class="feature-list">
+        <li><strong>Claude Code installed</strong> and working in one checkout. Run it once in the repository before you parallelize.</li>
+        <li><strong>A Git repository</strong> with a clean main branch and a test command you trust.</li>
+        <li><strong>Two independent tasks.</strong> Different files, different tests, no shared schema change. If they share a file, they are one task.</li>
+        <li><strong>A setup path for each checkout.</strong> Dependencies, <code>.env</code>, ports, and a database or schema per task.</li>
+      </ul>
+      <p>
+        If the test suite is flaky, fix that first. A green run you do not trust
+        is not a review signal.
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2>Create one worktree per task</h2>
+      <p>
+        Claude Code can create the worktree and start the session in one step:
+      </p>
+      <div class="code-block" data-copy><pre>claude --worktree feature-auth
+claude --worktree feature-billing</pre></div>
+      <p>
+        Or create the worktrees with Git and launch Claude Code inside each one:
+      </p>
+      <div class="code-block" data-copy><pre>git worktree add ../project-auth -b feature-auth
+git worktree add ../project-billing -b feature-billing
+
+cd ../project-auth
+pnpm install
+cp ../project/.env .env.local
+claude
+
+cd ../project-billing
+pnpm install
+cp ../project/.env .env.local
+claude</pre></div>
+      <p>
+        Name the worktree and branch after the task, not the agent. If you use
+        <code>--worktree</code>, <code>.worktreeinclude</code> can copy
+        gitignored files such as <code>.env</code> into each new checkout.
+      </p>
+      <p>
+        For the mechanics and pitfalls, read
+        <a href="/guides/agent-worktrees-explained/">Git worktrees for coding agents, explained</a>.
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2>A concrete two-session setup</h2>
+      <p>
+        Two tasks: an auth refresh fix and a billing retry. They touch different
+        files and have different tests. Start both sessions:
+      </p>
+      <div class="code-block" data-copy><pre>claude --worktree feature-auth
+claude --worktree feature-billing</pre></div>
+      <p>
+        Before either session starts, set up the checkout:
+      </p>
+      <ul class="feature-list">
+        <li><strong>Dependencies:</strong> <code>pnpm install</code> in each worktree. Do not share <code>node_modules</code> unless you know the toolchain tolerates it.</li>
+        <li><strong>Env:</strong> copy <code>.env</code> into each checkout, or use <code>.worktreeinclude</code>.</li>
+        <li><strong>Ports:</strong> auth on 3001, billing on 3002. Make the dev server fail on a conflict rather than pick another port.</li>
+        <li><strong>Databases:</strong> <code>app_auth</code> and <code>app_billing</code>. Do not let two sessions run migrations against the same database.</li>
+      </ul>
+      <p>
+        Then give each session its task statement: goal, owned paths, done-when
+        command, and out-of-scope list. The auth session should not touch
+        <code>src/billing/**</code>; the billing session should not touch
+        <code>src/auth/**</code>.
+      </p>
+      <p>
+        When both finish, review the auth diff first. Rebase the billing branch
+        on main after the auth merge, run the tests, then merge billing. The
+        order matters even when the files are disjoint, because the shared
+        dependencies may have changed.
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2>Scope the tasks</h2>
+      <p>
+        A worktree prevents file overwrites. It does not prevent two sessions
+        from changing the same shared file on different branches. Give each task
+        a scope before the agent starts:
+      </p>
+      <ul class="feature-list">
+        <li><strong>A goal in one sentence.</strong> “Fix the token refresh path,” not “improve auth.”</li>
+        <li><strong>Owned paths.</strong> The files the session may change. Everything else is out of scope.</li>
+        <li><strong>A done-when command.</strong> The test or verification the session must run.</li>
+        <li><strong>An out-of-scope list.</strong> Public types, route tables, migrations, formatting. This is where drift gets caught.</li>
+        <li><strong>A baseline.</strong> The commit or worktree state the task started from, so review can compare against it.</li>
+      </ul>
+      <p>
+        If both tasks need a shared contract — a new type, a route entry, a
+        schema change — land that change on main first, then branch.
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2>Launch and monitor</h2>
+      <p>
+        Run each session in its own terminal or in a workbench that shows all of
+        them. The important part is not the UI; it is that you can see:
+      </p>
+      <ul class="feature-list">
+        <li>which task is running, queued, or waiting for you;</li>
+        <li>which checkout each session owns;</li>
+        <li>which session has finished but not been reviewed.</li>
+      </ul>
+      <p>
+        With two sessions, a pair of terminals can work. With three or more, use
+        a queue: a list with explicit states, a slot limit, and a review
+        decision. The queue is what keeps “running” from being confused with
+        “done.”
+      </p>
+      <p>
+        For the queue model, read
+        <a href="/guides/queue-coding-agent-tasks/">how to queue coding agent tasks</a>.
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2>When a session stalls</h2>
+      <p>
+        A stalled session is not always a failed one. Three states look similar
+        from a terminal and require different responses:
+      </p>
+      <ul class="feature-list">
+        <li><strong>Waiting for you.</strong> The agent asked a question or needs an approval. Read the prompt and answer. Do not kill the session; you will lose the context that produced the question.</li>
+        <li><strong>Running slowly.</strong> The agent is still working. Check the last tool call or file it touched before you assume it is stuck.</li>
+        <li><strong>Failed or looping.</strong> The process is repeating the same action or has exited with an error. Stop it, keep the branch, and read the diff before retrying. A retry without a change produces the same failure.</li>
+      </ul>
+      <p>
+        This is one reason a queue is useful even with two sessions: it tells
+        you which state each task is in, so you do not interrupt a waiting
+        session or wait on a failed one.
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2>Review before you merge</h2>
+      <p>
+        When a session finishes, review the diff in its checkout. Run the
+        done-when command yourself, check the files outside the owned paths, and
+        look for deleted or weakened tests.
+      </p>
+      <p>
+        The review decision is separate from the process exit. A completed
+        session can still be rejected or sent back for revision. Do not merge
+        just because Claude Code exited zero.
+      </p>
+      <p>
+        For the full review workflow, read
+        <a href="/guides/review-ai-generated-code/">how to review AI-generated code</a>.
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2>Merge in order</h2>
+      <p>
+        Merge one branch at a time. Rebase each branch on main, run the tests,
+        and merge the combined result. Two branches can pass alone and fail
+        together.
+      </p>
+      <div class="code-block" data-copy><pre>git checkout main
+git pull
+git checkout feature-auth
+git rebase main
+pnpm test
+git checkout main
+git merge --ff-only feature-auth</pre></div>
+      <p>
+        Then repeat for the next branch. Keep the worktree and branch until the
+        change is verified in main; removing a worktree deletes uncommitted
+        changes.
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2>Claude Code agent teams vs parallel sessions</h2>
+      <p>
+        Claude Code also supports agent teams: a lead session spawns named
+        teammates that share a task list and can message each other. That is a
+        different model. Agent teams orchestrate subagents inside a parent
+        session; the parallel-session model runs separate sessions, often in
+        separate worktrees, and lets you mix harnesses.
+      </p>
+      <p>
+        Use agent teams when the work is one coordinated effort that benefits
+        from a lead and shared context. Use separate worktrees when the tasks
+        are independent, the sessions may use different agents or
+        subscriptions, and you want each diff reviewed on its own. Both can be
+        valid; do not mix them without knowing which one owns the checkout.
+      </p>
+      <p>
+        Anthropic's documentation covers
+        <a href="https://code.claude.com/docs/en/agent-teams" rel="noopener">agent teams</a>
+        and
+        <a href="https://code.claude.com/docs/en/worktrees" rel="noopener">worktrees</a>.
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2>When to move to a workbench</h2>
+      <p>
+        Two sessions in two terminals can work. The setup starts to break when:
+      </p>
+      <ul class="feature-list">
+        <li>you have more tasks than terminals and track states in your head;</li>
+        <li>a session is waiting while another is running and you miss the waiting one;</li>
+        <li>review becomes the bottleneck and you need a visible queue of unreviewed diffs;</li>
+        <li>you want the task state to survive an app restart.</li>
+      </ul>
+      <p>
+        A workbench is not a different workflow; it makes the workflow the
+        default: worktrees, explicit task states, a bounded queue, and review in
+        the session checkout. If the two-session setup is working, keep it. If
+        you are losing track, move the queue into a tool before you add a third
+        session.
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2>Common mistakes</h2>
+      <ul class="feature-list">
+        <li><strong>Two sessions in one checkout.</strong> They will overwrite each other. Use one worktree per task.</li>
+        <li><strong>Two tasks on the same file.</strong> A worktree does not prevent a semantic conflict. Land the shared change first.</li>
+        <li><strong>Forgetting <code>.env</code> and dependencies.</strong> A fresh worktree is a clean checkout, not a working environment.</li>
+        <li><strong>Port and database collisions.</strong> Assign a port and a database or schema per checkout.</li>
+        <li><strong>Merging without review.</strong> A green session is not an accepted change.</li>
+        <li><strong>Long-lived worktrees.</strong> Rebase after every merge; the longer a branch lives, the more the merge becomes a design decision.</li>
+      </ul>
+      <div class="actions">
+        <a class="button button-primary" href="/workbench/">Explore iCode Workbench</a>
+        <a class="button" href="/guides/agent-worktrees-explained/">How worktrees work</a>
+        <a class="button" href="/guides/review-ai-generated-code/">How to review the diff</a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<!-- BEGIN:site-footer -->
+<!-- END:site-footer -->
+<script src="../../assets/main.js"></script>
+</body>
+</html>

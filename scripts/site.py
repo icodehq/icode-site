@@ -74,6 +74,7 @@ ARTICLE_ROUTES = {
     "guides/agent-worktrees-explained",
     "guides/queue-coding-agent-tasks",
     "guides/review-ai-generated-code",
+    "guides/run-claude-code-in-parallel",
 }
 
 # Routes that exist only in English. They are built once, canonicalized to the
@@ -85,6 +86,7 @@ ENGLISH_ONLY_ROUTES = {
     "guides/agent-worktrees-explained",
     "guides/queue-coding-agent-tasks",
     "guides/review-ai-generated-code",
+    "guides/run-claude-code-in-parallel",
     "compare/orca",
     "blog/agent-review-workflow",
     "blog/agent-task-queue",
@@ -117,6 +119,7 @@ CONTENT_DATES = {
     "guides/agent-worktrees-explained": "2026-11-24",
     "guides/queue-coding-agent-tasks": "2026-11-24",
     "guides/review-ai-generated-code": "2026-11-24",
+    "guides/run-claude-code-in-parallel": "2026-11-24",
     "compare/orca": "2026-11-24",
 }
 ARTICLE_PUBLISHED = {
@@ -134,6 +137,7 @@ ARTICLE_PUBLISHED = {
     "guides/agent-worktrees-explained": "2026-11-24",
     "guides/queue-coding-agent-tasks": "2026-11-24",
     "guides/review-ai-generated-code": "2026-11-24",
+    "guides/run-claude-code-in-parallel": "2026-11-24",
 }
 PRODUCTS = {
     "workbench": {
