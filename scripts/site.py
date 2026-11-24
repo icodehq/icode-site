@@ -71,6 +71,7 @@ ARTICLE_ROUTES = {
     "guides/automate-in-ci",
     "guides/what-is-an-agent-development-environment",
     "guides/from-one-agent-to-a-fleet",
+    "guides/agent-worktrees-explained",
 }
 
 # Routes that exist only in English. They are built once, canonicalized to the
@@ -79,6 +80,7 @@ ENGLISH_ONLY_ROUTES = {
     "guides/parallel-agents",
     "guides/what-is-an-agent-development-environment",
     "guides/from-one-agent-to-a-fleet",
+    "guides/agent-worktrees-explained",
     "compare/orca",
     "blog/agent-review-workflow",
     "blog/agent-task-queue",
@@ -108,6 +110,7 @@ CONTENT_DATES = {
     "guides/automate-in-ci": "2026-11-23",
     "guides/what-is-an-agent-development-environment": "2026-11-24",
     "guides/from-one-agent-to-a-fleet": "2026-11-24",
+    "guides/agent-worktrees-explained": "2026-11-24",
     "compare/orca": "2026-11-24",
 }
 ARTICLE_PUBLISHED = {
@@ -122,6 +125,7 @@ ARTICLE_PUBLISHED = {
     "guides/automate-in-ci": "2026-10-14",
     "guides/what-is-an-agent-development-environment": "2026-11-24",
     "guides/from-one-agent-to-a-fleet": "2026-11-24",
+    "guides/agent-worktrees-explained": "2026-11-24",
 }
 PRODUCTS = {
     "workbench": {

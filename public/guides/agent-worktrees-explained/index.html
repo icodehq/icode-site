@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Git worktrees for coding agents, explained — iCode Workbench</title>
+  <meta name="description" content="Git worktrees let each coding agent work in its own checkout without duplicating the repo. How they work, why they prevent collisions, and how to use them." />
+  <meta name="theme-color" content="#ffffff" />
+  <link rel="icon" href="../../assets/favicon.svg" type="image/svg+xml" />
+  <link rel="stylesheet" href="../../assets/styles.css" />
+  <script src="../../assets/theme.js"></script>
+</head>
+<body>
+<!-- BEGIN:site-header -->
+<!-- END:site-header -->
+
+<main>
+  <section class="section">
+    <div class="container">
+      <p class="eyebrow">iCode Workbench · Guide · Isolation</p>
+      <h1>Git worktrees for coding agents, explained</h1>
+      <p class="lede">
+        A Git worktree is a separate working directory for the same repository.
+        It shares the history and object store, but it has its own checkout,
+        its own branch, and its own uncommitted changes. For coding agents, that
+        is the isolation layer that makes parallel work possible.
+      </p>
+      <p>
+        This guide covers what a worktree is, why a branch alone is not enough,
+        what a fresh worktree is missing, and the commands and cleanup you need
+        before you run more than one agent.
+      </p>
+      <!-- BEGIN:article-meta -->
+      <!-- END:article-meta -->
+      <p class="muted"><em>This guide is currently available in English only.</em></p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2>What a Git worktree is</h2>
+      <p>
+        A normal Git checkout has one working directory and one <code>.git</code>
+        directory. A worktree adds another working directory that points at the
+        same repository. Git keeps one index and one HEAD per worktree, so each
+        worktree can be on a different branch without copying the object store.
+      </p>
+      <div class="code-block" data-copy><pre>git worktree add ../project-auth -b feature-auth
+git worktree add ../project-billing -b feature-billing
+git worktree list</pre></div>
+      <p>
+        The two new directories are full checkouts. Each has its own branch, its
+        own uncommitted changes, and its own working tree. The repository
+        history is shared, so creating a worktree is cheap: no clone, no second
+        object store, no network round trip.
+      </p>
+      <p>
+        Git will refuse to check out the same branch in two worktrees at once.
+        That is a feature: it prevents two agents from committing to the same
+        branch from different directories.
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2>Why coding agents need one</h2>
+      <p>
+        An agent edits files. If two agents edit the same checkout at the same
+        time, they can overwrite each other, read stale state, or both report
+        success while the last write wins. A worktree gives each agent its own
+        filesystem view, so the edits cannot collide.
+      </p>
+      <p>
+        A branch alone does not solve this. Two agents can check out different
+        branches in the same directory, and they still share the working tree.
+        Switching branches under a running agent is worse: the files change
+        while the agent is reading them.
+      </p>
+      <p>
+        The worktree also makes review cleaner. The diff, the tests, and the
+        surrounding code are all in the checkout where the agent worked. You do
+        not have to reconstruct the state after the fact.
+      </p>
+      <p>
+        For the full workflow, see
+        <a href="/guides/parallel-agents/">how to run multiple coding agents in parallel</a>.
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container-wide">
+      <h2>Worktree vs branch vs clone</h2>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th></th><th>Branch</th><th>Worktree</th><th>Clone</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th>Working directory</th>
+              <td>Shared</td>
+              <td>Separate</td>
+              <td>Separate</td>
+            </tr>
+            <tr>
+              <th>Git history</th>
+              <td>Shared</td>
+              <td>Shared</td>
+              <td>Duplicated</td>
+            </tr>
+            <tr>
+              <th>File isolation</th>
+              <td>No</td>
+              <td>Yes</td>
+              <td>Yes</td>
+            </tr>
+            <tr>
+              <th>Setup cost</th>
+              <td>Lowest</td>
+              <td>Low</td>
+              <td>High</td>
+            </tr>
+            <tr>
+              <th>Best for</th>
+              <td>Switching tasks in one checkout</td>
+              <td>Parallel agents in one repository</td>
+              <td>A separate repository or machine</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p>
+        Use a branch when you are working alone and switching context. Use a
+        worktree when two agents need to work at the same time. Use a clone when
+        you need a separate object store, a separate remote, or a separate
+        machine.
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2>What a fresh worktree is missing</h2>
+      <p>
+        A worktree contains tracked files. It does not contain everything your
+        development environment needs:
+      </p>
+      <ul class="feature-list">
+        <li><strong>Gitignored files.</strong> <code>.env</code>, local config, and generated credentials are not in a fresh checkout. Copy them with a setup script, or use your harness's worktree include mechanism if it has one.</li>
+        <li><strong>Dependencies.</strong> <code>node_modules</code>, virtualenvs, and build caches are per-directory. Install them in each worktree. Do not symlink unless you know the toolchain tolerates it.</li>
+        <li><strong>Ports.</strong> Two dev servers both want 3000. Assign a fixed port per worktree and make the server fail rather than silently pick another.</li>
+        <li><strong>Databases and caches.</strong> Migrations and seeds from one agent can corrupt another's test data. Use a separate database or schema per worktree.</li>
+        <li><strong>Git hooks, stash, and config.</strong> These are repository-level, not worktree-level. Do not stash in one worktree and expect another not to see it.</li>
+      </ul>
+      <p>
+        The right column of that list is where most “parallel agents” attempts
+        fail. The worktree isolates files; it does not isolate the rest of your
+        machine.
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2>Commands and cleanup</h2>
+      <p>
+        The core commands are small:
+      </p>
+      <div class="code-block" data-copy><pre># create a worktree and branch
+git worktree add ../project-auth -b feature-auth
+
+# list every worktree
+git worktree list
+
+# remove a worktree after the branch is merged
+git worktree remove ../project-auth
+
+# prune metadata for worktrees deleted by hand
+git worktree prune</pre></div>
+      <p>
+        Two rules matter more than the commands:
+      </p>
+      <ol class="feature-list">
+        <li><strong>Do not remove a worktree with uncommitted changes.</strong> Removing it deletes the working tree. Keep the checkout and the branch until the change is verified in main.</li>
+        <li><strong>Do not reuse a branch across worktrees.</strong> Git will refuse, and forcing it creates the exact collision the worktree was meant to prevent.</li>
+      </ol>
+      <p>
+        If you use Claude Code, <code>claude --worktree feature-auth</code> creates
+        the worktree and starts the session in one step, and
+        <code>.worktreeinclude</code> copies gitignored files into new
+        worktrees. Codex and other directory-based agents work with plain
+        <code>git worktree add</code>.
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2>A concrete setup</h2>
+      <p>
+        Two tasks, two worktrees. The auth fix owns
+        <code>src/auth/**</code> and the billing refactor owns
+        <code>src/billing/**</code>. Neither touches the other's files.
+      </p>
+      <div class="code-block" data-copy><pre>git worktree add ../project-auth -b feature-auth
+git worktree add ../project-billing -b feature-billing
+
+cd ../project-auth
+pnpm install
+cp ../project/.env .env.local
+
+cd ../project-billing
+pnpm install
+cp ../project/.env .env.local</pre></div>
+      <p>
+        Then assign the shared resources before either agent starts:
+      </p>
+      <ul class="feature-list">
+        <li><strong>Auth worktree:</strong> port 3001, database <code>app_auth</code>.</li>
+        <li><strong>Billing worktree:</strong> port 3002, database <code>app_billing</code>.</li>
+        <li><strong>Both:</strong> the same branch protection and test command, so the review is comparable.</li>
+      </ul>
+      <p>
+        Put that setup in a script. The third worktree should not require you to
+        remember the port, the database name, and the env copy from the first
+        time. A setup script is also the place to initialize submodules and
+        install dependencies.
+      </p>
+      <p>
+        When the auth branch merges, remove its worktree and prune. Keep the
+        billing worktree until its branch is verified in main. Do not remove a
+        worktree with uncommitted changes.
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2>Worktrees or containers?</h2>
+      <p>
+        Worktrees isolate files. They do not isolate processes, network access,
+        credentials, or the rest of your machine. An agent running in a worktree
+        can still read your SSH keys and reach the network.
+      </p>
+      <p>
+        Use worktrees when the agents are trusted, the main risk is file
+        collisions, and you want a fast local setup. Use containers when you
+        need process, network, or database isolation, or when the agent runs
+        untrusted commands. The two can be combined: a container per worktree is
+        a common setup for unsupervised runs.
+      </p>
+      <p>
+        The decision is about the threat model, not the number of agents. Two
+        trusted agents in worktrees are safer than two agents sharing one
+        checkout; one untrusted agent in a container is safer than either.
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2>How many worktrees?</h2>
+      <p>
+        Worktrees are cheap to create, but they are not free: every checkout
+        needs its own dependencies, env files, ports, and database. The
+        practical limit is review capacity plus machine resources, not Git.
+      </p>
+      <p>
+        Start with two. Add a third only when the first two are merging cleanly
+        and the review queue is consistently empty. Clean up merged worktrees
+        promptly; a long-lived worktree drifts from main and turns the eventual
+        merge into a design decision.
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2>Pitfalls</h2>
+      <ul class="feature-list">
+        <li><strong>A worktree is not a sandbox.</strong> Agents still share your machine, your SSH keys, your network, and your credentials. Use containers when you need process or network isolation.</li>
+        <li><strong>Long-lived branches drift.</strong> Rebase each branch on main after every merge. The longer a worktree lives, the more the merge becomes a design decision.</li>
+        <li><strong>Submodules need their own setup.</strong> A worktree does not initialize submodules for you. Run <code>git submodule update --init</code> in the new checkout.</li>
+        <li><strong>Worktrees are not backups.</strong> They share the object store. A corrupted repository affects every worktree.</li>
+      </ul>
+      <p>
+        For the queue and review side of the workflow, read
+        <a href="/blog/agent-task-queue/">durable tasks, not terminal tabs</a> and
+        <a href="/blog/agent-review-workflow/">the review gate</a>.
+      </p>
+      <div class="actions">
+        <a class="button button-primary" href="/workbench/">Explore iCode Workbench</a>
+        <a class="button" href="/guides/parallel-agents/">Read the parallel-agents guide</a>
+        <a class="button" href="/guides/what-is-an-agent-development-environment/">What is an ADE?</a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<!-- BEGIN:site-footer -->
+<!-- END:site-footer -->
+<script src="../../assets/main.js"></script>
+</body>
+</html>

@@ -98,7 +98,7 @@
         the smallest loop that keeps them from colliding.
       </p>
       <ol class="feature-list">
-        <li><strong>Create one worktree and one branch per task.</strong> Name them after the task. Do not run two agents in the same checkout.</li>
+        <li><strong>Create one worktree and one branch per task.</strong> Name them after the task. Do not run two agents in the same checkout. Here is <a href="/guides/agent-worktrees-explained/">how worktrees work</a>.</li>
         <li><strong>Give each task a scope.</strong> Owned paths, a done-when command, and an out-of-scope list. If the two tasks share a file, they are one task until the shared change lands.</li>
         <li><strong>Run both agents, but review one at a time.</strong> Two agents can run in parallel; your review cannot. Read the first diff, decide, then read the second.</li>
         <li><strong>Merge serially.</strong> Rebase the second branch on main after the first merge, run the tests, then merge. Do not merge both and test afterward.</li>
