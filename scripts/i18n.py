@@ -63,6 +63,7 @@ EN_UI = {
     "footer.getStarted": "Get started",
     "footer.guides": "Guides",
     "footer.blog": "Blog",
+    "footer.changelog": "Changelog",
     "footer.compare": "Compare",
     "footer.faq": "FAQ",
     "footer.about": "About",
