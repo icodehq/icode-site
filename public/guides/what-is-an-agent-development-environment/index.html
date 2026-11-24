@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>What is an agent development environment? — iCode Workbench</title>
+  <meta name="description" content="An agent development environment (ADE) runs multiple CLI coding agents in isolated worktrees, with task queues and review. What it is and when you need one." />
+  <meta name="theme-color" content="#ffffff" />
+  <link rel="icon" href="../../assets/favicon.svg" type="image/svg+xml" />
+  <link rel="stylesheet" href="../../assets/styles.css" />
+  <script src="../../assets/theme.js"></script>
+</head>
+<body>
+<!-- BEGIN:site-header -->
+<!-- END:site-header -->
+
+<main>
+  <section class="section">
+    <div class="container">
+      <p class="eyebrow">iCode Workbench · Guide · Category</p>
+      <h1>What is an agent development environment?</h1>
+      <p class="lede">
+        An <strong>agent development environment (ADE)</strong> is a control
+        surface for running CLI coding agents. It gives each task its own Git
+        worktree, runs agents in parallel, tracks what each one is doing, and
+        gives the human a place to review the result before it reaches main.
+      </p>
+      <p>
+        It is not a new model. It is not a chat window wrapped around a model.
+        And it is not an IDE with an AI autocomplete bolted on. The defining
+        shift is who the primary actor is: in an ADE, agents do the work, and the
+        human supervises, queues, and reviews.
+      </p>
+      <!-- BEGIN:article-meta -->
+      <!-- END:article-meta -->
+      <p class="muted">
+        The category is still early. Most developers today use one agent in one
+        terminal. An ADE becomes useful when that stops scaling: when you are
+        waiting on agents, running independent tasks, or losing track of which
+        session is doing what.
+      </p>
+      <p class="muted"><em>This guide is currently available in English only.</em></p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container-wide">
+      <h2>ADE vs IDE vs terminal</h2>
+      <p>The three tools solve different problems.</p>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th></th><th>Terminal</th><th>IDE with AI</th><th>Agent development environment</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th>Primary actor</th>
+              <td>The developer</td>
+              <td>The developer, assisted</td>
+              <td>The agents, supervised</td>
+            </tr>
+            <tr>
+              <th>Isolation</th>
+              <td>One working directory</td>
+              <td>One project</td>
+              <td>One worktree per task</td>
+            </tr>
+            <tr>
+              <th>Task model</th>
+              <td>A process</td>
+              <td>A file</td>
+              <td>A durable task with states</td>
+            </tr>
+            <tr>
+              <th>Review</th>
+              <td>You read the output</td>
+              <td>Inline suggestions</td>
+              <td>A diff and a review decision</td>
+            </tr>
+            <tr>
+              <th>Typical failure</th>
+              <td>Context switching</td>
+              <td>Suggestions that miss the codebase</td>
+              <td>Unreviewed output, or agents colliding</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p>
+        A terminal is still the best place to run one agent on one task. An IDE
+        is still the best place to write code yourself. An ADE is for the moment
+        when you have more agent work than attention.
+      </p>
+      <p>
+        Some ADEs include an editor, a browser, or a chat surface. Those are
+        useful features, but they are not the definition. The definition is the
+        control loop: isolate the task, run the agent, observe the state, review
+        the result.
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2>The four components</h2>
+      <p>
+        A useful ADE has four components. Not every product has all four, and the
+        weaker ones usually skip review.
+      </p>
+
+      <h3>1. Isolation</h3>
+      <p>
+        Every task needs its own working directory. Git worktrees are the
+        standard mechanism: they share the repository's history but give each
+        task a separate checkout, so two agents never edit the same file by
+        accident.
+      </p>
+      <p>
+        A branch alone is not enough. Two agents can check out different branches
+        in the same directory and still collide. The isolation has to be at the
+        filesystem level. See
+        <a href="/guides/parallel-agents/">how worktrees isolate parallel agents</a>.
+      </p>
+
+      <h3>2. A task model</h3>
+      <p>
+        An agent session is not a task. A task has a goal, a state, and a
+        history. It can be queued, running, waiting for a person, completed,
+        failed, or cancelled. A retry should be a new attempt, not an erased
+        failure. A schedule should create ordinary tasks, not a separate system.
+      </p>
+      <p>
+        This is the difference between a terminal tab and a queue. The tab tells
+        you a process exists. The queue tells you what work exists, what needs
+        you, and what can wait. See
+        <a href="/blog/agent-task-queue/">durable tasks, not terminal tabs</a>.
+      </p>
+
+      <h3>3. Review</h3>
+      <p>
+        The agent finishing is not the same as the work being accepted. A review
+        gate puts the diff in front of a person in the checkout where the agent
+        worked, with the tests and the surrounding code. The review decision is
+        separate from process exit, so a completed task can still be rejected.
+      </p>
+      <p>
+        This is the component most tools undersell. A green run proves the
+        process exited; it does not prove the change is correct. See
+        <a href="/blog/agent-review-workflow/">the review gate</a>.
+      </p>
+
+      <h3>4. A control plane</h3>
+      <p>
+        Once you run more than one agent, you need a view across projects: what
+        is running, what is waiting, what failed, what is ready for review. Some
+        ADEs add an assistant that reads the real queue and routes attention. The
+        useful ones are bounded: they can tell you what needs you, but they
+        cannot approve, merge, or push on their own.
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2>When you need one</h2>
+      <p>You probably need an ADE when two or more of these are true:</p>
+      <ul class="feature-list">
+        <li>You regularly run more than one coding agent.</li>
+        <li>You spend time waiting for an agent, then context-switch to another task.</li>
+        <li>You have independent tasks that could run at the same time.</li>
+        <li>You review agent output before merging, or you wish you did.</li>
+        <li>You lose track of which session is doing what.</li>
+        <li>You want the work to stay on your machine.</li>
+      </ul>
+      <p>
+        The trigger is not ambition. It is the moment your attention becomes the
+        bottleneck.
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2>When you don't</h2>
+      <p>You probably do not need an ADE when:</p>
+      <ul class="feature-list">
+        <li>You run one agent on one task at a time.</li>
+        <li>You do not review agent output, and the work is low-stakes.</li>
+        <li>You want a chat-first assistant rather than a CLI agent.</li>
+        <li>You need remote servers, a mobile companion, or Slack/Linear bots more than you need a local review gate.</li>
+      </ul>
+      <p>
+        That last point matters. Some ADEs are broader than others. Orca, for
+        example, supports remote servers, mobile companions, and bots in Slack,
+        Linear, and GitHub. If those are requirements, a broad ADE is the better
+        fit. If your bottleneck is review and local control, a narrower ADE can
+        be the better fit.
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2>Common misconceptions</h2>
+
+      <h3>“An ADE is a new model.”</h3>
+      <p>
+        No. It is a control surface for the CLI agents you already use. You keep
+        your subscriptions and your agent choice; the ADE changes where and how
+        the work runs.
+      </p>
+
+      <h3>“An ADE is a chat UI.”</h3>
+      <p>
+        A chat surface can be part of an ADE, but it is not the definition. A
+        chat window with a model behind it still has one conversation, one
+        context, and no filesystem isolation. The defining features are
+        worktrees, task state, and review.
+      </p>
+
+      <h3>“An ADE is a terminal multiplexer.”</h3>
+      <p>
+        tmux and split panes show you processes. An ADE tracks tasks: what is
+        queued, what is running, what is waiting for a person, what failed, and
+        what is ready to review. A pane can show a process; it cannot tell you
+        what needs your judgment.
+      </p>
+
+      <h3>“An ADE is only for large teams.”</h3>
+      <p>
+        The trigger is not team size. It is the number of independent tasks you
+        are running and how much attention they consume. A solo developer
+        running three agents on three features can benefit more than a large
+        team running one agent at a time.
+      </p>
+
+      <h3>“An ADE replaces the IDE.”</h3>
+      <p>
+        It does not have to. Many developers keep their editor for hand-written
+        code and use the ADE for agent work. The two can coexist; the question is
+        where the agent runs and where the review happens.
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2>Examples</h2>
+      <p>The category is still forming, so the products differ.</p>
+      <ul class="feature-list">
+        <li>
+          <strong><a href="https://orca.dev/" rel="noopener">Orca</a></strong> is
+          a broad agent IDE: desktop, mobile, remote servers, an embedded
+          browser, and bots. It is MIT-licensed and supports many CLI agents.
+        </li>
+        <li>
+          <strong><a href="/workbench/">iCode Workbench</a></strong> is a
+          review-first, local-first ADE: a durable queue, a review gate, worktree
+          isolation, and a bounded assistant. It is AGPL-3.0 and pre-1.0. This
+          is our product, so treat the comparison accordingly.
+        </li>
+        <li>
+          <strong><a href="https://conductor.build/" rel="noopener">Conductor</a></strong>
+          is a polished, Mac-only workflow with cloud workspaces.
+        </li>
+        <li>
+          <strong><a href="https://paradev.com/" rel="noopener">Paradev (formerly Superset)</a></strong>
+          is a team agent workspace with worktree-per-task.
+        </li>
+        <li>
+          <strong><a href="https://emdash.com/" rel="noopener">Emdash</a></strong>
+          focuses on cloud coding agents for teams, with issue-tracker intake.
+        </li>
+        <li>
+          <strong><a href="https://paseo.sh/" rel="noopener">Paseo</a></strong>
+          focuses on running agents remotely from a desktop app or CLI.
+        </li>
+      </ul>
+      <p class="muted">
+        Verify current details and licensing on each project's site. The category
+        changes quickly.
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2>How to evaluate one</h2>
+      <p>A short checklist:</p>
+      <ol class="feature-list">
+        <li><strong>Isolation:</strong> does each task get its own worktree, or only a branch?</li>
+        <li><strong>Task model:</strong> are there explicit states, retries, and schedules?</li>
+        <li><strong>Review:</strong> can you review the diff in the checkout, and is the review decision separate from process exit?</li>
+        <li><strong>Data:</strong> does the state live locally, and is there telemetry?</li>
+        <li><strong>Agents:</strong> does it support the CLI agents and subscriptions you already use?</li>
+        <li><strong>License and platform:</strong> does the license fit your organization, and does it run on your OS?</li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2>Where to go next</h2>
+      <p>
+        If you are still running one agent, start with
+        <a href="/guides/parallel-agents/">how to run multiple coding agents in parallel</a>.
+        If review is the bottleneck, start with
+        <a href="/blog/agent-review-workflow/">the review gate</a>. If you want
+        the product view, see <a href="/workbench/">iCode Workbench</a>; for the
+        comparison, see <a href="/compare/orca/">Orca IDE alternative</a>.
+      </p>
+      <div class="actions">
+        <a class="button button-primary" href="/workbench/">Explore iCode Workbench</a>
+        <a class="button" href="/guides/parallel-agents/">Read the parallel-agents guide</a>
+        <a class="button" href="/compare/orca/">Compare with Orca</a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<!-- BEGIN:site-footer -->
+<!-- END:site-footer -->
+<script src="../../assets/main.js"></script>
+</body>
+</html>

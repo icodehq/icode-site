@@ -69,12 +69,14 @@ ARTICLE_ROUTES = {
     "guides/refactor-a-module",
     "guides/track-down-a-bug",
     "guides/automate-in-ci",
+    "guides/what-is-an-agent-development-environment",
 }
 
 # Routes that exist only in English. They are built once, canonicalized to the
 # English URL, and omitted from the localized builds and hreflang alternates.
 ENGLISH_ONLY_ROUTES = {
     "guides/parallel-agents",
+    "guides/what-is-an-agent-development-environment",
     "compare/orca",
     "blog/agent-review-workflow",
     "blog/agent-task-queue",
@@ -102,6 +104,7 @@ CONTENT_DATES = {
     "guides/refactor-a-module": "2026-11-23",
     "guides/track-down-a-bug": "2026-11-23",
     "guides/automate-in-ci": "2026-11-23",
+    "guides/what-is-an-agent-development-environment": "2026-11-24",
     "compare/orca": "2026-11-24",
 }
 ARTICLE_PUBLISHED = {
@@ -114,6 +117,7 @@ ARTICLE_PUBLISHED = {
     "guides/refactor-a-module": "2026-10-14",
     "guides/track-down-a-bug": "2026-10-14",
     "guides/automate-in-ci": "2026-10-14",
+    "guides/what-is-an-agent-development-environment": "2026-11-24",
 }
 PRODUCTS = {
     "workbench": {
