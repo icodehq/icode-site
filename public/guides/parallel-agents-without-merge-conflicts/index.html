@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Parallel agents without merge conflicts — iCode Workbench</title>
+  <meta name="description" content="Why parallel coding agents collide, and how to prevent it: file-scoped tasks, worktrees, a merge queue, and tests on the merged result." />
+  <meta name="theme-color" content="#ffffff" />
+  <link rel="icon" href="../../assets/favicon.svg" type="image/svg+xml" />
+  <link rel="stylesheet" href="../../assets/styles.css" />
+  <script src="../../assets/theme.js"></script>
+</head>
+<body>
+<!-- BEGIN:site-header -->
+<!-- END:site-header -->
+
+<main>
+  <section class="section">
+    <div class="container">
+      <p class="eyebrow">iCode Workbench · Guide · Isolation</p>
+      <h1>Parallel agents without merge conflicts</h1>
+      <p class="lede">
+        Git worktrees stop two agents from overwriting each other's files. They
+        do not stop the merge conflict. Two branches can change the same shared
+        file, pass their own tests, and still fail — or silently drop one side —
+        when they land together.
+      </p>
+      <p>
+        This guide is about the second problem: how to scope, order, and test
+        parallel work so the merge is boring.
+      </p>
+      <!-- BEGIN:article-meta -->
+      <!-- END:article-meta -->
+      <p class="muted"><em>This guide is currently available in English only.</em></p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2>Why conflicts happen</h2>
+      <p>
+        A merge conflict is a disagreement about the same lines in the same
+        file. Two agents can create one without ever sharing a checkout: branch
+        A changes a function, branch B changes the same function from an older
+        read of main, and Git cannot choose between them.
+      </p>
+      <p>
+        There is a quieter failure too. Git can merge both changes cleanly, and
+        the result can still be wrong: two features compile, but the combined
+        behavior breaks. That is a semantic conflict, and it is the one a
+        passing branch-level test will not catch.
+      </p>
+      <p>
+        The fix is not a smarter merge. It is to reduce the overlap before the
+        agents start, and to test the combined result after they finish.
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2>Hub files</h2>
+      <p>
+        Most parallel-agent conflicts concentrate in a small set of files that
+        every task seems to touch:
+      </p>
+      <ul class="feature-list">
+        <li><strong>Dependency manifests and lockfiles.</strong> <code>package.json</code>, <code>pnpm-lock.yaml</code>, <code>pyproject.toml</code>, <code>uv.lock</code>.</li>
+        <li><strong>Route tables and export lists.</strong> The files that register every feature in one place.</li>
+        <li><strong>Shared types and API schemas.</strong> A change here affects every caller.</li>
+        <li><strong>Migration directories.</strong> Two migrations that assume different schemas.</li>
+        <li><strong>Test fixtures and factories.</strong> Shared setup used by several tasks.</li>
+        <li><strong>Configuration and environment files.</strong> The same key changed for different reasons.</li>
+      </ul>
+      <p>
+        Treat these as shared contracts, not as ordinary files. Land the shared
+        change on main first, or give the hub file to one task and make every
+        other task wait. Do not let two agents “coordinate” through commit
+        messages.
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2>Scope by file, not by feature</h2>
+      <p>
+        “Auth” and “billing” are features, not scopes. A feature name can hide
+        the fact that both tasks need the same route table. Scope by the paths
+        the agent may change:
+      </p>
+      <div class="code-block" data-copy><pre>## Task
+Add token refresh to the auth client.
+
+## Owned paths
+- src/auth/**
+- tests/auth/**
+
+## Shared files
+- src/routes.ts — coordinate; do not edit without announcing
+
+## Done when
+- pnpm test -- auth passes
+- The refresh path is covered for an expired token
+
+## Out of scope
+- Public types
+- Billing
+- Formatting-only changes</pre></div>
+      <p>
+        The owned paths are a boundary, not a guarantee. Agents drift. Review
+        the diff for files outside them, especially the hub files above.
+      </p>
+      <p>
+        If two tasks must change the same shared file, merge that change first,
+        then rebase both worktrees. If the change is small and local, give the
+        file to one task and have the other wait.
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2>Isolate with worktrees</h2>
+      <p>
+        A worktree gives each task its own checkout and branch while sharing the
+        repository history. It prevents the overwrite problem and makes the
+        diff reviewable in place. It does not prevent the merge conflict; that
+        is what scoping and merge order are for.
+      </p>
+      <p>
+        For the mechanics, read
+        <a href="/guides/agent-worktrees-explained/">Git worktrees for coding agents, explained</a>.
+        For the full fleet workflow, read
+        <a href="/guides/parallel-agents/">the parallel-agents pillar</a>.
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2>The merge queue</h2>
+      <p>
+        Merge one branch at a time. For each branch:
+      </p>
+      <ol class="feature-list">
+        <li><strong>Rebase on main.</strong> Resolve any conflict in the branch, not in the merge commit.</li>
+        <li><strong>Run the full test suite.</strong> Not just the task's tests.</li>
+        <li><strong>Merge with <code>--ff-only</code>.</strong> If it does not fast-forward, rebase again.</li>
+        <li><strong>Test the combined result.</strong> The next branch now starts from a different main.</li>
+      </ol>
+      <div class="code-block" data-copy><pre>git checkout main
+git pull
+git checkout feature-auth
+git rebase main
+pnpm test
+git checkout main
+git merge --ff-only feature-auth</pre></div>
+      <p>
+        Lockfiles get their own rule: do not hand-merge them. Restore the target
+        branch's lockfile, re-run the package manager's add command, and commit
+        the regenerated file.
+      </p>
+      <p>
+        A queue makes this order explicit. If you run three agents and merge
+        them in the order they finish, you are choosing merge order by accident.
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2>Semantic conflicts</h2>
+      <p>
+        A semantic conflict is a merge that applies cleanly and breaks behavior.
+        Examples: one task renames a function while another adds a caller; one
+        changes a default while another relies on it; two tasks add migrations
+        that assume different schemas.
+      </p>
+      <p>
+        The only reliable catch is a test on the merged result. Run the
+        integration tests after each merge, not just the unit tests in each
+        branch. If the suite is flaky, fix that before you add agents; a green
+        run you do not trust cannot catch a semantic conflict.
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2>A worked example: two branches, one route table</h2>
+      <p>
+        The auth task adds <code>/auth/refresh</code>; the billing task adds
+        <code>/billing/portal</code>. Both edit <code>src/routes.ts</code>. Each
+        branch passes its own tests, so both look green.
+      </p>
+      <p>
+        Merge auth first. Billing rebases on main and hits a conflict in the
+        route table. The resolution is to keep both routes, then run the full
+        suite — including a test that calls both endpoints. If billing had
+        rewritten the table instead of appending, the conflict would be
+        semantic: a clean merge could still drop the auth route.
+      </p>
+      <p>
+        The same pattern appears with shared types. If both tasks add a field to
+        <code>Session</code>, one branch's type change lands first and the other
+        conflicts. The contract should have been decided on main before either
+        branch started.
+      </p>
+      <p>
+        The file list is the early warning. A diff that touches a hub file
+        outside the owned paths is a review finding, even when the branch is
+        green.
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2>Merge order by dependency</h2>
+      <p>
+        Merge in dependency order, not completion order:
+      </p>
+      <ol class="feature-list">
+        <li><strong>Schema and migrations.</strong> Everything else assumes the new shape.</li>
+        <li><strong>Shared types and contracts.</strong> Route tables, API schemas, exported interfaces.</li>
+        <li><strong>Feature branches.</strong> Rebase each on the new main, test, merge.</li>
+        <li><strong>Docs and low-risk changes.</strong> Last, so they describe the final behavior.</li>
+      </ol>
+      <p>
+        If two branches depend on each other, they are one task until the shared
+        change lands. Splitting them creates a merge order problem that no
+        amount of rebasing fixes.
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2>When to abandon a branch</h2>
+      <p>
+        A branch that has drifted for days is not a merge problem; it is a
+        design debate. If rebasing produces conflicts in files the task never
+        intended to touch, stop. Recreate the branch from main and re-apply the
+        task with the current contract. Keep the old branch for reference until
+        the new one is verified.
+      </p>
+      <p>
+        Forcing a merge to preserve work is how a small change becomes a large
+        review. The task, not the branch, is the unit of work.
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2>Rebase or merge?</h2>
+      <p>
+        Rebase the feature branch onto main before merging, then merge with
+        <code>--ff-only</code>. That keeps the history linear and puts the
+        conflict resolution in the branch, where it can be tested before it
+        reaches main.
+      </p>
+      <p>
+        Do not rebase a branch that another person or agent is actively using.
+        Rebasing rewrites commits; a running session can end up on a branch
+        whose history no longer matches its checkout.
+      </p>
+      <p>
+        If a conflict is large or touches a shared contract, stop and fix the
+        contract on main first. A long conflict resolution is a sign that the
+        task was not independent, not a sign that you need a better merge tool.
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2>Checklist</h2>
+      <ol class="feature-list">
+        <li>Are the tasks file-disjoint, not just feature-disjoint?</li>
+        <li>Are the hub files owned by one task or landed on main first?</li>
+        <li>Does each task have an out-of-scope list?</li>
+        <li>Does each branch rebase on main before merging?</li>
+        <li>Is the full suite green on the merged result?</li>
+        <li>Are lockfiles regenerated, not hand-merged?</li>
+      </ol>
+      <div class="actions">
+        <a class="button button-primary" href="/workbench/">Explore iCode Workbench</a>
+        <a class="button" href="/guides/agent-worktrees-explained/">How worktrees work</a>
+        <a class="button" href="/guides/queue-coding-agent-tasks/">Queue coding agent tasks</a>
+        <a class="button" href="/guides/review-ai-generated-code/">Review the diff</a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<!-- BEGIN:site-footer -->
+<!-- END:site-footer -->
+<script src="../../assets/main.js"></script>
+</body>
+</html>

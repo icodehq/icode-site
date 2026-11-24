@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Worktrees vs branches vs clones — iCode Workbench</title>
+  <meta name="description" content="Worktrees, branches, and clones solve different isolation problems. A comparison for teams running multiple coding agents." />
+  <meta name="theme-color" content="#ffffff" />
+  <link rel="icon" href="../../assets/favicon.svg" type="image/svg+xml" />
+  <link rel="stylesheet" href="../../assets/styles.css" />
+  <script src="../../assets/theme.js"></script>
+</head>
+<body>
+<!-- BEGIN:site-header -->
+<!-- END:site-header -->
+
+<main>
+  <section class="section">
+    <div class="container">
+      <p class="eyebrow">iCode Workbench · Guide · Isolation</p>
+      <h1>Worktrees vs branches vs clones</h1>
+      <p class="lede">
+        Branches, worktrees, and clones are often used as if they were
+        interchangeable ways to “work on something else.” They are not. They
+        isolate different things, cost different amounts, and fail in different
+        ways when two coding agents run at once.
+      </p>
+      <p>
+        This guide compares the three for the specific case that matters here:
+        multiple agents in one repository.
+      </p>
+      <!-- BEGIN:article-meta -->
+      <!-- END:article-meta -->
+      <p class="muted"><em>This guide is currently available in English only.</em></p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container-wide">
+      <h2>Definitions</h2>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th></th><th>Branch</th><th>Worktree</th><th>Clone</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th>What it is</th>
+              <td>A movable pointer to a commit</td>
+              <td>A separate working directory attached to the same repository</td>
+              <td>A separate repository with its own object store</td>
+            </tr>
+            <tr>
+              <th>Working directory</th>
+              <td>Shared</td>
+              <td>Separate</td>
+              <td>Separate</td>
+            </tr>
+            <tr>
+              <th>Git history</th>
+              <td>Shared</td>
+              <td>Shared</td>
+              <td>Duplicated</td>
+            </tr>
+            <tr>
+              <th>File isolation</th>
+              <td>No</td>
+              <td>Yes</td>
+              <td>Yes</td>
+            </tr>
+            <tr>
+              <th>Setup cost</th>
+              <td>Lowest</td>
+              <td>Low</td>
+              <td>High</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p>
+        A branch changes which commit you are looking at. A worktree changes
+        where you are looking at it. A clone changes the repository itself.
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2>Isolation level</h2>
+      <p>
+        A branch gives you no filesystem isolation. Two agents can check out
+        different branches in the same directory and still overwrite each
+        other's files, because they share the working tree. Switching branches
+        under a running agent is worse: the files change while it is reading
+        them.
+      </p>
+      <p>
+        A worktree gives you filesystem isolation with shared history. Each
+        worktree has its own working directory, index, and HEAD, so two agents
+        can work at the same time without seeing each other's edits. Git refuses
+        to check out the same branch in two worktrees, which prevents the most
+        obvious collision.
+      </p>
+      <p>
+        A clone gives you repository-level isolation. It has its own object
+        store and remote configuration, so it is the right tool for a separate
+        machine, a separate fork, or a completely separate line of work. It is
+        heavier than a worktree and unnecessary for parallel agents in one
+        repository.
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2>Disk and setup cost</h2>
+      <p>
+        A branch is nearly free: it is a pointer. A worktree is cheap: it shares
+        the object store, so creating one does not duplicate history. A clone
+        duplicates the object store and may re-download the repository.
+      </p>
+      <p>
+        But the worktree is not free at the development-environment level. Every
+        checkout needs its own dependencies, <code>.env</code>, ports, and
+        database. Three worktrees can mean three <code>node_modules</code>
+        installs and three dev servers. The Git cost is low; the environment
+        cost is the real one.
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2>Shared state</h2>
+      <p>
+        All three share more than the file list suggests. Git hooks, stash, and
+        config are repository-level. Submodules need their own initialization.
+        Credentials, SSH keys, and network access are machine-level. A worktree
+        isolates the working tree; it does not isolate the machine.
+      </p>
+      <p>
+        If you need process, network, or database isolation, a worktree is not
+        enough. Use a container per worktree, or a clone in a sandbox. The
+        decision is about the threat model, not the number of agents.
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2>Shared state checklist</h2>
+      <p>Before you treat a worktree as isolated, check what it still shares:</p>
+      <ul class="feature-list">
+        <li><strong>Git hooks.</strong> Repository-level, not worktree-level. A pre-commit hook runs in every checkout.</li>
+        <li><strong>Stash.</strong> Shared across worktrees. Do not stash in one and expect another not to see it.</li>
+        <li><strong>Config.</strong> Local Git config is shared unless you override it per worktree.</li>
+        <li><strong>Submodules.</strong> Need their own initialization in each checkout.</li>
+        <li><strong>Env files.</strong> Gitignored files are not in a fresh worktree. Copy them.</li>
+        <li><strong>Dependencies.</strong> <code>node_modules</code>, virtualenvs, and build caches are per-directory.</li>
+        <li><strong>Ports.</strong> Two dev servers both want 3000. Assign one per worktree.</li>
+        <li><strong>Databases and caches.</strong> A migration in one worktree can corrupt another's test data.</li>
+        <li><strong>Credentials and network.</strong> A worktree is not a sandbox; it still uses your machine's keys and network.</li>
+      </ul>
+      <p>
+        If any of these matter, the worktree is not the whole isolation story.
+        Add a setup script, a container, or both.
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2>When to use each</h2>
+      <ul class="feature-list">
+        <li><strong>Branch:</strong> switching context in one checkout, reviewing a change, or keeping a line of work without running it in parallel.</li>
+        <li><strong>Worktree:</strong> two or more agents in one repository, each on an independent task; reviewing a diff in the checkout where it was made.</li>
+        <li><strong>Clone:</strong> a separate machine, a separate object store, a fork, or a fully isolated environment where sharing history is undesirable.</li>
+      </ul>
+      <p>
+        A useful rule: if the agents are working in the same repository and on
+        independent files, use worktrees. If they are working on the same files,
+        they are one task; no isolation tool fixes that.
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2>Common mistakes</h2>
+      <ul class="feature-list">
+        <li><strong>Using a branch as file isolation.</strong> Two agents in one checkout with different branches still share the working tree.</li>
+        <li><strong>Cloning for every agent.</strong> It works, but it duplicates history and setup cost. A worktree is cheaper for the same file isolation.</li>
+        <li><strong>Creating a worktree without setup.</strong> A clean checkout has no <code>.env</code>, no dependencies, and no database. It is not a working environment yet.</li>
+        <li><strong>Checking out the same branch twice.</strong> Git refuses, and forcing it recreates the collision the worktree was meant to prevent.</li>
+        <li><strong>Removing a worktree with uncommitted changes.</strong> Removing it deletes the working tree. Merge or keep the branch first.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2>How to choose</h2>
+      <p>Three questions decide it:</p>
+      <ol class="feature-list">
+        <li><strong>Are two agents working at the same time?</strong> If yes, you need file isolation: a worktree or a clone.</li>
+        <li><strong>Do they need the same repository history?</strong> If yes, a worktree is the cheaper isolation. If no, a clone.</li>
+        <li><strong>Do they need process or network isolation?</strong> If yes, a worktree is not enough. Add a container or run the clone in a sandbox.</li>
+      </ol>
+      <p>
+        If the answer to the first question is no, a branch is enough.
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container-wide">
+      <h2>Commands at a glance</h2>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th></th><th>Create</th><th>Switch</th><th>Remove</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th>Branch</th>
+              <td><code>git switch -c feature-auth</code></td>
+              <td><code>git switch feature-auth</code></td>
+              <td><code>git branch -d feature-auth</code></td>
+            </tr>
+            <tr>
+              <th>Worktree</th>
+              <td><code>git worktree add ../project-auth -b feature-auth</code></td>
+              <td><code>cd ../project-auth</code></td>
+              <td><code>git worktree remove ../project-auth</code></td>
+            </tr>
+            <tr>
+              <th>Clone</th>
+              <td><code>git clone &lt;url&gt; ../project-auth</code></td>
+              <td><code>cd ../project-auth</code></td>
+              <td>Delete the directory</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p>
+        The branch row changes what you are looking at; the worktree and clone
+        rows change where you are looking at it. Only the last two give you a
+        separate working tree.
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2>Quick answers</h2>
+      <details>
+        <summary><strong>Does a worktree duplicate the repository?</strong></summary>
+        <p>No. It shares the object store and history. Only the working directory and index are separate, which is why creating one is cheap.</p>
+      </details>
+      <details>
+        <summary><strong>Can two worktrees use the same branch?</strong></summary>
+        <p>No. Git refuses to check out the same branch in two worktrees. That is a safety feature: it prevents two agents from committing to the same branch from different directories.</p>
+      </details>
+      <details>
+        <summary><strong>Is a clone better for isolation?</strong></summary>
+        <p>It is more isolated because it has its own object store and remote configuration, but it is heavier. Use a clone for a separate machine, a fork, or a genuinely separate repository, not for every agent in one repo.</p>
+      </details>
+      <details>
+        <summary><strong>Can I delete a worktree safely?</strong></summary>
+        <p>Only after the branch is merged or the changes are committed. Removing a worktree deletes the working tree, including uncommitted changes.</p>
+      </details>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2>Recommendation for agents</h2>
+      <p>
+        Use one worktree per task. It gives you file isolation at the lowest Git
+        cost, keeps the main checkout clean, and makes the review local to the
+        work. Use a clone only when you need a separate repository or machine.
+        Use a branch alone only when you are the only agent in the checkout.
+      </p>
+      <p>
+        For the mechanics, read
+        <a href="/guides/agent-worktrees-explained/">Git worktrees for coding agents, explained</a>.
+        For the full workflow, read
+        <a href="/guides/parallel-agents/">the parallel-agents pillar</a>.
+      </p>
+      <div class="actions">
+        <a class="button button-primary" href="/workbench/">Explore iCode Workbench</a>
+        <a class="button" href="/guides/agent-worktrees-explained/">How worktrees work</a>
+        <a class="button" href="/guides/parallel-agents-without-merge-conflicts/">Avoid merge conflicts</a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<!-- BEGIN:site-footer -->
+<!-- END:site-footer -->
+<script src="../../assets/main.js"></script>
+</body>
+</html>

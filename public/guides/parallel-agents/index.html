@@ -118,7 +118,9 @@
       <p>
         The right column is where most “parallel agents” attempts fail. For the
         mechanics, read
-        <a href="/guides/agent-worktrees-explained/">Git worktrees for coding agents, explained</a>.
+        <a href="/guides/agent-worktrees-explained/">Git worktrees for coding agents, explained</a>,
+        and for the comparison, read
+        <a href="/guides/worktrees-vs-branches/">worktrees vs branches vs clones</a>.
       </p>
       <ul class="feature-list">
         <li><strong>Ports.</strong> Two <code>npm run dev</code> processes both want 3000. Assign a fixed port per worktree, and make the dev server fail rather than silently pick another.</li>
@@ -332,7 +334,11 @@ Extract the report formatter from src/report/builder.ts into its own module.
   <section class="section">
     <div class="container">
       <h2>Merge one branch at a time</h2>
-      <p>Parallel branches are not independent at merge time. Merge serially:</p>
+      <p>
+        Parallel branches are not independent at merge time. Merge serially. For
+        the conflict-prevention workflow, read
+        <a href="/guides/parallel-agents-without-merge-conflicts/">parallel agents without merge conflicts</a>.
+      </p>
       <div class="code-block" data-copy><pre>git checkout main
 git pull
 git checkout feature-auth

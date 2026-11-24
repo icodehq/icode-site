@@ -120,7 +120,7 @@
       <ul class="feature-list">
         <li><strong>File collisions.</strong> Two agents in one checkout overwrite each other. A worktree per task fixes this before it happens.</li>
         <li><strong>Shared-state surprises.</strong> A fresh worktree has no <code>.env</code>, no <code>node_modules</code>, and no local database. Two dev servers both want port 3000. Set up each checkout deliberately.</li>
-        <li><strong>Merge order.</strong> Two branches can pass alone and fail together. Merge one at a time and test the combined result.</li>
+        <li><strong>Merge order.</strong> Two branches can pass alone and fail together. Merge one at a time and test the combined result. See <a href="/guides/parallel-agents-without-merge-conflicts/">parallel agents without merge conflicts</a>.</li>
         <li><strong>Review load.</strong> Two agents can produce two diffs faster than one person can read them. The limit is review capacity, not agent count.</li>
         <li><strong>Lost sessions.</strong> A terminal dies, the app restarts, and the work disappears with the process. If the task matters, the session should outlive the window.</li>
       </ul>

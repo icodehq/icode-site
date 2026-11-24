@@ -135,7 +135,8 @@ git worktree list</pre></div>
         Use a branch when you are working alone and switching context. Use a
         worktree when two agents need to work at the same time. Use a clone when
         you need a separate object store, a separate remote, or a separate
-        machine.
+        machine. For the full comparison, read
+        <a href="/guides/worktrees-vs-branches/">worktrees vs branches vs clones</a>.
       </p>
     </div>
   </section>
@@ -232,7 +233,8 @@ cp ../project/.env .env.local</pre></div>
       <p>
         When the auth branch merges, remove its worktree and prune. Keep the
         billing worktree until its branch is verified in main. Do not remove a
-        worktree with uncommitted changes.
+        worktree with uncommitted changes. If the merge conflicts, read
+        <a href="/guides/parallel-agents-without-merge-conflicts/">parallel agents without merge conflicts</a>.
       </p>
     </div>
   </section>
