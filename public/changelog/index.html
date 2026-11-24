@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Changelog — what's new in iCode Workbench</title>
+  <meta name="description" content="What's new in iCode Workbench: releases, fixes, and workflow changes. See the latest versions, update notes, and the full changelog." />
+  <meta name="theme-color" content="#ffffff" />
+  <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml" />
+  <link rel="stylesheet" href="../assets/styles.css" />
+  <script src="../assets/theme.js"></script>
+</head>
+<body>
+<!-- BEGIN:site-header -->
+<!-- END:site-header -->
+
+<main>
+  <section class="section">
+    <div class="container">
+      <p class="eyebrow">iCode Workbench · Changelog</p>
+      <h1>Changelog</h1>
+      <p class="lede">
+        What's new in iCode Workbench: releases, fixes, and workflow changes.
+        The full history lives in the repository.
+      </p>
+      <p class="muted">
+        <a href="https://github.com/icodehq/icode-workbench/blob/master/CHANGELOG.md" rel="noopener">Full changelog</a>
+        ·
+        <a href="https://github.com/icodehq/icode-workbench/releases" rel="noopener">Releases</a>
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2>How releases work</h2>
+      <p>
+        iCode Workbench is pre-1.0 and follows semantic versioning. Each release
+        is cut from a tagged commit; installers are attached to the
+        <a href="https://github.com/icodehq/icode-workbench/releases" rel="noopener">GitHub release</a>.
+        Stable tags publish as normal releases; prerelease tags publish as GitHub
+        prereleases so they do not become <code>latest</code> for stable clients.
+      </p>
+      <p>
+        Packaged builds check for updates shortly after launch and every six
+        hours; the check can be disabled in <strong>Settings → Updates</strong>.
+        Windows NSIS and packaged AppImage builds download on request and install
+        after a restart. The first build with in-app updates still needs one
+        manual install.
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2>0.26.1 — 2026-11-24</h2>
+      <ul class="feature-list">
+        <li><strong>Worktree row actions.</strong> Right-clicking anywhere on a worktree row opens <strong>Worktree actions</strong>; before, only the branch label answered the right-click.</li>
+        <li><strong>Pointer cursor.</strong> Controls that answer a click now show the hand cursor; disabled controls and drag handles keep their own cursors.</li>
+      </ul>
+
+      <h2>0.26.0 — 2026-11-24</h2>
+      <ul class="feature-list">
+        <li><strong>Large monorepos no longer freeze the window.</strong> Generated directories are skipped at any depth, so a package-level <code>node_modules</code> no longer creates tens of thousands of watchers.</li>
+        <li><strong>WSL checkouts use polling.</strong> Files and Source Control no longer watch a WSL repository through Windows; they use the existing two-second polling fallback.</li>
+        <li><strong>Watchers run outside the main process.</strong> A dedicated watcher child owns every physical watch; a crash or failed subscription falls back to polling instead of stalling the window.</li>
+        <li><strong>Native recursive watching.</strong> Local watches prefer the operating system's native watcher and prune generated directories; chokidar remains an automatic fallback.</li>
+        <li><strong>Files watches only visible directories.</strong> Collapsed folders drop their watch, reducing descriptor pressure.</li>
+      </ul>
+
+      <h2>0.25.0 — 2026-11-23</h2>
+      <ul class="feature-list">
+        <li><strong>Updates unblocked.</strong> Historical <code>unavailable</code> sessions no longer block an install; only a session whose own host cannot prove its state does.</li>
+        <li><strong>Update downloads follow the proxy.</strong> A proxy configured inside iCode now applies to electron-updater's own network session.</li>
+        <li><strong>Timeouts and cancel.</strong> A stalled check or download no longer leaves the app in <code>checking</code> forever; the banner offers Cancel while downloading.</li>
+        <li><strong>Install errors surfaced.</strong> The backend verifies the installer exists and records the attempt; failures show their session/process detail.</li>
+        <li><strong>Packaged update E2E.</strong> CI can install an older build, serve the new installer, and verify the relaunched version.</li>
+      </ul>
+
+      <h2>0.24.0 — 2026-11-23</h2>
+      <ul class="feature-list">
+        <li><strong>Resizable Projects and Tasks panes.</strong> Drag the seam to set the Tasks height; double-click to return to content-sized; the height survives a relaunch.</li>
+        <li><strong>Project groups start collapsed.</strong> Expand a project with its chevron; expansion is remembered while the window runs.</li>
+      </ul>
+
+      <h2>0.23.1 — 2026-11-23</h2>
+      <ul class="feature-list">
+        <li><strong>WSL responsiveness.</strong> Source Control, Files, and checkout resolution share guest calls instead of spawning one <code>wsl.exe</code> per request; the steady-state poll drops below one spawn per second.</li>
+      </ul>
+
+      <h2>0.23.0 — 2026-11-23</h2>
+      <ul class="feature-list">
+        <li><strong>In-app updates.</strong> iCode checks the release feed shortly after launch and every six hours; Windows NSIS and packaged AppImage builds download on request and install after a restart.</li>
+        <li><strong>Restart safety.</strong> Restarting asks before ending live sessions, sleeps them first, and stops the detached host and WSL holders so the installer can replace the app.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="actions">
+        <a class="button button-primary" href="/workbench/">Explore iCode Workbench</a>
+        <a class="button" href="/guides/parallel-agents/">Read the parallel-agents guide</a>
+        <a class="button" href="/compare/orca/">Compare with Orca</a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<!-- BEGIN:site-footer -->
+<!-- END:site-footer -->
+<script src="../assets/main.js"></script>
+</body>
+</html>

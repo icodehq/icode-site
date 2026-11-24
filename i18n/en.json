@@ -415,6 +415,42 @@
         "title": "Mira, the bounded cross-project assistant — iCode Workbench"
       }
     },
+    "changelog": {
+      "alts": {},
+      "blocks": {
+        "0350f35dbc60": "<strong>Updates unblocked.</strong> Historical <code>unavailable</code> sessions no longer block an install; only a session whose own host cannot prove its state does.",
+        "037bc41df456": "<strong>WSL checkouts use polling.</strong> Files and Source Control no longer watch a WSL repository through Windows; they use the existing two-second polling fallback.",
+        "0e8120ee4eb3": "<strong>Timeouts and cancel.</strong> A stalled check or download no longer leaves the app in <code>checking</code> forever; the banner offers Cancel while downloading.",
+        "164b3d4809f9": "Changelog",
+        "218d21c162d5": "Compare with Orca",
+        "2e145d71df3a": "<strong>Worktree row actions.</strong> Right-clicking anywhere on a worktree row opens <strong>Worktree actions</strong>; before, only the branch label answered the right-click.",
+        "3c6e120f60ac": "<strong>Update downloads follow the proxy.</strong> A proxy configured inside iCode now applies to electron-updater's own network session.",
+        "3e114e541a26": "<strong>In-app updates.</strong> iCode checks the release feed shortly after launch and every six hours; Windows NSIS and packaged AppImage builds download on request and install after a restart.",
+        "41c0b08c8e68": "<strong>Pointer cursor.</strong> Controls that answer a click now show the hand cursor; disabled controls and drag handles keep their own cursors.",
+        "452f700b7adb": "<strong>WSL responsiveness.</strong> Source Control, Files, and checkout resolution share guest calls instead of spawning one <code>wsl.exe</code> per request; the steady-state poll drops below one spawn per second.",
+        "4e6ec72631a2": "What's new in iCode Workbench: releases, fixes, and workflow changes. The full history lives in the repository.",
+        "4f4bd9649570": "<strong>Large monorepos no longer freeze the window.</strong> Generated directories are skipped at any depth, so a package-level <code>node_modules</code> no longer creates tens of thousands of watchers.",
+        "65e38d346767": "<strong>Resizable Projects and Tasks panes.</strong> Drag the seam to set the Tasks height; double-click to return to content-sized; the height survives a relaunch.",
+        "6f44d1a05e52": "<a href=\"https://github.com/icodehq/icode-workbench/blob/master/CHANGELOG.md\" rel=\"noopener\">Full changelog</a> · <a href=\"https://github.com/icodehq/icode-workbench/releases\" rel=\"noopener\">Releases</a>",
+        "71b9a2c53e86": "How releases work",
+        "90a3b4decedc": "<strong>Watchers run outside the main process.</strong> A dedicated watcher child owns every physical watch; a crash or failed subscription falls back to polling instead of stalling the window.",
+        "9f03caf72134": "<strong>Project groups start collapsed.</strong> Expand a project with its chevron; expansion is remembered while the window runs.",
+        "a1f280fdfd3b": "iCode Workbench is pre-1.0 and follows semantic versioning. Each release is cut from a tagged commit; installers are attached to the <a href=\"https://github.com/icodehq/icode-workbench/releases\" rel=\"noopener\">GitHub release</a>. Stable tags publish as normal releases; prerelease tags publish as GitHub prereleases so they do not become <code>latest</code> for stable clients.",
+        "a8b92e39e061": "<strong>Native recursive watching.</strong> Local watches prefer the operating system's native watcher and prune generated directories; chokidar remains an automatic fallback.",
+        "b6a3bdeec714": "<strong>Restart safety.</strong> Restarting asks before ending live sessions, sleeps them first, and stops the detached host and WSL holders so the installer can replace the app.",
+        "b9c33e72f92a": "<strong>Install errors surfaced.</strong> The backend verifies the installer exists and records the attempt; failures show their session/process detail.",
+        "ca82fcbcd03d": "Read the parallel-agents guide",
+        "eb496974cdea": "Packaged builds check for updates shortly after launch and every six hours; the check can be disabled in <strong>Settings → Updates</strong>. Windows NSIS and packaged AppImage builds download on request and install after a restart. The first build with in-app updates still needs one manual install.",
+        "ecaf59cd1eaf": "Explore iCode Workbench",
+        "ee6c8570970e": "<strong>Files watches only visible directories.</strong> Collapsed folders drop their watch, reducing descriptor pressure.",
+        "eff2281f3b8a": "<strong>Packaged update E2E.</strong> CI can install an older build, serve the new installer, and verify the relaunched version.",
+        "fdd3a5e5d564": "iCode Workbench · Changelog"
+      },
+      "meta": {
+        "description": "What's new in iCode Workbench: releases, fixes, and workflow changes. See the latest versions, update notes, and the full changelog.",
+        "title": "Changelog — what's new in iCode Workbench"
+      }
+    },
     "compare/orca": {
       "alts": {},
       "blocks": {
@@ -2140,6 +2176,7 @@
         "2adf14b14502": "iCode Workbench · Migration",
         "2c445dd5994f": "Before you start",
         "3229609e1543": "License",
+        "3594733dbaa8": "For recent changes, see the <a href=\"/changelog/\">changelog</a>.",
         "3605b0488e53": "A split setup is a valid result. The goal is not a winner-takes-all migration; it is a review loop that actually happens.",
         "3a1b079621f8": "What to watch",
         "3f18e250016a": "If the answers favor Workbench for the review-gated work, keep it for that work. If you need Orca's broader surfaces, keep Orca for those and use Workbench for the tasks that need a review gate. A split setup is a valid outcome.",

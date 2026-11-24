@@ -99,6 +99,7 @@ ENGLISH_ONLY_ROUTES = {
     "guides/agent-task-states",
     "guides/agent-review-checklist",
     "workbench/migrate-from-orca",
+    "changelog",
     "compare/orca",
     "blog/agent-review-workflow",
     "blog/agent-task-queue",
@@ -138,6 +139,7 @@ CONTENT_DATES = {
     "guides/agent-task-states": "2026-11-24",
     "guides/agent-review-checklist": "2026-11-24",
     "workbench/migrate-from-orca": "2026-11-24",
+    "changelog": "2026-11-24",
     "compare/orca": "2026-11-24",
 }
 ARTICLE_PUBLISHED = {
