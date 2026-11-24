@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>How to queue coding agent tasks — iCode Workbench</title>
+  <meta name="description" content="A practical guide to queueing coding agent tasks: states, retries, schedules, slot limits, and a review gate. Works with Claude Code, Codex, and OpenCode." />
+  <meta name="theme-color" content="#ffffff" />
+  <link rel="icon" href="../../assets/favicon.svg" type="image/svg+xml" />
+  <link rel="stylesheet" href="../../assets/styles.css" />
+  <script src="../../assets/theme.js"></script>
+</head>
+<body>
+<!-- BEGIN:site-header -->
+<!-- END:site-header -->
+
+<main>
+  <section class="section">
+    <div class="container">
+      <p class="eyebrow">iCode Workbench · Guide · Queue</p>
+      <h1>How to queue coding agent tasks</h1>
+      <p class="lede">
+        A terminal tab is a process, not a task. When you run more than one
+        agent, the question stops being “which tab is running?” and becomes
+        “what work is queued, what is running, what needs me, and what is ready
+        to review?” A queue answers the second question.
+      </p>
+      <p>
+        This guide covers the state model, retries, schedules, slot limits, and
+        the review gate — the parts of a queue that make a fleet legible.
+      </p>
+      <!-- BEGIN:article-meta -->
+      <!-- END:article-meta -->
+      <p class="muted"><em>This guide is currently available in English only.</em></p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2>Terminal tabs vs a queue</h2>
+      <p>
+        A tab shows you a process. It does not tell you what the process is for,
+        what it is waiting on, whether it is blocked, or whether the result has
+        been reviewed. With one agent, you can hold that in your head. With
+        three, you cannot.
+      </p>
+      <p>
+        A queue makes the task the primary object. A task has a goal, an owner,
+        a state, and a history. The agent is an implementation detail: it may be
+        Claude Code today and Codex tomorrow. The task outlives the session.
+      </p>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th></th><th>Terminal tabs</th><th>Task queue</th></tr>
+          </thead>
+          <tbody>
+            <tr><th>Primary object</th><td>Process</td><td>Task</td></tr>
+            <tr><th>State</th><td>Running or not</td><td>Queued, running, waiting, failed, completed</td></tr>
+            <tr><th>History</th><td>Scrollback</td><td>Attempts, retries, review decision</td></tr>
+            <tr><th>Review</th><td>Manual</td><td>A separate decision on the task</td></tr>
+            <tr><th>Survives a restart</th><td>No</td><td>Yes, if the task state is durable</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2>The state model</h2>
+      <p>
+        A useful queue has explicit states. The exact names matter less than the
+        distinctions:
+      </p>
+      <ul class="feature-list">
+        <li><strong>Queued.</strong> The task exists and is waiting for a slot. Nothing is running yet.</li>
+        <li><strong>Dispatching.</strong> A slot opened and the task is being assigned to a session. This is a short state, but it makes the transition visible.</li>
+        <li><strong>Running.</strong> The agent is working. Running is not the same as “will succeed,” and it is not the same as “reviewed.”</li>
+        <li><strong>Waiting.</strong> The agent needs a person: an approval, a decision, or an answer. Waiting is not failed, and it is not running.</li>
+        <li><strong>Completed.</strong> The process exited successfully. The task still needs a review decision before it is accepted.</li>
+        <li><strong>Failed.</strong> The process exited with an error, or the verification command failed. A retry creates a new attempt.</li>
+        <li><strong>Cancelled.</strong> A person stopped the task. It should not silently reappear.</li>
+      </ul>
+      <p>
+        Without these distinctions, a fleet looks like a wall of green. A false
+        green is worse than an honest unknown: it tells you not to look.
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2>What a task should contain</h2>
+      <p>
+        A queue is only as good as the task it holds. A vague task produces a
+        vague diff, and no amount of state management fixes that. A useful task
+        has five fields:
+      </p>
+      <ol class="feature-list">
+        <li><strong>A goal in one sentence.</strong> “Fix the token refresh path,” not “improve auth.”</li>
+        <li><strong>Owned paths.</strong> The files or directories the agent may change. Everything else is out of scope unless it announces the change.</li>
+        <li><strong>A done-when command.</strong> The verification the agent must run, and you will run again. “The auth tests pass” is better than “it works.”</li>
+        <li><strong>An out-of-scope list.</strong> The changes you do not want: public types, route tables, migrations, formatting. This is where agent drift gets caught.</li>
+        <li><strong>A baseline.</strong> The commit or worktree state the task started from, so the review can compare against it.</li>
+      </ol>
+      <p>
+        A sixth field — the review owner — is useful once more than one person
+        can accept work. The queue should know who is expected to decide, not
+        just who is expected to run.
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2>Retries</h2>
+      <p>
+        A retry is a new attempt, not an erased failure. The previous attempt
+        should stay in the task history: what the agent tried, why it failed,
+        and what changed. If the retry succeeds, you still want to review the
+        final diff; if it fails again, you want to see the pattern.
+      </p>
+      <p>
+        Retries also interact with review. A retry should never count as a
+        review, and a successful retry should not auto-merge. The task’s review
+        decision is independent of how many attempts it took.
+      </p>
+      <p>
+        Keep the retry policy simple: retry a failed verification, do not retry
+        a failed review without a change, and do not retry a task that is
+        waiting on a person.
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2>Schedules</h2>
+      <p>
+        Recurring work belongs in the same queue. A schedule creates an ordinary
+        queued task on a cadence — once, daily, weekdays, weekly, or every few
+        hours. The schedule is not a separate automation with its own failure
+        modes; it is a task factory.
+      </p>
+      <p>
+        The important design decision is overlap. If the previous run is still
+        running when the next one is due, you can queue the new one or skip it.
+        Pick one explicitly. A nightly audit that silently stacks up ten
+        concurrent runs is worse than a nightly audit that skips a night.
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2>Slot limits</h2>
+      <p>
+        A slot limit is a feature, not a restriction. It bounds concurrency to
+        what you can review, not to what the machine can run. Start with two
+        slots. Add a third only when the first two are merging cleanly and the
+        review queue is consistently empty.
+      </p>
+      <p>
+        The limit also makes the queue useful: if every task runs immediately,
+        the queue is just a launcher. The queued state is where prioritization
+        happens.
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2>Where the queue lives</h2>
+      <p>
+        The queue should outlive the terminal. If task state lives only in
+        scrollback, closing the app erases the history and the work becomes
+        invisible even if the branch survives.
+      </p>
+      <p>
+        Local-first queue state — a local database or file — has two
+        advantages: it survives restarts without a network, and it keeps the
+        task history on the machine. That matters when the tasks include
+        repository names, paths, and diffs you would rather not send to a
+        hosted service.
+      </p>
+      <p>
+        A hosted queue can be useful for a team, but make the trade-off
+        explicit. The question is not “local or cloud” as an ideology; it is
+        whether the state is durable, who can read it, and what happens when the
+        service is unavailable.
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2>The review gate</h2>
+      <p>
+        A queue that ends at “completed” is not a workbench; it is a process
+        manager. The review decision is what turns a completed task into
+        accepted work.
+      </p>
+      <p>
+        Review in the checkout where the agent worked, against the baseline the
+        task started from. Read the diff, run the verification command, and make
+        a decision that is separate from process exit. A task can complete and
+        still be rejected; a rejected task can be revised and re-reviewed.
+      </p>
+      <p>
+        For the review workflow itself, read
+        <a href="/blog/agent-review-workflow/">the review gate</a>.
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2>Common mistakes</h2>
+      <ul class="feature-list">
+        <li><strong>Too many slots.</strong> If the queue is always empty, you are not reviewing. Concurrency should track review capacity, not machine capacity.</li>
+        <li><strong>Retrying a failed review without a change.</strong> A retry with the same task and the same diff produces the same review. Change the task or the code first.</li>
+        <li><strong>Schedules that stack.</strong> A nightly audit with no overlap policy becomes ten concurrent audits. Choose queue-or-skip explicitly.</li>
+        <li><strong>A queue without a review gate.</strong> Completed is not accepted. If the queue ends at process exit, it is a launcher, not a workbench.</li>
+        <li><strong>Using the queue as a to-do list.</strong> A queue without a slot limit and a review decision is a backlog. The value is in the bounded concurrency and the decision.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2>A worked example</h2>
+      <p>
+        Five tasks: an auth fix, a billing refactor, a flaky test, a migration,
+        and a docs update. You have two slots and one reviewer.
+      </p>
+      <ol class="feature-list">
+        <li><strong>Queue all five.</strong> The migration and auth fix are independent; the billing refactor depends on the auth session type; the docs update depends on the auth flow.</li>
+        <li><strong>Run the migration and auth fix first.</strong> Two slots, two independent tasks. The billing, test, and docs tasks wait.</li>
+        <li><strong>Review the migration before starting billing.</strong> If the migration changes the session table, the billing branch should start from the new schema, not the old one.</li>
+        <li><strong>Retry the flaky test as a new attempt.</strong> If the first attempt only skips the test, reject it. A retry should change the diagnosis, not the assertion.</li>
+        <li><strong>Run the docs task last.</strong> It depends on the auth flow, and it is the lowest-risk diff. Do not let it consume a slot that a code task needs.</li>
+      </ol>
+      <p>
+        The queue is doing two jobs here: bounding concurrency and encoding
+        dependencies. A pile of terminal tabs can do neither.
+      </p>
+      <div class="actions">
+        <a class="button button-primary" href="/workbench/">Explore iCode Workbench</a>
+        <a class="button" href="/guides/parallel-agents/">Read the parallel-agents guide</a>
+        <a class="button" href="/guides/from-one-agent-to-a-fleet/">From one agent to a fleet</a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<!-- BEGIN:site-footer -->
+<!-- END:site-footer -->
+<script src="../../assets/main.js"></script>
+</body>
+</html>
