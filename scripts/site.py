@@ -77,6 +77,8 @@ ARTICLE_ROUTES = {
     "guides/run-claude-code-in-parallel",
     "guides/parallel-agents-without-merge-conflicts",
     "guides/worktrees-vs-branches",
+    "guides/how-many-agents-in-parallel",
+    "guides/agent-task-states",
 }
 
 # Routes that exist only in English. They are built once, canonicalized to the
@@ -91,6 +93,8 @@ ENGLISH_ONLY_ROUTES = {
     "guides/run-claude-code-in-parallel",
     "guides/parallel-agents-without-merge-conflicts",
     "guides/worktrees-vs-branches",
+    "guides/how-many-agents-in-parallel",
+    "guides/agent-task-states",
     "compare/orca",
     "blog/agent-review-workflow",
     "blog/agent-task-queue",
@@ -126,6 +130,8 @@ CONTENT_DATES = {
     "guides/run-claude-code-in-parallel": "2026-11-24",
     "guides/parallel-agents-without-merge-conflicts": "2026-11-24",
     "guides/worktrees-vs-branches": "2026-11-24",
+    "guides/how-many-agents-in-parallel": "2026-11-24",
+    "guides/agent-task-states": "2026-11-24",
     "compare/orca": "2026-11-24",
 }
 ARTICLE_PUBLISHED = {
@@ -146,6 +152,8 @@ ARTICLE_PUBLISHED = {
     "guides/run-claude-code-in-parallel": "2026-11-24",
     "guides/parallel-agents-without-merge-conflicts": "2026-11-24",
     "guides/worktrees-vs-branches": "2026-11-24",
+    "guides/how-many-agents-in-parallel": "2026-11-24",
+    "guides/agent-task-states": "2026-11-24",
 }
 PRODUCTS = {
     "workbench": {

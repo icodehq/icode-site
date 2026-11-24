@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>How many coding agents in parallel? — iCode Workbench</title>
+  <meta name="description" content="More agents isn't always faster. How to choose a parallel agent count based on task independence, review capacity, and machine limits." />
+  <meta name="theme-color" content="#ffffff" />
+  <link rel="icon" href="../../assets/favicon.svg" type="image/svg+xml" />
+  <link rel="stylesheet" href="../../assets/styles.css" />
+  <script src="../../assets/theme.js"></script>
+</head>
+<body>
+<!-- BEGIN:site-header -->
+<!-- END:site-header -->
+
+<main>
+  <section class="section">
+    <div class="container">
+      <p class="eyebrow">iCode Workbench · Guide · Queue</p>
+      <h1>How many coding agents should you run in parallel?</h1>
+      <p class="lede">
+        The honest answer is not a number. It is the largest fleet you can still
+        review well. Past that point, more agents produce more diffs, not more
+        accepted work.
+      </p>
+      <p>
+        This guide gives you a way to choose the number instead of guessing:
+        start with two, measure the review loop, and add a slot only when the
+        queue and the review are both keeping up.
+      </p>
+      <!-- BEGIN:article-meta -->
+      <!-- END:article-meta -->
+      <p class="muted"><em>This guide is currently available in English only.</em></p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2>The bottleneck isn't the model</h2>
+      <p>
+        Agents can produce diffs faster than a person can review them. If you
+        measure only agent throughput, the fleet looks great; if you measure
+        accepted, reviewed work, the queue is the constraint.
+      </p>
+      <p>
+        This is why “run ten agents” is not a strategy. Ten agents may produce
+        ten diffs in an hour, and one person may review two of them well. The
+        other eight become a backlog, and a backlog of unreviewed diffs is not
+        progress.
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2>Task independence</h2>
+      <p>
+        Parallelism only pays off for independent tasks. Two tasks are
+        independent when they touch disjoint files, have no shared contract that
+        must land first, and can be verified separately.
+      </p>
+      <p>
+        If task B needs the result of task A, run them in sequence. If both need
+        a new type, a route entry, or a schema change, land that contract on
+        main first; otherwise the two branches will invent different versions of
+        it. A fleet does not make dependent work faster; it makes the dependency
+        harder to see.
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2>Review capacity</h2>
+      <p>
+        Review capacity is the real limit. Measure it directly:
+      </p>
+      <ol class="feature-list">
+        <li><strong>How long does a typical review take?</strong> Not a skim; a real read of the diff, the tests, and the surrounding code.</li>
+        <li><strong>How many can you do in a focused hour?</strong> For most people, one to three, depending on the diff size.</li>
+        <li><strong>How many hours per day do you actually have for review?</strong> Not the whole day; the time between other work.</li>
+      </ol>
+      <p>
+        The product of those numbers is your rough ceiling. If a review takes 30
+        minutes and you have two focused hours, four reviews is a full day. A
+        fleet that produces eight diffs a day is already over capacity.
+      </p>
+      <p>
+        The limit is not fixed. Smaller tasks and a faster test suite raise it;
+        large diffs and a flaky suite lower it. The point is to choose the fleet
+        size from the review loop, not from the machine. Measure your own review
+        speed before you choose a fleet size: the number that matters is how
+        many diffs you can read, not how many agents you can start.
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2>When review is the bottleneck</h2>
+      <p>
+        Do not add an agent to fix a review bottleneck. Fix the review loop:
+      </p>
+      <ul class="feature-list">
+        <li><strong>Make the tasks smaller.</strong> A 200-line diff is faster to review than a 600-line diff, and it is less likely to hide a semantic conflict.</li>
+        <li><strong>Make the tests faster and more trustworthy.</strong> A five-minute suite lets you run the combined result after every merge.</li>
+        <li><strong>Review the risky files first.</strong> Auth, data, shared interfaces, and dependencies before formatting and docs.</li>
+        <li><strong>Reject oversized diffs.</strong> “Too large to review” is a process finding; split the task and re-run.</li>
+        <li><strong>Add a reviewer before you add a slot.</strong> A second reader raises capacity more than a fourth agent.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2>Machine and cost limits</h2>
+      <p>
+        The machine sets a second ceiling: CPU and memory for the agents, the
+        dev servers, and the test suites; ports and databases for each worktree;
+        and the rate limits of the model or agent provider. Cost is the third:
+        tokens and subscription usage scale with the number of concurrent
+        sessions.
+      </p>
+      <p>
+        These are easier to see than review capacity, which is why people
+        optimize for them and miss the real bottleneck. A machine that can run
+        ten agents is not a reason to run ten.
+      </p>
+      <p>
+        A concrete example: four agents each running a ten-minute test suite can
+        saturate four cores and make every review wait for a test run. The
+        fleet's wall-clock time improves, but the reviewer's does not. If the
+        machine is the limit, reduce concurrency or move the suite to a faster
+        runner; adding agents will only queue more work behind the same CPU.
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2>A simple starting formula</h2>
+      <ol class="feature-list">
+        <li><strong>Start with two.</strong> Two independent tasks, two worktrees, one reviewer.</li>
+        <li><strong>Run for a week.</strong> Track queue wait time, review time, merge failures, and rework.</li>
+        <li><strong>Add one slot</strong> only when the queue is consistently empty and every diff is still being read.</li>
+        <li><strong>Remove one slot</strong> when the review backlog grows for more than a few days or the rework rate rises.</li>
+        <li><strong>Do not add a slot to fix a slow agent.</strong> Fix the task scope or the harness first.</li>
+      </ol>
+      <p>
+        The number will be different for a solo developer, a two-person team,
+        and a team with a dedicated reviewer. That is expected. The formula is
+        the same; the inputs are not.
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2>A worked example: two vs four</h2>
+      <p>
+        Week one: two agents, eight independent tasks, one reviewer. The queue
+        is empty by day three, every diff is read, and two merges need a small
+        rebase. Review capacity looks like roughly four tasks a day.
+      </p>
+      <p>
+        Week two: four agents, sixteen tasks. By day two the review backlog is
+        six, two diffs are merged after a skim, and one semantic conflict
+        reaches main. The agents were faster; the accepted work was not.
+      </p>
+      <p>
+        The useful conclusion is not “four is bad.” It is that the fourth slot
+        exceeded review capacity for that week's task sizes. The next attempt
+        should use three slots, or keep four and make the tasks smaller and the
+        test suite faster. Add a slot when the queue is empty and review is
+        current; remove one when the backlog grows.
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2>Team scenarios</h2>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>Setup</th><th>Starting slots</th><th>Why</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Solo developer, no reviewer</td><td>2</td><td>You are the review bottleneck; two diffs is usually a full review load.</td></tr>
+            <tr><td>Pair, shared review</td><td>3–4</td><td>Two people can read diffs; the queue can be slightly deeper.</td></tr>
+            <tr><td>Dedicated reviewer</td><td>4–6</td><td>Review capacity is the job; measure it before adding more.</td></tr>
+            <tr><td>No reviewer available</td><td>1–2</td><td>Do not add agents you cannot review. A backlog is not progress.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>
+        These are starting points, not rules. The number that matters is the one
+        your review loop can sustain.
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2>Signals to add or remove agents</h2>
+      <ul class="feature-list">
+        <li><strong>Add:</strong> the queue is empty, review is current, merges are clean, and you have independent tasks waiting.</li>
+        <li><strong>Remove:</strong> the review backlog is growing, the same files conflict repeatedly, or the rework rate is rising.</li>
+        <li><strong>Hold:</strong> the queue is empty but review is behind. The constraint is review, not agent count.</li>
+        <li><strong>Fix first:</strong> flaky tests, missing env setup, port conflicts, or a task that is too broad.</li>
+      </ul>
+      <p>
+        For the queue mechanics, read
+        <a href="/guides/queue-coding-agent-tasks/">how to queue coding agent tasks</a>.
+        For the state model, read
+        <a href="/guides/agent-task-states/">agent task states, retries, and schedules</a>.
+        For the first step from one agent, read
+        <a href="/guides/from-one-agent-to-a-fleet/">from one agent to a fleet</a>.
+        A rule of thumb: if you cannot say which diff you will review next, you
+        have too many agents running. If the queue is empty and review is
+        current for a week, you have room for one more.
+      </p>
+      <div class="actions">
+        <a class="button button-primary" href="/workbench/">Explore iCode Workbench</a>
+        <a class="button" href="/guides/queue-coding-agent-tasks/">Queue coding agent tasks</a>
+        <a class="button" href="/guides/parallel-agents/">Read the parallel-agents guide</a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<!-- BEGIN:site-footer -->
+<!-- END:site-footer -->
+<script src="../../assets/main.js"></script>
+</body>
+</html>

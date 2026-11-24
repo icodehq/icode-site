@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Agent task states, retries, and schedules — iCode Workbench</title>
+  <meta name="description" content="Queued, running, waiting, failed, completed: a practical model for coding agent task states, retries, and schedules." />
+  <meta name="theme-color" content="#ffffff" />
+  <link rel="icon" href="../../assets/favicon.svg" type="image/svg+xml" />
+  <link rel="stylesheet" href="../../assets/styles.css" />
+  <script src="../../assets/theme.js"></script>
+</head>
+<body>
+<!-- BEGIN:site-header -->
+<!-- END:site-header -->
+
+<main>
+  <section class="section">
+    <div class="container">
+      <p class="eyebrow">iCode Workbench · Guide · Queue</p>
+      <h1>Agent task states, retries, and schedules</h1>
+      <p class="lede">
+        A task is not a process. A process is either running or not; a task has
+        a goal, a history, and a state. The state is what tells you whether the
+        work needs you, whether it can wait, and whether it is actually done.
+      </p>
+      <p>
+        This guide is the model behind a useful queue: the states, how retries
+        work, why “waiting” is not “failed,” and how schedules fit without
+        becoming a second system.
+      </p>
+      <!-- BEGIN:article-meta -->
+      <!-- END:article-meta -->
+      <p class="muted"><em>This guide is currently available in English only.</em></p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2>Why states matter</h2>
+      <p>
+        With one agent, you can hold the state in your head: it is running, or
+        it is done. With three, the head fails. A wall of green terminals does
+        not tell you which task is blocked, which is waiting for an approval,
+        and which finished but has not been reviewed.
+      </p>
+      <p>
+        A false green is worse than an honest unknown. If a task shows
+        “running” when it is actually waiting for a person, you wait too. If it
+        shows “completed” when it has not been reviewed, you may merge
+        unreviewed work.
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2>The state model</h2>
+      <ul class="feature-list">
+        <li><strong>Queued.</strong> The task exists and is waiting for a slot. Nothing is running.</li>
+        <li><strong>Dispatching.</strong> A slot opened and the task is being assigned. A short state, but it makes the transition visible.</li>
+        <li><strong>Running.</strong> The agent is working. Running does not mean “will succeed,” and it does not mean “reviewed.”</li>
+        <li><strong>Waiting.</strong> The agent needs a person: an approval, a decision, or an answer. Waiting is not failed and not running.</li>
+        <li><strong>Completed.</strong> The process exited successfully. The task still needs a review decision before it is accepted.</li>
+        <li><strong>Failed.</strong> The process exited with an error, or the verification command failed. A retry creates a new attempt.</li>
+        <li><strong>Cancelled.</strong> A person stopped the task. It should not silently reappear.</li>
+      </ul>
+      <p>
+        The names matter less than the distinctions. The critical ones are
+        waiting vs failed, and completed vs accepted.
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2>Retries as new attempts</h2>
+      <p>
+        A retry is a new attempt, not an erased failure. The previous attempt
+        should stay in the task history: what the agent tried, why it failed,
+        and what changed. If the retry succeeds, you still review the final diff;
+        if it fails again, the history shows the pattern.
+      </p>
+      <p>
+        A retry should never count as a review, and a successful retry should
+        not auto-merge. The review decision is independent of how many attempts
+        it took.
+      </p>
+      <p>
+        Keep the policy simple: retry a failed verification, do not retry a
+        failed review without a change, and do not retry a task that is waiting
+        on a person.
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2>Waiting vs failed</h2>
+      <p>
+        Waiting means the agent is blocked on a human. Failed means the agent or
+        the verification failed. The distinction changes what you do next:
+      </p>
+      <ul class="feature-list">
+        <li><strong>Waiting:</strong> read the prompt, answer or approve, and let the same session continue.</li>
+        <li><strong>Failed:</strong> read the failure, decide whether the task or the code needs to change, then retry.</li>
+        <li><strong>Running slowly:</strong> check the last tool call or file before assuming it is stuck.</li>
+      </ul>
+      <p>
+        If these all look like “red” in your UI, you will interrupt waiting
+        sessions and wait on failed ones. That is a state-model problem, not an
+        agent problem.
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2>Schedules</h2>
+      <p>
+        A schedule creates an ordinary queued task on a cadence: once, daily,
+        weekdays, weekly, or every few hours. It is not a separate automation
+        with its own failure modes; it is a task factory that uses the same
+        queue, the same review gate, and the same state model.
+      </p>
+      <p>
+        The important decision is overlap. If the previous run is still running
+        when the next is due, queue the new one or skip it — pick one explicitly.
+        A nightly audit that silently stacks ten concurrent runs is worse than
+        one that skips a night.
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2>Status hooks</h2>
+      <p>
+        A status hook lets the harness report what it is actually doing. Without
+        one, the queue has to guess from process output, and guesses become
+        false greens. A good hook reports running, waiting, and completed
+        distinctly; a harness without a hook should stay <code>unknown</code>
+        rather than pretend to be running.
+      </p>
+      <p>
+        Do not infer “running” from a live PTY. A terminal can be open while the
+        agent is waiting for an answer; the process is alive, but the task needs
+        you. That is exactly the case a status hook exists to distinguish.
+      </p>
+      <p>
+        Unknown is a legitimate state. It tells you to look, which is better
+        than a confident wrong answer.
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2>A task through the states</h2>
+      <p>
+        09:00 — <strong>queued</strong>. The task exists; no slot is free.<br/>
+        09:05 — <strong>dispatching</strong>. A slot opened.<br/>
+        09:06 — <strong>running</strong>. The agent started.<br/>
+        09:40 — <strong>waiting</strong>. The agent needs an approval.<br/>
+        09:45 — <strong>running</strong>. You approved; the same session continues.<br/>
+        10:10 — <strong>completed</strong>. The process exited zero. The task is not accepted yet.<br/>
+        10:15 — <strong>review</strong>: revise. The diff skipped a test.<br/>
+        10:25 — <strong>running</strong>. A retry, as a new attempt, with the test restored.<br/>
+        10:40 — <strong>completed</strong>. The retry exited zero.<br/>
+        10:45 — <strong>accepted</strong>. You reviewed the diff and recorded the decision.<br/>
+        10:50 — merged.
+      </p>
+      <p>
+        The history is the point. The first failure was not erased, the waiting
+        period was visible, and the retry was a new attempt. If the UI collapsed
+        all of this into “running” and then “done,” you would not know which
+        task needed you or which diff had been reviewed.
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container-wide">
+      <h2>State transitions</h2>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>From</th><th>To</th><th>Trigger</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Queued</td><td>Dispatching</td><td>A slot opens</td></tr>
+            <tr><td>Dispatching</td><td>Running</td><td>The agent starts</td></tr>
+            <tr><td>Running</td><td>Waiting</td><td>The agent asks for approval or a decision</td></tr>
+            <tr><td>Waiting</td><td>Running</td><td>A person answers or approves</td></tr>
+            <tr><td>Running</td><td>Completed</td><td>Process exits zero and verification passes</td></tr>
+            <tr><td>Running</td><td>Failed</td><td>Process error or verification failure</td></tr>
+            <tr><td>Completed</td><td>Accepted</td><td>Review accepts the diff</td></tr>
+            <tr><td>Completed</td><td>Revise</td><td>Review requests changes; a retry follows</td></tr>
+            <tr><td>Failed</td><td>Queued</td><td>A new attempt is created</td></tr>
+            <tr><td>Any</td><td>Cancelled</td><td>A person stops the task</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>
+        A state machine this small is enough to make a fleet legible. The value
+        is in the transitions being visible, not in the number of states.
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2>Measuring state accuracy</h2>
+      <ul class="feature-list">
+        <li><strong>False green rate.</strong> Tasks marked running or completed that were actually waiting or failed. Any nonzero rate means the status hooks are guessing.</li>
+        <li><strong>Waiting time.</strong> How long tasks sit in waiting before a person responds. This is the queue's attention latency.</li>
+        <li><strong>Retry rate.</strong> Retries per task. A rising rate means the task statement or the tests are weak.</li>
+        <li><strong>Review latency.</strong> Time from completed to accepted. This is the real throughput limit.</li>
+      </ul>
+      <p>
+        If the false green rate is above zero, fix the hooks before adding
+        agents. A wrong state is worse than an unknown one.
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2>Anti-patterns</h2>
+      <ul class="feature-list">
+        <li><strong>Completed means done.</strong> Completed is a process exit, not an accepted task. Keep the review decision separate.</li>
+        <li><strong>Retry until green.</strong> Retrying without changing the task or the code produces the same failure. Read the history first.</li>
+        <li><strong>One state for everything.</strong> If waiting, failed, and running all look the same, the queue cannot route your attention.</li>
+        <li><strong>Schedules outside the queue.</strong> A separate cron with its own state and review path becomes a second system to maintain.</li>
+        <li><strong>Guessing status.</strong> A false green is worse than an honest unknown.</li>
+      </ul>
+      <p>
+        For the practical setup, read
+        <a href="/guides/queue-coding-agent-tasks/">how to queue coding agent tasks</a>.
+        For the fleet view, read
+        <a href="/guides/parallel-agents/">the parallel-agents pillar</a>.
+      </p>
+      <div class="actions">
+        <a class="button button-primary" href="/workbench/">Explore iCode Workbench</a>
+        <a class="button" href="/guides/queue-coding-agent-tasks/">Queue coding agent tasks</a>
+        <a class="button" href="/guides/how-many-agents-in-parallel/">How many agents?</a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<!-- BEGIN:site-footer -->
+<!-- END:site-footer -->
+<script src="../../assets/main.js"></script>
+</body>
+</html>
