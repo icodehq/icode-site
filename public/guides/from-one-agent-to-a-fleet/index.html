@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>From one agent to a fleet — iCode Workbench</title>
+  <meta name="description" content="When does one coding agent stop being enough? The signals, the first two-agent setup, and what breaks first when you move from one agent to a small fleet." />
+  <meta name="theme-color" content="#ffffff" />
+  <link rel="icon" href="../../assets/favicon.svg" type="image/svg+xml" />
+  <link rel="stylesheet" href="../../assets/styles.css" />
+  <script src="../../assets/theme.js"></script>
+</head>
+<body>
+<!-- BEGIN:site-header -->
+<!-- END:site-header -->
+
+<main>
+  <section class="section">
+    <div class="container">
+      <p class="eyebrow">iCode Workbench · Guide · Start here</p>
+      <h1>From one agent to a fleet: when you need a workbench</h1>
+      <p class="lede">
+        One coding agent in one terminal is a good setup. It is simple, it is
+        easy to review, and it does not need a queue. The question is not
+        whether a fleet is more powerful. It is whether your work has outgrown
+        the single-agent loop.
+      </p>
+      <p>
+        This guide is about the moment you add a second agent — and the few
+        things you should put in place before you add a third.
+      </p>
+      <!-- BEGIN:article-meta -->
+      <!-- END:article-meta -->
+      <p class="muted"><em>This guide is currently available in English only.</em></p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2>One agent is fine — until it isn't</h2>
+      <p>
+        A single agent is not a beginner setup. For one task at a time, it is
+        often the best setup: one context, one checkout, one diff to review.
+        Adding a fleet too early creates coordination work you did not need.
+      </p>
+      <p>
+        The single-agent loop starts to strain when the work becomes independent
+        but the tooling stays serial. You give an agent a task, wait, and then
+        give it the next task. The agent is busy; you are waiting. Or you open a
+        second terminal, then a third, and start tracking sessions in your head.
+        The work did not become complex. The coordination did.
+      </p>
+      <p>
+        The trigger is not ambition or team size. It is the ratio of independent
+        work to your attention. When that ratio crosses a threshold, a
+        workbench stops being overhead and starts being the thing that keeps the
+        work legible.
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2>Three signals you need a fleet</h2>
+      <ol class="feature-list">
+        <li>
+          <strong>You wait on the agent while independent work is ready.</strong>
+          If you have a second task that does not depend on the first, the
+          waiting time is pure loss. Two tasks can run at once without becoming
+          a fleet.
+        </li>
+        <li>
+          <strong>You are tracking sessions in your head.</strong> When you have
+          to remember which terminal is on which branch, which one is blocked,
+          and which one finished, the sessions have outgrown the interface. A
+          queue is cheaper than memory.
+        </li>
+        <li>
+          <strong>Review is the bottleneck — or it is being skipped.</strong> If
+          you review every diff and the queue of unreviewed work is growing, you
+          need a review gate, not more agents. If you are skipping review
+          because you cannot keep up, that is the signal that the workflow needs
+          a workbench.
+        </li>
+      </ol>
+      <p>
+        Two of these three is usually enough. One alone might be a bad week.
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2>The first two-agent setup</h2>
+      <p>
+        Start with two tasks, not five. Pick work that is genuinely independent:
+        different files, different tests, no shared schema change. Then set up
+        the smallest loop that keeps them from colliding.
+      </p>
+      <ol class="feature-list">
+        <li><strong>Create one worktree and one branch per task.</strong> Name them after the task. Do not run two agents in the same checkout.</li>
+        <li><strong>Give each task a scope.</strong> Owned paths, a done-when command, and an out-of-scope list. If the two tasks share a file, they are one task until the shared change lands.</li>
+        <li><strong>Run both agents, but review one at a time.</strong> Two agents can run in parallel; your review cannot. Read the first diff, decide, then read the second.</li>
+        <li><strong>Merge serially.</strong> Rebase the second branch on main after the first merge, run the tests, then merge. Do not merge both and test afterward.</li>
+        <li><strong>Write down what broke.</strong> A shared file, a port, an env var, a merge conflict. That list is the setup for the next attempt.</li>
+      </ol>
+      <p>
+        If this feels like too much process for two tasks, keep one agent. The
+        process is the point: it is what makes the third and fourth task safe.
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2>What breaks first</h2>
+      <p>
+        The first failures are predictable. They are rarely model failures.
+      </p>
+      <ul class="feature-list">
+        <li><strong>File collisions.</strong> Two agents in one checkout overwrite each other. A worktree per task fixes this before it happens.</li>
+        <li><strong>Shared-state surprises.</strong> A fresh worktree has no <code>.env</code>, no <code>node_modules</code>, and no local database. Two dev servers both want port 3000. Set up each checkout deliberately.</li>
+        <li><strong>Merge order.</strong> Two branches can pass alone and fail together. Merge one at a time and test the combined result.</li>
+        <li><strong>Review load.</strong> Two agents can produce two diffs faster than one person can read them. The limit is review capacity, not agent count.</li>
+        <li><strong>Lost sessions.</strong> A terminal dies, the app restarts, and the work disappears with the process. If the task matters, the session should outlive the window.</li>
+      </ul>
+      <p>
+        A concrete example: one agent adds <code>/auth/refresh</code> and the
+        other adds <code>/billing/portal</code>. Both edit
+        <code>src/routes.ts</code>. Each branch passes its own tests, so both
+        look green. The second merge silently drops the first route, and the
+        combined test suite only catches it if it exercises both paths. The fix
+        is not a better model; it is landing the shared route-table edit before
+        the parallel work, or giving the route table to one task.
+      </p>
+      <p>
+        None of these requires a platform to understand. They require a
+        deliberate setup. A workbench is one way to make that setup the default.
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2>The minimum viable workbench</h2>
+      <p>
+        You do not need every feature of a mature ADE to run two agents. You
+        need three things:
+      </p>
+      <ol class="feature-list">
+        <li><strong>Isolation.</strong> One worktree per task, so the agents cannot overwrite each other.</li>
+        <li><strong>A task list with states.</strong> Even a simple list is enough at first: queued, running, waiting for me, done. The states tell you what needs attention without opening every terminal.</li>
+        <li><strong>A review gate.</strong> A diff in the checkout where the agent worked, and a decision that is separate from the process exiting.</li>
+      </ol>
+      <p>
+        Everything else — schedules, retries, a cross-project assistant, mobile,
+        remote servers — is an optimization. Useful, but not the minimum.
+      </p>
+      <p>
+        <a href="/workbench/">iCode Workbench</a> packages those three things:
+        worktrees, a durable queue with explicit states, and review in the
+        session checkout. It also adds a bounded assistant and 44 CLI agents,
+        but the three are the reason it exists.
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2>When not to add a second agent</h2>
+      <p>
+        A fleet is not a maturity badge. There are good reasons to stay with one
+        agent:
+      </p>
+      <ul class="feature-list">
+        <li><strong>The work is sequential.</strong> If task B needs the result of task A, running them together creates a merge problem, not speed.</li>
+        <li><strong>The tasks share files.</strong> Two agents editing the same route table, manifest, or migration directory are one task until the shared change lands.</li>
+        <li><strong>The test suite is flaky.</strong> A green run is only useful if you trust it. Fix the suite before you multiply the number of green runs.</li>
+        <li><strong>You cannot review two diffs a day.</strong> The bottleneck is your attention, not the agent count. Adding agents makes the queue longer, not the work faster.</li>
+        <li><strong>You are avoiding a design decision.</strong> Parallel agents do not resolve an ambiguous interface. They produce two implementations of it.</li>
+      </ul>
+      <p>
+        A single agent with a clear scope and a review gate is often better than
+        two agents with neither. Add the second agent when the work is
+        independent and the review loop is already working.
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2>Next step</h2>
+      <p>
+        If the signals above sound familiar, do not start by adding five agents.
+        Read the
+        <a href="/guides/parallel-agents/">parallel coding agents guide</a> and
+        run two independent tasks for a week. If review keeps up and the merges
+        are clean, add a third. If review does not keep up, fix the review loop
+        before adding anything.
+      </p>
+      <p>
+        New to the category? Read
+        <a href="/guides/what-is-an-agent-development-environment/">what is an agent development environment?</a>
+        For the “why” behind the queue and the review gate, see
+        <a href="/blog/agent-task-queue/">durable tasks, not terminal tabs</a> and
+        <a href="/blog/agent-review-workflow/">the review gate</a>.
+      </p>
+      <div class="actions">
+        <a class="button button-primary" href="/workbench/">Explore iCode Workbench</a>
+        <a class="button" href="/guides/parallel-agents/">Read the parallel-agents guide</a>
+        <a class="button" href="/compare/orca/">Compare with Orca</a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<!-- BEGIN:site-footer -->
+<!-- END:site-footer -->
+<script src="../../assets/main.js"></script>
+</body>
+</html>
