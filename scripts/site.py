@@ -79,6 +79,7 @@ ARTICLE_ROUTES = {
     "guides/worktrees-vs-branches",
     "guides/how-many-agents-in-parallel",
     "guides/agent-task-states",
+    "guides/agent-review-checklist",
 }
 
 # Routes that exist only in English. They are built once, canonicalized to the
@@ -95,6 +96,7 @@ ENGLISH_ONLY_ROUTES = {
     "guides/worktrees-vs-branches",
     "guides/how-many-agents-in-parallel",
     "guides/agent-task-states",
+    "guides/agent-review-checklist",
     "compare/orca",
     "blog/agent-review-workflow",
     "blog/agent-task-queue",
@@ -132,6 +134,7 @@ CONTENT_DATES = {
     "guides/worktrees-vs-branches": "2026-11-24",
     "guides/how-many-agents-in-parallel": "2026-11-24",
     "guides/agent-task-states": "2026-11-24",
+    "guides/agent-review-checklist": "2026-11-24",
     "compare/orca": "2026-11-24",
 }
 ARTICLE_PUBLISHED = {
@@ -154,6 +157,7 @@ ARTICLE_PUBLISHED = {
     "guides/worktrees-vs-branches": "2026-11-24",
     "guides/how-many-agents-in-parallel": "2026-11-24",
     "guides/agent-task-states": "2026-11-24",
+    "guides/agent-review-checklist": "2026-11-24",
 }
 PRODUCTS = {
     "workbench": {

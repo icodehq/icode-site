@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Agent diff review checklist — iCode Workbench</title>
+  <meta name="description" content="A practical checklist for reviewing agent diffs: scope, tests, error handling, security, style, and the final review decision." />
+  <meta name="theme-color" content="#ffffff" />
+  <link rel="icon" href="../../assets/favicon.svg" type="image/svg+xml" />
+  <link rel="stylesheet" href="../../assets/styles.css" />
+  <script src="../../assets/theme.js"></script>
+</head>
+<body>
+<!-- BEGIN:site-header -->
+<!-- END:site-header -->
+
+<main>
+  <section class="section">
+    <div class="container">
+      <p class="eyebrow">iCode Workbench · Guide · Review</p>
+      <h1>Agent diff review checklist</h1>
+      <p class="lede">
+        A checklist does not review the diff for you. It keeps the review from
+        collapsing into “the tests pass” on a day when you are tired. Use it
+        risk-first: scope, tests, error handling, security, performance, style,
+        then the decision.
+      </p>
+      <p>
+        This checklist pairs with
+        <a href="/guides/review-ai-generated-code/">how to review AI-generated code</a>.
+        The guide explains the workflow; this page is the list you keep open.
+      </p>
+      <!-- BEGIN:article-meta -->
+      <!-- END:article-meta -->
+      <p class="muted"><em>This guide is currently available in English only.</em></p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2>How to use this checklist</h2>
+      <ul class="feature-list">
+        <li><strong>Review in the checkout, not in chat.</strong> Open the diff where the agent worked; the surrounding code and the tests are part of the review.</li>
+        <li><strong>Start with the file list.</strong> Scope and test changes are the highest-signal lines; read them before the code.</li>
+        <li><strong>Go risk-first.</strong> Auth, data, shared interfaces, and dependencies before formatting and docs.</li>
+        <li><strong>Timebox the pass.</strong> If a diff takes more than 20–30 minutes, it is probably too large to review well; split the task.</li>
+        <li><strong>Batch the feedback.</strong> Collect line notes and send one pass, not five small messages.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2>1. Scope</h2>
+      <ul class="feature-list">
+        <li>Does the file list match the task, or did the agent drift?</li>
+        <li>Are there files outside the owned paths? Why?</li>
+        <li>Is the diff small enough to read in one sitting? If not, split the task.</li>
+        <li>Are there unrelated formatting, rename, or dependency changes?</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2>2. Correctness</h2>
+      <ul class="feature-list">
+        <li>Does the change do what the task asked, not just something plausible?</li>
+        <li>Are the edge cases covered: empty input, missing value, duplicate call, partial failure?</li>
+        <li>Did the change respect the callers and the public types?</li>
+        <li>Are there new branches that no test exercises?</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2>3. Tests</h2>
+      <ul class="feature-list">
+        <li>Did the test fail before the fix and pass after?</li>
+        <li>Were any tests deleted, skipped, or weakened?</li>
+        <li>Does the test assert behavior, or just that the function returns?</li>
+        <li>Did you run the full suite on the merged result, not only the task's tests?</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2>4. Error handling</h2>
+      <ul class="feature-list">
+        <li>Is any error swallowed by a new catch or a fallback?</li>
+        <li>Are retries bounded, with a backoff and a failure path?</li>
+        <li>Are timeouts and cancellation handled?</li>
+        <li>Does a failure leave the system in a recoverable state?</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2>5. Security</h2>
+      <ul class="feature-list">
+        <li>Are authorization checks still in place on every new path?</li>
+        <li>Is user input validated at the boundary?</li>
+        <li>Are secrets kept out of logs, errors, and the diff?</li>
+        <li>Are new dependencies necessary, and are their licenses acceptable?</li>
+        <li>Does the change widen a permission, a token lifetime, or a CORS policy?</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2>6. Performance and concurrency</h2>
+      <ul class="feature-list">
+        <li>Did the change add an N+1 query, an unbounded loop, or a large in-memory load?</li>
+        <li>Are locks, queues, and shared state used correctly?</li>
+        <li>Is the operation idempotent where it needs to be?</li>
+        <li>Does the change hold a database lock or a transaction longer than necessary?</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2>7. Style and docs</h2>
+      <ul class="feature-list">
+        <li>Does the change follow the surrounding patterns, or introduce a new one without a reason?</li>
+        <li>Are public APIs, configuration, and user-visible behavior documented?</li>
+        <li>Is the changelog entry present if the project requires one?</li>
+        <li>Are comments explaining *why*, not restating *what*?</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2>Common false passes</h2>
+      <p>
+        A diff can satisfy the checklist mechanically and still be wrong. These
+        are the cases to slow down for:
+      </p>
+      <ul class="feature-list">
+        <li><strong>The test was weakened.</strong> A deleted assertion, a skipped case, or a looser matcher makes the suite green without proving the behavior.</li>
+        <li><strong>The diff is small but changes a default.</strong> A one-line default change can alter every caller; read the callers, not just the line.</li>
+        <li><strong>The code looks idiomatic but invents an API.</strong> A plausible import or method can be hallucinated. Check that it exists.</li>
+        <li><strong>The happy path works; the error path is missing.</strong> A new catch that swallows the error, or a retry without a bound, is a production bug.</li>
+        <li><strong>The change is “harmless” but out of scope.</strong> It still needs its own task and its own review.</li>
+        <li><strong>The types compile; the runtime shape differs.</strong> Check the serialized shape, not just the TypeScript type.</li>
+        <li><strong>The unit tests pass; the integration breaks.</strong> Run the combined result after the merge.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2>When to stop and send it back</h2>
+      <p>
+        A review that cannot be done well is a process finding, not a personal
+        failure. Send the task back when:
+      </p>
+      <ul class="feature-list">
+        <li>the task statement is too vague to judge the diff;</li>
+        <li>the diff is too large to read in one sitting;</li>
+        <li>the tests are flaky or the suite is too slow to run;</li>
+        <li>there is no baseline to compare against;</li>
+        <li>the diff changes a shared contract that was never decided.</li>
+      </ul>
+      <p>
+        “Revise” is a valid decision. So is “reject and split the task.” The
+        goal is reviewed, mergeable work, not a review that looks thorough. A
+        review that stops at “looks fine” is not a review; it is a hope.
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2>A worked example</h2>
+      <p>
+        The task: “Fix token refresh when the API returns 401.” The diff changes
+        <code>src/auth/refresh.ts</code>, <code>src/routes.ts</code>, and
+        <code>tests/auth/refresh.test.ts</code>. The suite is green.
+      </p>
+      <p>
+        A checklist pass finds four things the green suite does not show:
+      </p>
+      <ul class="feature-list">
+        <li><strong>Scope:</strong> <code>src/routes.ts</code> is outside the owned paths. Finding: out-of-scope change; split it into its own task.</li>
+        <li><strong>Tests:</strong> the test file was edited and one case is skipped. Finding: weakened test; the green run is not evidence.</li>
+        <li><strong>Error handling:</strong> the retry has no bound. Finding: a 401 loop if the refresh token is also expired.</li>
+        <li><strong>Correctness:</strong> there is no test for the expired-refresh-token case, which is the case that matters.</li>
+      </ul>
+      <p>
+        The decision is “revise,” with line notes for each finding. The next diff
+        is smaller, the test is restored, and the review is faster. The
+        checklist did not replace judgment; it kept the judgment from stopping
+        at “green.”
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2>Severity: what blocks a merge</h2>
+      <ul class="feature-list">
+        <li><strong>Blocker:</strong> a security hole, data loss, a weakened test, an out-of-scope change that affects behavior, or a missing failure path on a critical operation.</li>
+        <li><strong>Should fix:</strong> unbounded retries, missing edge-case tests, performance regressions, unclear error handling, undocumented public behavior.</li>
+        <li><strong>Nit:</strong> naming, formatting, comment style, a small refactor that is not required for the task.</li>
+      </ul>
+      <p>
+        Review the blockers first. If there is a blocker, do not spend the
+        review on nits; send the blocker back and review the next diff. If there
+        is no blocker, the nits can wait for a follow-up or be skipped.
+      </p>
+      <p>
+        Severity is about impact, not diff size. A one-line auth change can be a
+        blocker; a 200-line rename can be a nit. If you cannot decide, ask what
+        happens if the change ships as-is.
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2>8. The decision</h2>
+      <ul class="feature-list">
+        <li><strong>Accept:</strong> the diff matches the task, the tests pass, and the risk areas are covered.</li>
+        <li><strong>Revise:</strong> the direction is right but the diff needs another pass. Send line notes with the problem, the expected change, and the evidence.</li>
+        <li><strong>Reject:</strong> the change is wrong, out of scope, or not worth fixing. Keep the branch and the history.</li>
+        <li>Record the decision separately from process exit. Do not auto-merge a green task.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2>Printable checklist</h2>
+      <ol class="feature-list">
+        <li>Scope matches the task; no unexplained files.</li>
+        <li>Edge cases and callers covered.</li>
+        <li>Tests fail before and pass after; no weakened tests.</li>
+        <li>Errors are handled, retries bounded, failures recoverable.</li>
+        <li>Auth, input, secrets, dependencies, permissions reviewed.</li>
+        <li>No obvious performance or concurrency regression.</li>
+        <li>Style and docs consistent.</li>
+        <li>Decision recorded; merge order respected.</li>
+      </ol>
+      <p>
+        For the reasoning behind each item, read
+        <a href="/guides/review-ai-generated-code/">how to review AI-generated code</a>
+        and <a href="/blog/agent-review-workflow/">the review gate</a>.
+      </p>
+      <div class="actions">
+        <a class="button button-primary" href="/workbench/">Explore iCode Workbench</a>
+        <a class="button" href="/guides/review-ai-generated-code/">Review AI-generated code</a>
+        <a class="button" href="/guides/queue-coding-agent-tasks/">Queue coding agent tasks</a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<!-- BEGIN:site-footer -->
+<!-- END:site-footer -->
+<script src="../../assets/main.js"></script>
+</body>
+</html>
