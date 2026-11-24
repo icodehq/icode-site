@@ -38,6 +38,61 @@
 
   <section class="section">
     <div class="container">
+      <h2>What parallel coding agents are</h2>
+      <p>
+        Parallel coding agents means running two or more CLI coding agents at the
+        same time on independent tasks. Each agent gets its own session, its own
+        context, and — if the setup is correct — its own Git worktree. The unit
+        of work is a task, not an agent. You do not “run five agents”; you run
+        five tasks and assign an agent to each.
+      </p>
+      <p>
+        This is different from subagents inside one agent. Claude Code's agent
+        teams and Codex's subagents split work inside a parent session; they
+        share the parent's orchestration and often the same checkout. Parallel
+        agents are separate sessions that can use different harnesses, different
+        models, and different subscriptions. The isolation boundary is the
+        worktree.
+      </p>
+      <p>
+        It is also different from a queue. Parallelism is concurrency: how many
+        tasks run at once. A queue is work management: what is queued, what is
+        running, what needs a person, what failed. You need both. Concurrency
+        without a queue is a pile of terminals; a queue without concurrency is a
+        to-do list.
+      </p>
+      <p>
+        The reason to run agents in parallel is wall-clock time on independent
+        work. The reason it fails is almost never the model. It is collisions,
+        merge order, unreviewed output, or a session that died with the work
+        inside it. The rest of this guide is about those four failures.
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2>The four failure modes</h2>
+      <p>
+        Most “parallel agents” attempts fail in one of four ways. Name them
+        before you add a second agent.
+      </p>
+      <ol class="feature-list">
+        <li><strong>File collisions.</strong> Two agents edit the same file in the same checkout. One overwrites the other, or both report success and the second write wins. A worktree per task fixes this.</li>
+        <li><strong>Merge conflicts.</strong> Worktrees prevent overwrites, not conflicts. Two branches can change the same shared file — a route table, a manifest, an export list — and the merge fails or silently drops one side. Scoping and merge order fix most of it.</li>
+        <li><strong>Unreviewed output.</strong> The agent exits zero, the task turns green, and the diff reaches main without a person reading it. A green run proves the process exited; it does not prove the change is correct. The review gate fixes this.</li>
+        <li><strong>Lost sessions.</strong> The terminal dies, the app restarts, or the laptop sleeps, and the agent's work disappears with the process. A detached host and durable task state fix this.</li>
+      </ol>
+      <p>
+        Each failure has a different fix, and they compose in order: isolate the
+        checkout, scope the task, queue the work, review the diff, merge in
+        order. If you only fix one, the others will find you.
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
       <h2>What worktrees isolate — and what they don't</h2>
       <p>
         A Git worktree is a separate working directory with its own branch,
@@ -297,6 +352,110 @@ git worktree prune</pre></div>
       <p>
         If the work is not merged, keep the checkout and the branch. Removing a
         worktree deletes uncommitted changes.
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container-wide">
+      <h2>A worked example: five tasks, one fleet</h2>
+      <p>
+        Imagine a repository with five independent tasks: an auth fix, a billing
+        refactor, a flaky checkout test, a database migration, and a docs update.
+        The work is parallelizable, but only if the shared contracts land first.
+      </p>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>Task</th><th>Owned paths</th><th>Done when</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Auth fix</td>
+              <td><code>src/auth/**</code>, <code>tests/auth/**</code></td>
+              <td>Auth tests pass; token refresh is covered</td>
+            </tr>
+            <tr>
+              <td>Billing refactor</td>
+              <td><code>src/billing/**</code>, <code>tests/billing/**</code></td>
+              <td>Billing tests pass; public types unchanged</td>
+            </tr>
+            <tr>
+              <td>Flaky checkout test</td>
+              <td><code>tests/e2e/checkout.spec.ts</code></td>
+              <td>The test fails before the fix and passes after 20 runs</td>
+            </tr>
+            <tr>
+              <td>Migration</td>
+              <td><code>db/migrations/**</code>, <code>src/db/**</code></td>
+              <td>Migration runs forward and back on a copy</td>
+            </tr>
+            <tr>
+              <td>Docs update</td>
+              <td><code>docs/**</code></td>
+              <td>The new auth flow is documented</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <ol class="feature-list">
+        <li><strong>Land the shared contract first.</strong> If auth and billing both need a new session type, merge that type to main before branching. Shared schema changes are not parallel work.</li>
+        <li><strong>Create one worktree and one branch per task.</strong> Name both after the task, not the agent. Copy the env file and assign a port and database per checkout.</li>
+        <li><strong>Queue the tasks with a slot limit of two.</strong> The limit is review capacity, not machine capacity. Two running tasks and three queued is a healthy fleet; five running and zero reviewed is not.</li>
+        <li><strong>Review each diff in its own checkout.</strong> Reject the flaky-test fix if it only skips the test. Reject the migration if it locks the table. A task can complete and still be rejected.</li>
+        <li><strong>Merge in dependency order.</strong> Migration first, then auth, then billing, then the test fix, then docs. Rebase each branch on main, run the tests, and merge one at a time.</li>
+      </ol>
+      <p>
+        The order is the point. If the migration lands last, every branch above
+        it is rebased onto a schema that changed underneath it. If the auth
+        contract lands after the billing branch, the billing branch invents its
+        own session type and the merge becomes a design debate.
+      </p>
+      <p>
+        This is also where a queue earns its keep: the migration and the auth fix
+        can run in parallel, but the docs update should wait until the auth flow
+        is settled. A queue lets you express that dependency without holding five
+        terminals in your head.
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2>Checklist before you add another agent</h2>
+      <ol class="feature-list">
+        <li><strong>Are the tasks independent?</strong> If two tasks touch the same file, they are one task until the shared change lands.</li>
+        <li><strong>Is the shared contract already on main?</strong> Schema, types, route tables, migrations. Land them first.</li>
+        <li><strong>Does each task have disjoint owned paths?</strong> Write the paths and the out-of-scope list into the task.</li>
+        <li><strong>Is the test suite fast and trustworthy?</strong> A flaky suite turns every green run into noise.</li>
+        <li><strong>Is there review capacity for every branch?</strong> The bottleneck moves; it does not disappear.</li>
+        <li><strong>Can each task finish in a bounded session?</strong> A task that needs 40 files of context is not a parallel unit.</li>
+        <li><strong>Is there a rollback path?</strong> Keep the branch and the worktree until the change is verified in main.</li>
+      </ol>
+      <p>
+        If any answer is no, fix that before adding the agent. The goal is not
+        maximum concurrency; it is reviewed, mergeable work.
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2>What to measure</h2>
+      <p>Parallelism is an investment; measure whether it pays back.</p>
+      <ul class="feature-list">
+        <li><strong>Wall-clock time per task.</strong> From queue to merge, not from agent start to exit.</li>
+        <li><strong>Review time per diff.</strong> If review time grows faster than execution time shrinks, you moved the bottleneck.</li>
+        <li><strong>Merge failure rate.</strong> How often a branch fails to merge or needs rework. A rising rate means scoping or merge order is wrong.</li>
+        <li><strong>Rework rate.</strong> How often a reviewed task is rejected or reopened. A high rate means the task statement or the tests are weak.</li>
+        <li><strong>Queue wait time.</strong> If tasks wait longer than they run, the slot limit or review capacity is the constraint.</li>
+        <li><strong>Cost per accepted change.</strong> Tokens plus review time divided by merged tasks. This is the number that decides whether the fleet is worth it.</li>
+      </ul>
+      <p>
+        Run the same five tasks sequentially for a week, then in parallel for a
+        week. Compare the six numbers. If parallelism does not improve cost per
+        accepted change, reduce the fleet or fix the review loop before adding
+        more agents.
       </p>
     </div>
   </section>
