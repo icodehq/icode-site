@@ -64,6 +64,7 @@ EN_UI = {
     "footer.guides": "Guides",
     "footer.blog": "Blog",
     "footer.changelog": "Changelog",
+    "footer.privacy": "Privacy",
     "footer.compare": "Compare",
     "footer.faq": "FAQ",
     "footer.about": "About",

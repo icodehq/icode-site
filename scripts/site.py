@@ -112,6 +112,7 @@ ENGLISH_ONLY_ROUTES = {
     "workbench/agents/gemini-cli",
     "workbench/agents/copilot",
     "changelog",
+    "privacy",
     "compare/orca",
     "blog/agent-review-workflow",
     "blog/agent-task-queue",
@@ -158,6 +159,7 @@ CONTENT_DATES = {
     "workbench/agents/gemini-cli": "2026-11-24",
     "workbench/agents/copilot": "2026-11-24",
     "changelog": "2026-11-24",
+    "privacy": "2026-11-25",
     "compare/orca": "2026-11-24",
 }
 ARTICLE_PUBLISHED = {
@@ -625,6 +627,7 @@ def inject_regions(html: str, locale: dict, route: str, ui: dict, href, language
         "guides_href": href("guides"),
         "blog_href": href("blog"),
         "changelog_href": href("changelog"),
+        "privacy_href": href("privacy"),
         "compare_href": href_for(locale, "compare/orca"),
         "faq_href": href("faq"),
         "about_href": href("about"),
@@ -656,6 +659,7 @@ def inject_regions(html: str, locale: dict, route: str, ui: dict, href, language
         "footer.guides": ui["footer.guides"],
         "footer.blog": ui["footer.blog"],
         "footer.changelog": ui["footer.changelog"],
+        "footer.privacy": ui["footer.privacy"],
         "footer.compare": ui["footer.compare"],
         "footer.faq": ui["footer.faq"],
         "footer.about": ui["footer.about"],

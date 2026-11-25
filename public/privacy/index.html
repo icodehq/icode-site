@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>iCode Privacy: No Telemetry, No Account, No Analytics</title>
+  <meta name="description" content="iCode Workbench collects no analytics, telemetry, account IDs, or install IDs. Every outbound call, the T3 Code comparison, and how to verify it." />
+  <meta name="theme-color" content="#ffffff" />
+  <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml" />
+  <link rel="stylesheet" href="../assets/styles.css" />
+  <script src="../assets/theme.js"></script>
+</head>
+<body>
+<!-- BEGIN:site-header -->
+<!-- END:site-header -->
+
+<main>
+  <section class="section">
+    <div class="container">
+      <p class="eyebrow">Privacy</p>
+      <h1>No telemetry. No account. No analytics.</h1>
+      <p class="lede">
+        iCode Workbench is local-first. The app collects no analytics, no
+        telemetry, no usage events, no account IDs, no install IDs, and no
+        device IDs. Prompts, code, file paths, and conversation IDs never leave
+        your machine through iCode.
+      </p>
+      <p>
+        T3 Code currently hashes your OpenAI and Claude account IDs and a stable
+        install ID, then forwards them to PostHog by default. iCode has no
+        account to hash — there is nothing to send.
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2>Every outbound call</h2>
+      <table>
+        <thead>
+          <tr><th>Call</th><th>When</th><th>What leaves</th><th>Where</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th>Update check</th>
+            <td>On launch and periodically</td>
+            <td>App version and platform in a standard update request</td>
+            <td>GitHub Releases</td>
+          </tr>
+          <tr>
+            <th>Agent CLI</th>
+            <td>When you run a harness</td>
+            <td>Whatever that CLI sends to its vendor and the provider you configured</td>
+            <td>Your CLI's vendor / your provider</td>
+          </tr>
+          <tr>
+            <th>Git</th>
+            <td>When you fetch or push</td>
+            <td>Repository data</td>
+            <td>The remote you configured</td>
+          </tr>
+          <tr>
+            <th>Diagnostics</th>
+            <td>Only when you choose to copy or export</td>
+            <td>Exactly what the diagnostics view shows</td>
+            <td>Wherever you send it</td>
+          </tr>
+        </tbody>
+      </table>
+      <p class="muted">
+        No other network calls are made by iCode. Local logs and session state
+        stay on your machine.
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2>How T3 Code compares</h2>
+      <p>
+        T3 Code is another control plane for coding agents. Its telemetry
+        documentation (November 2026) describes product events sent to
+        <code>ingest.t3.codes</code>, associated with hashed T3 Connect,
+        OpenAI, and Claude account IDs, a stable install ID, and a per-device
+        ID; events are forwarded to PostHog. Telemetry is on by default, with
+        an opt-out via <code>T3CODE_TELEMETRY_ENABLED=false</code> or a managed
+        policy. Relay diagnostics go to Axiom and can include the connected
+        machine's name and environment identifiers.
+      </p>
+      <table>
+        <thead>
+          <tr><th></th><th>T3 Code (per its docs, Nov 2026)</th><th>iCode</th></tr>
+        </thead>
+        <tbody>
+          <tr><th>Analytics / telemetry on by default</th><td>Yes</td><td><strong>None</strong></td></tr>
+          <tr><th>Hashed OpenAI / Claude account IDs</th><td>Yes</td><td><strong>None</strong></td></tr>
+          <tr><th>Hashed T3 Connect account</th><td>Yes</td><td><strong>No account exists</strong></td></tr>
+          <tr><th>Stable install ID / per-device ID</th><td>Yes</td><td><strong>None</strong></td></tr>
+          <tr><th>Third-party analytics</th><td>Events forwarded to PostHog</td><td><strong>None</strong></td></tr>
+          <tr><th>Prompts / code / file contents</th><td>Not collected by default (opt-in feedback can attach text)</td><td>Not collected</td></tr>
+          <tr><th>Relay diagnostics</th><td>Axiom (machine name, environment IDs)</td><td><strong>None</strong></td></tr>
+          <tr><th>Opt-out</th><td>Env var / managed policy</td><td><strong>N/A — nothing to opt out of</strong></td></tr>
+        </tbody>
+      </table>
+      <p class="muted">
+        Source: T3 Code's
+        <a href="https://github.com/pingdotgg/t3code/blob/main/docs/user/telemetry.md" rel="noopener">telemetry documentation</a>.
+        T3 Code is not affiliated with iCode; this comparison reflects its
+        documentation as of November 2026 and may change.
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2>Verify it yourself</h2>
+      <ul class="feature-list">
+        <li>
+          Run <code>bash scripts/audit-telemetry.sh</code> from the
+          <a href="https://github.com/icodehq/icode-workbench" rel="noopener">iCode Workbench repository</a>.
+          It fails if an analytics SDK or endpoint is added to
+          <code>src/</code> or <code>package.json</code>.
+        </li>
+        <li>
+          Watch the app's network calls with Little Snitch, Proxyman, or
+          <code>lsof -i -P | grep -i icode</code>. You will see the update check
+          and the agents and providers you configured.
+        </li>
+      </ul>
+      <pre><code>grep -RInE "posthog|sentry|amplitude|mixpanel|segment\.io|plausible|umami|bugsnag|datadog|newrelic|google-analytics|googletagmanager" src package.json</code></pre>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2>Policy</h2>
+      <p>
+        iCode will never add telemetry. If that ever changes, it will be
+        opt-in, off by default, and announced in the changelog. A CI check
+        enforces the current state.
+      </p>
+      <h2>Third-party harnesses</h2>
+      <p>
+        The CLIs you run (Claude Code, Codex, OpenCode, and others) have their
+        own data policies. iCode does not add, proxy, or observe their
+        telemetry. If a harness sends data to its vendor, that is between you
+        and the vendor.
+      </p>
+      <h2>Diagnostics</h2>
+      <p>
+        iCode's diagnostics are manual. Nothing is sent unless you choose to
+        copy or export it, and the view shows exactly what would leave.
+      </p>
+      <p class="muted"><em>This page is currently available in English only.</em></p>
+    </div>
+  </section>
+</main>
+
+<!-- BEGIN:site-footer -->
+<!-- END:site-footer -->
+<script src="../assets/main.js"></script>
+</body>
+</html>
